@@ -1,0 +1,89 @@
+<?php
+/**
+ * @var \Phalcon\Mvc\View\Engine\Php $this
+ */
+?>
+
+<div class="row">
+    <nav>
+        <ul class="pager">
+            <li class="previous"><?php echo $this->tag->linkTo(["reservations", "Go Back"]) ?></li>
+        </ul>
+    </nav>
+</div>
+
+<div class="page-header">
+    <h1>
+        Create reservations
+    </h1>
+</div>
+
+<?php echo $this->getContent(); ?>
+
+<?php
+    echo $this->tag->form(
+        [
+            "reservations/create",
+            "autocomplete" => "off",
+            "class" => "form-horizontal"
+        ]
+    );
+?>
+
+<div class="form-group">
+    <label for="fieldExhibitorsId" class="col-sm-2 control-label">Exhibitors</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textField(["exhibitors_id", "type" => "number", "class" => "form-control", "id" => "fieldExhibitorsId"]) ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="fieldEventsId" class="col-sm-2 control-label">Events</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textField(["events_id", "type" => "number", "class" => "form-control", "id" => "fieldEventsId"]) ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="fieldAreasId" class="col-sm-2 control-label">Areas</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textField(["areas_id", "type" => "number", "class" => "form-control", "id" => "fieldAreasId"]) ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="fieldCodicestand" class="col-sm-2 control-label">Codicestand</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textField(["codicestand", "size" => 30, "class" => "form-control", "id" => "fieldCodicestand"]) ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="fieldPadreId" class="col-sm-2 control-label">Padre</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textField(["padre_id", "type" => "number", "class" => "form-control", "id" => "fieldPadreId"]) ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="fieldPrezzofinale" class="col-sm-2 control-label">Prezzofinale</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textField(["prezzofinale", "type" => "number", "class" => "form-control", "id" => "fieldPrezzofinale"]) ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="fieldNotepagamento" class="col-sm-2 control-label">Notepagamento</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textArea(["notepagamento", "cols" => 30, "rows" => 4, "class" => "form-control", "id" => "fieldNotepagamento"]) ?>
+    </div>
+</div>
+
+
+<div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+        <?php echo $this->tag->submitButton(["Save", "class" => "btn btn-default"]) ?>
+    </div>
+</div>
+
+<?php echo $this->tag->endForm(); ?>

@@ -1,0 +1,609 @@
+[Fri, 02 Nov 18 15:28:02 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:28:02 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Fri, 02 Nov 18 15:28:40 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:28:40 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Fri, 02 Nov 18 15:28:40 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:28:40 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:30:39 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:30:39 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Fri, 02 Nov 18 15:30:40 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:30:40 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:37:40 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:37:40 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Fri, 02 Nov 18 15:37:41 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:37:41 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:39:58 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:39:58 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: save. Lo accetto? SI
+[Fri, 02 Nov 18 15:39:58 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:39:58 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Fri, 02 Nov 18 15:39:58 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:39:59 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:40:09 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:40:09 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Fri, 02 Nov 18 15:40:10 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:40:10 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:40:12 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:40:12 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Fri, 02 Nov 18 15:40:12 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:40:12 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:40:36 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:40:36 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: save. Lo accetto? SI
+[Fri, 02 Nov 18 15:40:36 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:40:36 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Fri, 02 Nov 18 15:40:36 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:40:36 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:40:55 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:40:55 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Fri, 02 Nov 18 15:40:56 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:40:56 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:41:01 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:41:01 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Fri, 02 Nov 18 15:41:01 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:41:02 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:41:25 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:41:25 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: save. Lo accetto? SI
+[Fri, 02 Nov 18 15:41:25 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:41:25 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Fri, 02 Nov 18 15:41:26 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:41:26 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:41:27 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:41:27 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Fri, 02 Nov 18 15:41:27 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:41:28 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:41:30 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:41:30 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Fri, 02 Nov 18 15:41:30 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 15:41:30 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:08:06 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:08:06 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Fri, 02 Nov 18 16:08:07 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:08:07 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:08:48 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:08:48 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Fri, 02 Nov 18 16:08:49 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:08:49 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:09:07 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:09:07 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Fri, 02 Nov 18 16:09:07 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:09:08 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:24:04 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:24:04 +0000][DEBUG] ACL:: ruolo: Users controller: index action: index. Lo accetto? SI
+[Fri, 02 Nov 18 16:24:04 +0000][DEBUG] ciao sono la index di indexcontroller
+[Fri, 02 Nov 18 16:24:07 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:24:07 +0000][DEBUG] ACL:: ruolo: Users controller: index action: index. Lo accetto? SI
+[Fri, 02 Nov 18 16:24:07 +0000][DEBUG] ciao sono la index di indexcontroller
+[Fri, 02 Nov 18 16:24:07 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:24:07 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:24:10 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:24:10 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Fri, 02 Nov 18 16:24:10 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:24:10 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:24:11 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:24:11 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Fri, 02 Nov 18 16:24:11 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:24:11 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:32:09 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:32:09 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: save. Lo accetto? SI
+[Fri, 02 Nov 18 16:32:09 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:32:09 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Fri, 02 Nov 18 16:32:09 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:32:09 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:32:14 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:32:14 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Fri, 02 Nov 18 16:32:14 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:32:14 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:32:16 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:32:16 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Fri, 02 Nov 18 16:32:16 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:32:16 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:33:13 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:33:13 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Fri, 02 Nov 18 16:33:13 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:33:13 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:45:50 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:45:50 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Fri, 02 Nov 18 16:45:50 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:45:50 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:47:46 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:47:46 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Fri, 02 Nov 18 16:48:51 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:48:51 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Fri, 02 Nov 18 16:48:51 +0000][DEBUG] ACL:: utente classificato come Users
+[Fri, 02 Nov 18 16:48:51 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 09:03:58 +0000][DEBUG] ACL:: utente classificato come Guests
+[Mon, 05 Nov 18 09:03:58 +0000][DEBUG] ACL:: ruolo: Guests controller: index action: index. Lo accetto? SI
+[Mon, 05 Nov 18 09:03:58 +0000][DEBUG] ciao sono la index di indexcontroller
+[Mon, 05 Nov 18 09:03:59 +0000][DEBUG] ACL:: utente classificato come Guests
+[Mon, 05 Nov 18 09:03:59 +0000][DEBUG] ACL:: ruolo: Guests controller: index action: index. Lo accetto? SI
+[Mon, 05 Nov 18 09:03:59 +0000][DEBUG] ciao sono la index di indexcontroller
+[Mon, 05 Nov 18 09:03:59 +0000][DEBUG] ACL:: utente classificato come Guests
+[Mon, 05 Nov 18 09:03:59 +0000][DEBUG] ACL:: utente classificato come Guests
+[Mon, 05 Nov 18 09:04:18 +0000][DEBUG] ACL:: utente classificato come Guests
+[Mon, 05 Nov 18 09:04:18 +0000][DEBUG] ACL:: ruolo: Guests controller: session action: index. Lo accetto? SI
+[Mon, 05 Nov 18 09:04:18 +0000][DEBUG] ciao sono la index di sessioncontroller (form login)
+[Mon, 05 Nov 18 09:04:18 +0000][DEBUG] ACL:: utente classificato come Guests
+[Mon, 05 Nov 18 09:04:18 +0000][DEBUG] ACL:: utente classificato come Guests
+[Mon, 05 Nov 18 09:04:29 +0000][DEBUG] ACL:: utente classificato come Guests
+[Mon, 05 Nov 18 09:04:29 +0000][DEBUG] ACL:: ruolo: Guests controller: session action: start. Lo accetto? SI
+[Mon, 05 Nov 18 09:04:29 +0000][DEBUG] inizio session/start...
+[Mon, 05 Nov 18 09:04:29 +0000][DEBUG] registro utente in sessione
+[Mon, 05 Nov 18 09:04:29 +0000][DEBUG] sto per fare il forward verso reservations/index
+[Mon, 05 Nov 18 09:04:29 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 09:04:29 +0000][DEBUG] ACL:: ruolo: Users controller: index action: index. Lo accetto? SI
+[Mon, 05 Nov 18 09:04:29 +0000][DEBUG] ciao sono la index di indexcontroller
+[Mon, 05 Nov 18 09:04:29 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 09:04:29 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 09:05:17 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 09:05:17 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Mon, 05 Nov 18 09:05:17 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 09:05:17 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 09:05:41 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 09:05:41 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: new. Lo accetto? SI
+[Mon, 05 Nov 18 09:05:41 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 09:05:41 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 09:05:56 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 09:05:56 +0000][DEBUG] ACL:: ruolo: Users controller: index action: index. Lo accetto? SI
+[Mon, 05 Nov 18 09:05:56 +0000][DEBUG] ciao sono la index di indexcontroller
+[Mon, 05 Nov 18 09:11:59 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 09:11:59 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: create. Lo accetto? SI
+[Mon, 05 Nov 18 09:11:59 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 09:11:59 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: new. Lo accetto? SI
+[Mon, 05 Nov 18 09:11:59 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 09:11:59 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 09:12:23 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 09:12:23 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: create. Lo accetto? SI
+[Mon, 05 Nov 18 09:12:23 +0000][DEBUG] passo prima del save
+[Mon, 05 Nov 18 09:12:23 +0000][DEBUG]  save del model reservations..
+[Mon, 05 Nov 18 09:12:24 +0000][DEBUG]  save del model reservations_services..
+[Mon, 05 Nov 18 09:12:24 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 09:12:24 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Mon, 05 Nov 18 09:12:24 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 09:12:24 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 09:13:24 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 09:13:24 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Mon, 05 Nov 18 09:13:25 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 09:13:25 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 09:32:41 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 09:32:41 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Mon, 05 Nov 18 09:32:41 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 09:32:41 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 09:44:07 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 09:44:07 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Mon, 05 Nov 18 09:44:16 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 09:44:16 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Mon, 05 Nov 18 09:45:09 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 09:45:09 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Mon, 05 Nov 18 09:45:15 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 09:45:15 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Mon, 05 Nov 18 09:45:15 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 09:45:15 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 10:01:47 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 10:01:47 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Mon, 05 Nov 18 10:01:51 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 10:01:51 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Mon, 05 Nov 18 10:02:18 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 10:02:18 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Mon, 05 Nov 18 10:02:23 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 10:02:23 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Mon, 05 Nov 18 10:02:23 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 10:02:23 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 10:03:33 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 10:03:33 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Mon, 05 Nov 18 10:03:34 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 10:03:34 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 10:04:05 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 10:04:05 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Mon, 05 Nov 18 10:04:05 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 10:04:05 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 10:51:38 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 10:51:38 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 10:51:38 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 10:51:38 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 10:54:27 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 10:54:27 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 10:54:27 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 10:54:27 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 10:56:16 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 10:56:16 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 10:56:16 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 10:56:16 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 10:56:52 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 10:56:52 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 10:56:52 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 10:56:52 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 10:57:18 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 10:57:18 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 10:57:18 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 10:57:18 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:09:39 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:09:39 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 11:09:39 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:09:39 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:10:10 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:10:10 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 11:10:10 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:10:10 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:10:11 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:10:11 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 11:10:11 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:10:11 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:12:35 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:12:35 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 11:12:35 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:12:35 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:13:09 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:13:09 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 11:13:09 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:13:09 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:23:41 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:23:41 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 11:23:41 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:23:41 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:25:21 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:25:21 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 11:25:21 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:25:21 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:27:08 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:27:08 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 11:27:08 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:27:08 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:41:53 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:41:53 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 11:41:53 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:41:53 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:42:01 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:51:49 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:51:49 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 11:51:49 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:51:50 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:52:49 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:52:49 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 11:52:49 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:52:49 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:54:08 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:54:08 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 11:54:08 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:54:09 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:54:53 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:54:53 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 11:54:53 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 11:54:53 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 12:14:53 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 12:14:53 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 12:16:03 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 12:16:03 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 12:16:03 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 12:16:03 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 12:16:27 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 12:16:27 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: save. Lo accetto? SI
+[Mon, 05 Nov 18 12:16:27 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 12:16:27 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 12:16:27 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 12:16:28 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 12:16:30 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 12:16:30 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Mon, 05 Nov 18 12:16:30 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 12:16:30 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 12:16:35 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 12:16:35 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 12:16:35 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 12:16:35 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 12:17:20 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 12:17:20 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 12:17:20 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 12:17:20 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:01:15 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:01:15 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 14:01:15 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:01:15 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:03:08 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:03:14 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:03:14 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 14:03:14 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:03:14 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:03:20 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:03:20 +0000][DEBUG] ACL:: ruolo: Users controller: index action: index. Lo accetto? SI
+[Mon, 05 Nov 18 14:03:20 +0000][DEBUG] ciao sono la index di indexcontroller
+[Mon, 05 Nov 18 14:03:20 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:03:20 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:03:27 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:03:27 +0000][DEBUG] ACL:: ruolo: Users controller: index action: index. Lo accetto? SI
+[Mon, 05 Nov 18 14:03:27 +0000][DEBUG] ciao sono la index di indexcontroller
+[Mon, 05 Nov 18 14:04:00 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:04:00 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Mon, 05 Nov 18 14:04:00 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:04:01 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:04:06 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:04:06 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Mon, 05 Nov 18 14:04:16 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:04:16 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 14:04:16 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:04:16 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:04:26 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:04:26 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 14:05:32 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:05:32 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 14:05:32 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:05:32 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:08:45 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:08:45 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 14:08:45 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:08:45 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:10:08 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:10:08 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 14:10:09 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:10:09 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:11:05 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:11:05 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 14:11:05 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:11:05 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:28:01 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:28:01 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 14:28:01 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:28:01 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:28:36 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:28:36 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 14:28:36 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:28:36 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:29:34 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:29:34 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 14:29:34 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:29:34 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:30:04 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:30:04 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 14:30:04 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:30:04 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:32:31 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:32:31 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 14:32:31 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:32:31 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:32:55 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:32:55 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 14:32:55 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:32:55 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:34:07 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:34:07 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 14:34:07 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:34:07 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:43:00 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:43:00 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 14:43:00 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:43:00 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:46:08 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:46:08 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 14:46:09 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:46:09 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:46:09 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:46:09 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 14:46:09 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:46:10 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:46:10 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 14:46:10 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:46:10 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 14:46:10 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:46:10 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:46:10 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 14:46:10 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:46:10 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:46:54 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:46:54 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 14:46:54 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:46:54 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:51:56 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:51:56 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 14:51:56 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 14:51:56 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:06:53 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:06:53 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 15:06:54 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:06:54 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:07:21 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:07:21 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 15:07:21 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:07:21 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:18:11 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:18:11 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 15:18:11 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:18:11 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:18:56 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:18:56 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 15:18:56 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:18:56 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:31:42 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:31:42 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 15:31:56 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:31:56 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 15:31:56 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:31:56 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:34:52 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:34:52 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 15:34:53 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:34:53 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:35:12 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:35:12 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 15:35:12 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:35:12 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:35:23 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:35:23 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 15:35:23 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:35:23 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:36:21 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:36:21 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 15:36:21 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:36:22 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:36:45 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:36:45 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 15:36:45 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:36:45 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:37:15 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:37:15 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 15:37:15 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:37:16 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:38:00 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:38:00 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: save. Lo accetto? SI
+[Mon, 05 Nov 18 15:38:00 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:38:00 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 15:38:00 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:38:00 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:39:01 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:39:01 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: save. Lo accetto? SI
+[Mon, 05 Nov 18 15:39:01 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:39:01 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 15:39:02 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:39:02 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:39:13 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:39:13 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Mon, 05 Nov 18 15:39:13 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:39:13 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:39:17 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:39:17 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 15:39:17 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:39:18 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:42:11 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:42:11 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 15:42:11 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:42:11 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:42:21 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:45:46 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:45:46 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 15:45:46 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:45:47 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:46:23 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:46:23 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: save. Lo accetto? SI
+[Mon, 05 Nov 18 15:46:23 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:46:23 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 15:46:23 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:46:23 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:46:49 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:46:49 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: save. Lo accetto? SI
+[Mon, 05 Nov 18 15:46:49 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:46:49 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 15:48:12 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:48:12 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: save. Lo accetto? SI
+[Mon, 05 Nov 18 15:48:12 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:48:12 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 15:48:38 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:48:38 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: save. Lo accetto? SI
+[Mon, 05 Nov 18 15:48:38 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:48:38 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 15:50:02 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:50:02 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: save. Lo accetto? SI
+[Mon, 05 Nov 18 15:50:02 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:50:02 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 15:50:02 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:50:02 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:50:08 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:50:08 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Mon, 05 Nov 18 15:50:08 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:50:08 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:50:10 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:50:10 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 15:50:10 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:50:10 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:50:11 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:50:11 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Mon, 05 Nov 18 15:50:11 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:50:12 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:50:12 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:50:12 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 15:50:13 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:50:13 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:50:30 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:50:30 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: save. Lo accetto? SI
+[Mon, 05 Nov 18 15:50:30 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:50:30 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 15:50:30 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:50:31 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:50:57 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:50:57 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: save. Lo accetto? SI
+[Mon, 05 Nov 18 15:50:58 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:50:58 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 15:50:58 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:50:58 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:59:15 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:59:15 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: save. Lo accetto? SI
+[Mon, 05 Nov 18 15:59:15 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:59:15 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 15:59:16 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:59:16 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:59:24 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:59:24 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: save. Lo accetto? SI
+[Mon, 05 Nov 18 15:59:24 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:59:24 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 15:59:24 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 15:59:24 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:01:01 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:01:01 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: save. Lo accetto? SI
+[Mon, 05 Nov 18 16:01:01 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:01:01 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 16:01:01 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:01:01 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:01:04 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:01:04 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Mon, 05 Nov 18 16:01:04 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:01:04 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:01:59 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:01:59 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 16:02:00 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:02:00 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:02:21 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:02:21 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: save. Lo accetto? SI
+[Mon, 05 Nov 18 16:02:21 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:02:21 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 16:02:21 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:02:21 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:02:25 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:02:25 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Mon, 05 Nov 18 16:02:25 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:02:25 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:02:29 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:02:29 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 16:02:29 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:02:29 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:02:46 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:02:46 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: save. Lo accetto? SI
+[Mon, 05 Nov 18 16:02:46 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:02:46 +0000][DEBUG] ACL:: ruolo: Users controller: reservations action: edit. Lo accetto? SI
+[Mon, 05 Nov 18 16:02:46 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:02:46 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:02:54 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:02:54 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Mon, 05 Nov 18 16:02:55 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:02:55 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:06:41 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:13:16 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:13:16 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Mon, 05 Nov 18 16:13:17 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:13:17 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:13:37 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:13:37 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Mon, 05 Nov 18 16:13:38 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:13:38 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:34:40 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:34:40 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: new. Lo accetto? SI
+[Mon, 05 Nov 18 16:34:41 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:34:41 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:38:07 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:38:07 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Mon, 05 Nov 18 16:38:07 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:38:07 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:38:14 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:38:14 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:38:29 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:38:29 +0000][DEBUG] ACL:: ruolo: Users controller: exhibitors action: index. Lo accetto? SI
+[Mon, 05 Nov 18 16:38:29 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 16:38:29 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 17:05:58 +0000][DEBUG] ACL:: utente classificato come Users
+[Mon, 05 Nov 18 17:05:58 +0000][DEBUG] ACL:: ruolo: Users controller: session action: end. Lo accetto? SI
+[Mon, 05 Nov 18 17:05:58 +0000][DEBUG] ACL:: utente classificato come Guests
+[Mon, 05 Nov 18 17:05:58 +0000][DEBUG] ACL:: ruolo: Guests controller: index action: index. Lo accetto? SI
+[Mon, 05 Nov 18 17:05:58 +0000][DEBUG] ciao sono la index di indexcontroller
+[Mon, 05 Nov 18 17:05:58 +0000][DEBUG] ACL:: utente classificato come Guests
+[Mon, 05 Nov 18 17:05:58 +0000][DEBUG] ACL:: utente classificato come Guests
+[Mon, 05 Nov 18 17:06:01 +0000][DEBUG] ACL:: utente classificato come Guests
+[Mon, 05 Nov 18 17:06:01 +0000][DEBUG] ACL:: ruolo: Guests controller: exhibitors action: new. Lo accetto? SI
+[Mon, 05 Nov 18 17:06:01 +0000][DEBUG] ACL:: utente classificato come Guests
+[Mon, 05 Nov 18 17:06:01 +0000][DEBUG] ACL:: utente classificato come Guests
+[Tue, 06 Nov 18 10:17:14 +0000][DEBUG] ACL:: utente classificato come Guests
+[Tue, 06 Nov 18 10:17:14 +0000][DEBUG] ACL:: ruolo: Guests controller: index action: index. Lo accetto? SI
+[Tue, 06 Nov 18 10:17:14 +0000][DEBUG] ciao sono la index di indexcontroller
