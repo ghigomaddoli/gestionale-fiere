@@ -66,7 +66,7 @@ class SecurityPlugin extends Plugin
 				'errors'     => ['show401', 'show404', 'show500'],
 				'session'    => ['index', 'register', 'start', 'end'],
 				'reservations'    => ['index', 'new', 'save', 'create'],
-				'exhibitors'    => ['index', 'new', 'save', 'create'],
+				'exhibitors'    => ['index', 'new', 'nuovo', 'save', 'create'],
 			];
 			foreach ($publicResources as $resource => $actions) {
 				$acl->addResource(new Resource($resource), $actions);

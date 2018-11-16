@@ -89,6 +89,7 @@ class Elements extends Component
     </li>
 */
         $controllerName = $this->view->getControllerName();
+
         foreach ($this->_sidebarMenu as $thecontroller => $action) {
             
             foreach ($action as $azione => $option) {

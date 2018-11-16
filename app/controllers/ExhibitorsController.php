@@ -47,9 +47,13 @@ class ExhibitorsController extends ControllerBase
 
     public function newAction()
     {
-        $this->view->form = new ExhibitorsForm();
-    }
-    
+        //$this->view->form = new ExhibitorsForm();
+        $this->view->province = Province::find();
+        $this->view->areas = Areas::find("events_id = ".$this->evento->id);
+        $this->assets->addCss('css/style.css');
+        $this->view->stands = Services::find("events_id = ".$this->evento->id." AND tipologia IN (1,2)");
+        $this->view->services = Services::find("events_id = ".$this->evento->id." AND tipologia = 3");
+    }    
 
     public function createAction()
     {
@@ -184,13 +188,14 @@ class ExhibitorsController extends ControllerBase
         $form->clear();
 
         $this->flash->success("I Dati della domanda di partecipazione dell'espositore sono stati inseriti con successo!");
-        $this->persistent->searchParams = null;
+        
         return $this->dispatcher->forward(
             [
-                "controller" => "exhibitors",
+                "controller" => "index",
                 "action"     => "index",
             ]
         );
+        
     }
 
 

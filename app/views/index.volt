@@ -23,6 +23,9 @@
     <!-- Custom styles for this template-->
     <link href="/css/sb-admin.css" rel="stylesheet">
 
+    {{ assets.outputCss() }}
+
+
   </head>
 
   <body id="page-top" {{ elements.getBodyClass() }}>

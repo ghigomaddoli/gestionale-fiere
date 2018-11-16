@@ -210,12 +210,9 @@ class ExhibitorsForm extends Form
         $referentetelefono->addValidators([
             new DigitValidator(
                 [
-                    "message" => "Il telefono dell'espositore deve contenere solo numeri",
+                    "message" => "Il telefono dell'espositore è obbligatorio e deve contenere solo numeri",
                 ]
-                ),
-                new PresenceOf([
-                    'message' => 'Il telefono dell\'espositore è obbligatorio'
-                ])
+                )
         ]);
         $this->add($referentetelefono);
 
@@ -223,12 +220,9 @@ class ExhibitorsForm extends Form
         $referenteemail->setLabel("Email dell'espositore");
         $referenteemail->setFilters(['striptags', 'string']);
         $referenteemail->addValidators([
-            new PresenceOf([
-                'message' => 'L\'indirizzo Email dell\'espositore è obbligatorio'
-            ]),
             new Email(
                 [
-                    'message' => 'L\'indirizzo email dell\'espositore non è valido',
+                    'message' => 'L\'indirizzo email dell\'espositore non è valido ed è obbligatorio',
                 ]
             )
         ]);
@@ -238,6 +232,11 @@ class ExhibitorsForm extends Form
         $fasciadiprezzo = new Select("fasciadiprezzo",['A'=>'Fascia A','B' => 'Fascia B']);
         $fasciadiprezzo->setLabel("Fascia di prezzo");
         $fasciadiprezzo->setFilters(['striptags', 'string']);
+        $fasciadiprezzo->addValidators([
+            new PresenceOf([
+                'message' => 'È obbligatorio selezionare una Fascia di prezzo'
+            ]),
+        ]);
         $this->add($fasciadiprezzo);
 
         /* Scelta dello spazio espositivo */
@@ -335,6 +334,7 @@ class ExhibitorsForm extends Form
         $catalogocap = new Text("catalogocap");
         $catalogocap->setLabel("Cap");
         $catalogocap->setFilters(['striptags', 'string']);
+       /*
         $catalogocap->addValidators([
             new DigitValidator(
                 [
@@ -348,6 +348,7 @@ class ExhibitorsForm extends Form
                     ]
                 )
         ]);
+        */
         $this->add($catalogocap);
 
         $catalogocitta = new Text("catalogocitta");
