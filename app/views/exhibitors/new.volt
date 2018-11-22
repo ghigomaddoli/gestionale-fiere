@@ -18,7 +18,7 @@
     
     {{ content() }}
     
-    {{ form('exhibitors/create', 'role': 'form', 'method': 'POST', 'autocomplete': 'off', 'class': 'form-horizontal') }} 
+    {{ form('exhibitors/create', 'id' : 'fespositori', 'role': 'form', 'method': 'POST', 'autocomplete': 'off', 'class': 'form-horizontal') }} 
     
     <div class="form-group">
 
@@ -118,7 +118,7 @@
 
 
     <!-- Form group area tematica --> 
-    <div class="form-group">
+    <div class="form-group" id="grupposeztematica">
 
             <div class="form-row">
                     <div class="col">
@@ -141,7 +141,11 @@
             {% if loop.last or (loop.index % 3 == 0) %}
             </div>
             {% endif %}
-            {% endfor %}   
+            {% endfor %} 
+            <div class="form-row">
+                <div class="col" id="msgerrareatema">
+                </div>
+        </div> 
     </div>
     
     <div class="form-group">
@@ -175,7 +179,7 @@
 
             <div class="form-row">            
                 <div>
-                    {{ radio_field('fasciadiprezzo', 'value' : 'A', 'class' : 'radio-left-pad', 'id' : 'fasciadiprezzo-a' ) }} 
+                    {{ radio_field('fasciadiprezzo', 'value' : 'a', 'class' : 'radio-left-pad', 'id' : 'fasciadiprezzo-a' ) }} 
                 </div>
                 <label class="col-sm-2 col-form-label" for="{{ identificativo }}"> Fascia A</label>
                 <div class="col-sm-9">
@@ -193,9 +197,9 @@
                     </div>
             </div>  
 
-            <div class="form-row">            
+            <div class="form-row" id = "fdp">            
                 <div>
-                    {{ radio_field('fasciadiprezzo', 'value' : 'B', 'class' : 'radio-left-pad', 'id' : 'fasciadiprezzo-b' ) }} 
+                    {{ radio_field('fasciadiprezzo', 'value' : 'b', 'class' : 'radio-left-pad', 'id' : 'fasciadiprezzo-b' ) }} 
                 </div>
                 <label class="col-sm-2 col-form-label" for="{{ identificativo }}"> Fascia B</label>
                 <div class="col-sm-9">
@@ -224,21 +228,29 @@
                     {% for index, stand in stands %}
                     {% set checked = null %}
                     {% set nome = 'services[' ~ stand.id ~ ']' %}
-                    {% set identificativo = 'servizio' ~ stand.id %}
+                    {% set identificativo = 'stand' ~ stand.id %}
+                    {% if stand.tipologia == 1 %}
+                        {% set onclick = 'return false;' %}
+                        {% set checked = 'checked' %}
+                    {% else %}
+                        {% set onclick = null %}
+                        {% set checked = null %}
+                    {% endif %}
+
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <div class="input-group-text">
-                            {{ check_field(nome, 'value' : 1, 'id' : identificativo, 'aria-label' : stand.descrizione ) }} 
+                            {{ check_field(nome, 'value' : 1, 'id' : identificativo, 'aria-label' : stand.descrizione, 'checked' : checked, 'onclick' : onclick ) }} 
                             </div>
                         </div>
                         {{ text_field('descserv', "class" : "form-control", "value" : stand.descrizione, 'disabled' : 'disabled') }}
                         <div class="input-group-append">
                                 <span class="input-group-text">€</span>
-                                <span class="input-group-text" id="prezzo-{{ identificativo }}">0.00</span>
+                                <span class="input-group-text" id="prezzo-{{ identificativo }}">{{ '%.2f'|format(stand.prezzofasciaa) }}</span>
                         </div>
                     </div>
-                    {{ hidden_field('prezzoserv', 'id' : 'identificativo'~'a', "value" : '%.2f'|format(stand.prezzofasciaa)) }}
-                    {{ hidden_field('prezzoserv', 'id' : 'identificativo'~'b', "value" : '%.2f'|format(stand.prezzofasciab)) }}
+                    {{ hidden_field('stand' ~ stand.id ~ 'a', 'id' : 'stand' ~ stand.id ~ 'a', "value" : '%.2f'|format(stand.prezzofasciaa), 'disabled' : 'disabled') }}
+                    {{ hidden_field('stand' ~ stand.id ~ 'b', 'id' : 'stand' ~ stand.id ~ 'b', "value" : '%.2f'|format(stand.prezzofasciab), 'disabled' : 'disabled') }}
                     {% endfor %}
             </div>
     </div>
@@ -251,7 +263,7 @@
     </div>
 
     <div class="form-row">
-        <div class="col-sm-12">&nbsp;</div>
+        <div class="col-sm-12" id="msgerrstand">&nbsp;</div>
     </div>
 
     <div class="form-row">
@@ -264,6 +276,7 @@
                 {% for index, service in services %}
                     {% set identificativo = 'servizio' ~ service.id %}
                     {% set nome = 'services[' ~ service.id ~ ']' %}
+
                     <div class="form-row">
                             <div class="col">
                 <div class="input-group mb-3">
@@ -278,13 +291,14 @@
 
                     <div class="input-group-append">
 
-                            {{ text_field('prezzo', "class" : "form-control", "value" : '€ %.2f'|format(service.prezzofasciaa), 'disabled' : 'disabled') }}
+                            <span class="input-group-text">€</span>
+                            {{ text_field('prezzo', "id": 'prezzoserv' ~ service.id, "class" : "form-control", "value" : '%.2f'|format(service.prezzofasciaa), 'disabled' : 'disabled') }}
 
                     </div>
                     
                 </div>   
-                {{ hidden_field('prezzoserv', 'id' : 'identificativo'~'a', "value" : '%.2f'|format(service.prezzofasciaa)) }}
-                {{ hidden_field('prezzoserv', 'id' : 'identificativo'~'b', "value" : '%.2f'|format(service.prezzofasciab)) }}      
+                {{ hidden_field('prezzoserv' ~ service.id ~ 'a', 'id' : 'prezzoserv' ~ service.id ~ 'a', "value" : '%.2f'|format(service.prezzofasciaa)) }}
+                {{ hidden_field('prezzoserv' ~ service.id ~ 'b', 'id' : 'prezzoserv' ~ service.id ~ 'b', "value" : '%.2f'|format(service.prezzofasciab)) }}      
             </div>
         </div>               
                 {% endfor %}
@@ -470,14 +484,17 @@
     </div>
 
     <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
+        <div class="col-sm-offset-2 col-sm-10 smooth-scroll">
             {{ submit_button('Salva',"class" : "btn btn-primary") }}
         </div>
     </div>
     
     {{ end_form() }}
     
-    
+
+    {{ hidden_field('arraystand', 'id' : 'arraystand', "value" : arraystand) }}
+    {{ hidden_field('arrayservizi', 'id' : 'arrayservizi', "value" : arrayservizi) }}
+
 
   </div>
   <!-- /.container-fluid -->

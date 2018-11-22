@@ -4,4 +4,5 @@
 /Runtime
 /vendor
 /app/logs
+app/logs/test.log
 

@@ -53,12 +53,76 @@ class ExhibitorsController extends ControllerBase
         $this->assets->addCss('css/style.css');
         $this->view->stands = Services::find("events_id = ".$this->evento->id." AND tipologia IN (1,2)");
         $this->view->services = Services::find("events_id = ".$this->evento->id." AND tipologia = 3");
+        $this->assets->addJs('js/exhibitors-new.js');
+        foreach($this->view->stands as $stand){
+            $arraystand[] = $stand->id;
+        }
+        $this->view->arraystand = implode(",",$arraystand);
+        foreach($this->view->services as $servizio){
+            $arrayservizi[] = $servizio->id;
+        }
+        $this->view->arrayservizi = implode(",",$arrayservizi);
     }    
+
+    /* metodo che chiamo prima del create per la valizazione del form in ajax (evento jquery beforesubmit) */
+    public function validateAction(){
+        
+        if($this->request->isAjax()){
+
+            $form = new ExhibitorsForm;
+            $exhibitors = new Exhibitors();
+            $data = $this->request->getPost();
+    
+            if (!$form->isValid($data, $exhibitors)) {
+
+                foreach($form->getElements() as $elemento){
+
+                    if($elemento->hasMessages()){
+                        $nomeelemento = $elemento->getName();
+                        
+                        foreach($elemento->getMessages() as $msg){
+                            $aa = $msg->getMessage();
+                        }
+                        $ris[$nomeelemento] = $aa;
+                        
+                    }
+                }
+                $ris["status"] = "KO";
+                return $this->response->setJsonContent($ris);
+            }
+
+            // verifico che almeno uno stand sia stato selezionato
+            $arrayservizi = $this->request->getPost('services');
+         //   \PhalconDebug::info('array dei seervizi ricevuto dal form',$arrayservizi);
+            $services = Services::find("tipologia=2");
+            $check = false;
+            foreach($services as $servizio){
+                if(in_array($servizio->id,$arrayservizi)){
+                    $check = true;
+                    break;
+                }
+            }
+            if($check == false && empty($this->request->getPost('standpersonalizzato','trim'))){
+                $ris["status"] = "KO";
+                $ris["stand"] = "Selezionare almeno uno stand o riempire il campo per uno stand personalizzato";
+                return $this->response->setJsonContent($ris);
+            }
+       
+            
+            return $this->response->setJsonContent(
+                [
+                    "status" => "OK"
+                ]
+            );
+            
+
+        }
+    }
 
     public function createAction()
     {
 
-        if (!$this->request->isPost()) {
+        if (!$this->request->isPost() ) {
             return $this->dispatcher->forward(
                 [
                     "controller" => "exhibitors",
@@ -89,11 +153,12 @@ class ExhibitorsController extends ControllerBase
             );
         }
 
-        $this->miologger->log("passo prima del save");
+        \PhalconDebug::info("passo prima del save");
+        \PhalconDebug::info($data);
 
         if ($exhibitors->save() === false) {
 
-            $this->miologger->log("errore nel salvataggio exhibitors!");
+            \PhalconDebug::info("errore nel salvataggio exhibitors");
 
             foreach ($exhibitors->getMessages() as $message) {
                 $this->flash->error("dal model: ".$message);
@@ -109,7 +174,7 @@ class ExhibitorsController extends ControllerBase
             );
         }
 
-        $this->miologger->log(" save del model reservations..");
+        \PhalconDebug::info(" save del model reservations..");
         $reservations = new Reservations();
         $reservations->exhibitors_id = $exhibitors->id;
         $reservations->events_id = $this->evento->id;
@@ -133,9 +198,10 @@ class ExhibitorsController extends ControllerBase
         }
 
         /* facciamo la insert dei servizi richiesti nella tabella reservation_services */
-        $this->miologger->log(" save del model reservations_services..");
+        \PhalconDebug::info(" save del model reservations_services..");
+
         $servizirichiesti = $this->request->getPost('services');
-        // \PhalconDebug::info($servizirichiesti);
+
         foreach($servizirichiesti as $services_id => $quantita){
             if($quantita > 0){
                 $reservationservices = new ReservationServices();
@@ -161,6 +227,7 @@ class ExhibitorsController extends ControllerBase
         }
 
         /* facciamo una insert anche nella tabella degli stati */
+        \PhalconDebug::info(" facciamo una insert anche nella tabella degli stati ");
         $logstatireservations = new LogStatiReservations();
         $logstatireservations->reservations_id = $reservations->id;
         $logstatireservations->stati_id = 1; // 1= richiesta prenotazione pendente
@@ -181,7 +248,7 @@ class ExhibitorsController extends ControllerBase
                 ]
             );
         }
-
+        \PhalconDebug::info(" tutto ok faccio la commit ");
         // Commit the transaction
         $this->db->commit();
 

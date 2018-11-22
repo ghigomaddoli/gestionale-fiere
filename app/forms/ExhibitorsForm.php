@@ -179,20 +179,6 @@ class ExhibitorsForm extends Form
         ]);
         $this->add($pivacodfisc);
 
-        $prodottiesposti = new TextArea("prodottiesposti");
-        $prodottiesposti->setLabel("Descrizione dei prodotti o servizi esposti");
-        $prodottiesposti->setFilters(['striptags', 'string']);
-        $prodottiesposti->addValidators([
-            new StringLength(
-                [
-                    "min"            => 15,
-                    "messageMinimum" => "È necessario descrivere brevemente i prodotti o servizi esposti (min. 15 caratteri)",
-                ]
-            )
-        ]);
-        $this->add($prodottiesposti);
-
-
         $referentenome = new Text("referentenome");
         $referentenome->setLabel("Nome dell'espositore da poter contattare durante l'evento");
         $referentenome->setFilters(['striptags', 'string']);
@@ -228,6 +214,18 @@ class ExhibitorsForm extends Form
         ]);
         $this->add($referenteemail);
 
+        $prodottiesposti = new TextArea("prodottiesposti");
+        $prodottiesposti->setLabel("Descrizione dei prodotti o servizi esposti");
+        $prodottiesposti->setFilters(['striptags', 'string']);
+        $prodottiesposti->addValidators([
+            new StringLength(
+                [
+                    "min"            => 15,
+                    "messageMinimum" => "È necessario descrivere brevemente i prodotti o servizi esposti (min. 15 caratteri)",
+                ]
+            )
+        ]);
+        $this->add($prodottiesposti);        
 
         $fasciadiprezzo = new Select("fasciadiprezzo",['A'=>'Fascia A','B' => 'Fascia B']);
         $fasciadiprezzo->setLabel("Fascia di prezzo");
@@ -283,6 +281,7 @@ class ExhibitorsForm extends Form
             new DigitValidator(
                 [
                     "message" => "specificare un numero valido di coespositori",
+                    "allowEmpty" => true,
                 ]
             ),
         ]);
@@ -313,7 +312,12 @@ class ExhibitorsForm extends Form
                 ]
         );
         $areas_id->setLabel("Scelta dell'area tematica");
-        $areas_id->setFilters(['striptags', 'string']);
+        $areas_id->setFilters(['striptags', 'int']);
+        $areas_id->addValidators([
+            new PresenceOf([
+                'message' => 'È obbligatorio selezionare un\'area tematica'
+            ]),
+        ]);
         $this->add($areas_id);
 
         $codicestand = new Text("codicestand",["id"=>"primadelcatalogo"]);
@@ -334,21 +338,21 @@ class ExhibitorsForm extends Form
         $catalogocap = new Text("catalogocap");
         $catalogocap->setLabel("Cap");
         $catalogocap->setFilters(['striptags', 'string']);
-       /*
         $catalogocap->addValidators([
             new DigitValidator(
                 [
                     "message" => "Il CAP per il catalogo deve contenere solo numeri",
+                    "allowEmpty" => true,
                 ]
                 ),
                 new StringLength(
                     [
                         "max"            => 5,
                         "messageMaximum" => "CAP per il catalogotroppo lungo",
+                        "allowEmpty" => true,
                     ]
                 )
-        ]);
-        */
+        ]); 
         $this->add($catalogocap);
 
         $catalogocitta = new Text("catalogocitta");
