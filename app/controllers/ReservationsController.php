@@ -1,7 +1,50 @@
 <?php
-
+use Phalcon\Mvc\Model\Criteria;
+use Phalcon\Paginator\Adapter\Model as Paginator;
 class ReservationsController extends ControllerBase
 {
+    public function indexAction()
+    {
+
+        $numberPage = 1;
+        $parameters = array();
+
+        if ($this->request->isPost()) {
+            $this->persistent->searchParams = null; 
+            $query = Criteria::fromInput($this->di, "Reservations", $this->request->getPost());
+            //$this->persistent->searchParams = $query->getParams();
+        } else {
+            $numberPage = $this->request->getQuery("page", "int");
+        }
+
+        
+        if ($this->persistent->searchParams) {
+            $parameters = $this->persistent->searchParams;
+        }
+        \PhalconDebug::info('array dei parametri di ricerca',$parameters);
+        //$reservations = reservations::find($parameters);
+        $reservations = reservations::find();
+        if (count($reservations) == 0) {
+            $this->flash->notice("Nessun espositore da mostrare");
+
+            return $this->dispatcher->forward(
+                [
+                    "controller" => "index",
+                    "action"     => "index",
+                ]
+            );
+        }
+        $this->view->richieste = count($reservations);
+
+        $paginator = new Paginator(array(
+            "data"  => $reservations,
+            "limit" => 10,
+            "page"  => $numberPage
+        ));
+
+        $this->view->page = $paginator->getPaginate();
+    }
+
     public function initialize()
     {
         $this->tag->setTitle('Prenotazioni');

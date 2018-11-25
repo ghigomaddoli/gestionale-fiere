@@ -66,7 +66,7 @@ class ExhibitorsForm extends Form
         $ragionesociale->setFilters(['striptags', 'string']);
         $ragionesociale->addValidators([
             new PresenceOf([
-                'message' => 'Ragione Sociale è obbligatoria'
+                'message' => 'La Ragione Sociale è obbligatoria'
             ])
         ]);
         $this->add($ragionesociale);
@@ -216,12 +216,12 @@ class ExhibitorsForm extends Form
 
         $prodottiesposti = new TextArea("prodottiesposti");
         $prodottiesposti->setLabel("Descrizione dei prodotti o servizi esposti");
-        $prodottiesposti->setFilters(['striptags', 'string']);
+        $prodottiesposti->setFilters(['striptags', 'string','trim']);
         $prodottiesposti->addValidators([
             new StringLength(
                 [
-                    "min"            => 15,
-                    "messageMinimum" => "È necessario descrivere brevemente i prodotti o servizi esposti (min. 15 caratteri)",
+                    "min"            => 10,
+                    "messageMinimum" => "È necessario descrivere brevemente i prodotti o servizi esposti",
                 ]
             )
         ]);
@@ -291,6 +291,11 @@ class ExhibitorsForm extends Form
         $nomecoespositore->setLabel("Nomi dei coespositori");
         $nomecoespositore->setFilters(['striptags', 'string']);
         $this->add($nomecoespositore);
+
+        $standpersonalizzato = new Text("standpersonalizzato");
+        $standpersonalizzato->setLabel("descrizione stand personalizzato");
+        $standpersonalizzato->setFilters(['striptags', 'string','trim']);
+        $this->add($standpersonalizzato);
 
         $interventoprogrammaculturale = new Check("interventoprogrammaculturale",["name" => "interventoprogrammaculturale","value" =>"1"]);
         $interventoprogrammaculturale->setLabel("Desidero partecipare al programma culturale");

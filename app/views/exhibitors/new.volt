@@ -159,7 +159,7 @@
             <div class="form-row">
                     <div class="col">
                             <div>
-                                    {{ text_area("prodottiesposti", "rows" : 4, "class" : "form-control", "id" : "fieldProdottiesposti") }}
+                                    {{ text_field("prodottiesposti", "class" : "form-control", "id" : "fieldProdottiesposti") }}
                             </div>
                     </div>
             </div>
@@ -412,7 +412,7 @@
             
             <div class="col-sm-2">
                 <label for="fieldCatalogoprovincia" class="control-label">Prov</label>
-                {{ text_field("catalogoprovincia", "size" : 30, "class" : "form-control", "id" : "fieldCatalogoprovincia") }}
+                {{ select('catalogoprovincia', province, 'using': ['sigla_province', 'nome_province'], 'class' : 'form-control') }}
             </div>
         </div>
         

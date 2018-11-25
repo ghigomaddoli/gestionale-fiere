@@ -131,7 +131,7 @@ class ReservationsForm extends Form
 
         $standpersonalizzato = new Text("standpersonalizzato");
         $standpersonalizzato->setLabel("descrizione stand personalizzato");
-        $standpersonalizzato->setFilters(['striptags', 'string']);
+        $standpersonalizzato->setFilters(['striptags', 'string','trim']);
         $this->add($standpersonalizzato);
 
         $stato = new Text("stato");

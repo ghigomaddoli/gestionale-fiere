@@ -12,6 +12,15 @@
 
     {{ content() }}
 
+    <?php 
+    if($this->flashSession->output() != ''){
+      echo "<div class='alert alert-success' role='alert'>";
+      $this->flashSession->output();
+    echo "</div>";
+    }
+    
+    ?>
+
     <!-- Page Content -->
     <h2>{{ evento|e }}</h2>
     <hr>

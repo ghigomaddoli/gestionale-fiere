@@ -8,41 +8,7 @@ class ExhibitorsController extends ControllerBase
     public function indexAction()
     {
 
-        $numberPage = 1;
 
-        if ($this->request->isPost()) {
-            $this->persistent->searchParams = null; 
-            $query = Criteria::fromInput($this->di, "Reservations", $this->request->getPost());
-            //$this->persistent->searchParams = $query->getParams();
-        } else {
-            $numberPage = $this->request->getQuery("page", "int");
-        }
-
-        $parameters = array();
-        if ($this->persistent->searchParams) {
-            $parameters = $this->persistent->searchParams;
-        }
-
-        $reservations = reservations::find($parameters);
-        if (count($reservations) == 0) {
-            $this->flash->notice("Nessun espositore da mostrare");
-
-            return $this->dispatcher->forward(
-                [
-                    "controller" => "index",
-                    "action"     => "index",
-                ]
-            );
-        }
-        $this->view->richieste = count($reservations);
-
-        $paginator = new Paginator(array(
-            "data"  => $reservations,
-            "limit" => 10,
-            "page"  => $numberPage
-        ));
-
-        $this->view->page = $paginator->getPaginate();
     }
 
     public function newAction()
@@ -93,16 +59,21 @@ class ExhibitorsController extends ControllerBase
 
             // verifico che almeno uno stand sia stato selezionato
             $arrayservizi = $this->request->getPost('services');
-         //   \PhalconDebug::info('array dei seervizi ricevuto dal form',$arrayservizi);
+            $arrayserviziselezionati = array();
+            foreach($arrayservizi as $idservizio => $quantita){
+                if($quantita > 0) $arrayserviziselezionati[] = $idservizio;
+            }
+            \PhalconDebug::info('array dei seervizi ricevuto dal form',$arrayservizi);
             $services = Services::find("tipologia=2");
             $check = false;
             foreach($services as $servizio){
-                if(in_array($servizio->id,$arrayservizi)){
+                \PhalconDebug::info('verifico se il servizio '.$servizio->id.' rientra tra questi:',$arrayserviziselezionati);
+                if(in_array($servizio->id,$arrayserviziselezionati)){
                     $check = true;
                     break;
                 }
             }
-            if($check == false && empty($this->request->getPost('standpersonalizzato','trim'))){
+            if($check == false && $this->request->getPost('standpersonalizzato','trim')==''){
                 $ris["status"] = "KO";
                 $ris["stand"] = "Selezionare almeno uno stand o riempire il campo per uno stand personalizzato";
                 return $this->response->setJsonContent($ris);
@@ -138,6 +109,7 @@ class ExhibitorsController extends ControllerBase
         $exhibitors = new Exhibitors();
         $data = $this->request->getPost();
 
+        \PhalconDebug::info("passo prima di validare i dati del form");
 
         if (!$form->isValid($data, $exhibitors)) {
 
@@ -180,6 +152,7 @@ class ExhibitorsController extends ControllerBase
         $reservations->events_id = $this->evento->id;
         $reservations->areas_id = $this->request->getPost('areas_id','int!');
         $reservations->codicestand = $this->request->getPost('codicestand','alphanum');
+        $reservations->standpersonalizzato = $this->request->getPost('standpersonalizzato','string');
 
         if ($reservations->save() === false) {
 
@@ -254,15 +227,16 @@ class ExhibitorsController extends ControllerBase
 
         $form->clear();
 
-        $this->flash->success("I Dati della domanda di partecipazione dell'espositore sono stati inseriti con successo!");
-        
+        $this->flashSession->success("I Dati della domanda di partecipazione dell'espositore sono stati inseriti con successo!");
+        $this->response->redirect('index');
+       /* 
         return $this->dispatcher->forward(
             [
-                "controller" => "index",
+                "controller" => "exhibitors",
                 "action"     => "index",
             ]
         );
-        
+        */
     }
 
 
@@ -280,7 +254,7 @@ class ExhibitorsController extends ControllerBase
 
             return $this->dispatcher->forward(
                 [
-                    "controller" => "exhibitors",
+                    "controller" => "reservations",
                     "action"     => "index",
                 ]
             );
@@ -293,7 +267,7 @@ class ExhibitorsController extends ControllerBase
 
             return $this->dispatcher->forward(
                 [
-                    "controller" => "exhibitors",
+                    "controller" => "reservations",
                     "action"     => "index",
                 ]
             );
@@ -303,7 +277,7 @@ class ExhibitorsController extends ControllerBase
 
             return $this->dispatcher->forward(
                 [
-                    "controller" => "exhibitors",
+                    "controller" => "reservations",
                     "action"     => "index",
                 ]
             );

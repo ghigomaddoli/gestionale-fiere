@@ -24,7 +24,7 @@ class Elements extends Component
 
         $auth = $this->session->get('auth');
         if ($auth) {
-            $this->_sidebarMenu['exhibitors']['index'] = [
+            $this->_sidebarMenu['reservations']['index'] = [
                 'caption' => 'Gestione Prenotazioni',
                 'fa-icon' => 'fa-briefcase'
             ];

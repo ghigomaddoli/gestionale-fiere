@@ -13,7 +13,7 @@
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
     <li class="breadcrumb-item">
-    <a href="/exhibitors/index">Stand</a>
+    <a href="/reservations/index">Gestione Stand</a>
     </li>
     <li class="breadcrumb-item active">{{ reservation.getexhibitors().ragionesociale }}</li>
     </ol>

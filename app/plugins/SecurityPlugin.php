@@ -48,9 +48,9 @@ class SecurityPlugin extends Plugin
 			$privateResources = [
 				'areas'    => ['index', 'search', 'new', 'edit', 'save', 'create', 'delete'],
 				'events'    => ['index', 'search', 'new', 'edit', 'save', 'create', 'delete'],
-				'exhibitors'    => ['search', 'edit', 'delete'],
+				'exhibitors'    => ['index','search', 'edit', 'delete'],
 				'notereservations'    => ['index', 'search', 'new', 'edit', 'save', 'create', 'delete'],
-				'reservations'    => ['search', 'edit', 'delete'],
+				'reservations'    => ['index','search', 'edit', 'delete'],
 				'reservationservices'    => ['index', 'search', 'new', 'edit', 'save', 'create', 'delete'],
 				'services'    => ['index', 'search', 'new', 'edit', 'save', 'create', 'delete'],
 				'statireservations'    => ['index', 'search', 'new', 'edit', 'save', 'create', 'delete'],
@@ -65,8 +65,8 @@ class SecurityPlugin extends Plugin
 				'index'      => ['index'],
 				'errors'     => ['show401', 'show404', 'show500'],
 				'session'    => ['index', 'register', 'start', 'end'],
-				'reservations'    => ['index', 'new', 'save', 'create'],
-				'exhibitors'    => ['index', 'new', 'nuovo', 'validate', 'save', 'create'],
+				'reservations'    => ['new', 'save', 'create'],
+				'exhibitors'    => [ 'new', 'nuovo', 'validate', 'save', 'create'],
 			];
 			foreach ($publicResources as $resource => $actions) {
 				$acl->addResource(new Resource($resource), $actions);
@@ -142,6 +142,7 @@ class SecurityPlugin extends Plugin
 		$this->miologger->log("ACL:: ruolo: {$role} controller: {$controller} action: {$action}. Lo accetto? {$accettazione}");
 
 		if (!$allowed) {
+			$this->miologger->log("ACL:: ruolo: {$role} controller: {$controller} action: {$action}. Lo accetto? {$accettazione}. Invece non lo acetto");
 			$dispatcher->forward([
 				'controller' => 'errors',
 				'action'     => 'show401'

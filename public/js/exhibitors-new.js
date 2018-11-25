@@ -18,10 +18,11 @@ $(document).ready(function(){
         }
 
     });
-/*
+
     var liscio = false;
 
     $("#fespositori").submit(function(event){
+
         if(liscio == false){
 
         event.preventDefault();
@@ -76,7 +77,7 @@ $(document).ready(function(){
             }
             else{
                 liscio = true;
-                alert($('input[type="submit"]').val());
+                console.log('ho verificato i campi i controlli sono superati, faccio il submit.')
                 $('input[type="submit"]').click();
             }
             
@@ -84,5 +85,5 @@ $(document).ready(function(){
 
     } // end if liscio == false
     });
-*/
+
 });
