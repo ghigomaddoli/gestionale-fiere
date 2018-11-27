@@ -32,7 +32,7 @@ class Stati extends \Phalcon\Mvc\Model
      */
     public function initialize()
     {
-        $this->setSchema("falacosagiusta");
+        $this->setSchema("c5_espositori");
         $this->setSource("stati");
         $this->hasMany('id', 'LogStatiReservations', 'stati_id', ['alias' => 'LogStatiReservations']);
     }

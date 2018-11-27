@@ -15,6 +15,8 @@
             Domanda di iscrizione {{ evento|e }}
         </h2>
     </div>
+
+    <div id="incima"></div>
     
     {{ content() }}
     
@@ -30,7 +32,7 @@
 
         <div class="form-row">
             <div class="col-md-6">
-                <label for="fieldRagionesociale" class="col-sm-2 control-label">Ragionesociale</label>
+                <label for="fieldRagionesociale" class="col-sm-2 control-label">Ragione Sociale</label>
                 {{ text_field("ragionesociale", "size" : 30, "class" : "form-control", "id" : "fieldRagionesociale") }}
             </div>
             <div class="col-md-6">
@@ -520,3 +522,19 @@
 <i class="fas fa-angle-up"></i>
 </a>
 
+<div class="modal fade" id="SuccessInsertModal" tabindex="-1" role="dialog" aria-labelledby="SuccessInsertModalLabel" aria-hidden="true">
+    <div class="modal-dialog .modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="SuccessInsertModalLabel">Inserimento Espositore</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body" id="contenutosuccess">I dati dell'espositore sono stati salvati con successo!</div>
+        <div class="modal-footer">
+          <a class="btn btn-primary" href="/index">OK</a>
+        </div>
+      </div>
+    </div>
+</div>

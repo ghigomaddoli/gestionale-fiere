@@ -98,7 +98,7 @@ class Users extends \Phalcon\Mvc\Model
      */
     public function initialize()
     {
-        $this->setSchema("falacosagiusta");
+        $this->setSchema("c5_espositori");
         $this->setSource("users");
         $this->hasMany('id', 'NoteReservations', 'users_id', ['alias' => 'NoteReservations']);
     }

@@ -12,23 +12,16 @@
 
     {{ content() }}
 
-    <?php 
-    if($this->flashSession->output() != ''){
-      echo "<div class='alert alert-success' role='alert'>";
-      $this->flashSession->output();
-    echo "</div>";
-    }
-    
-    ?>
-
     <!-- Page Content -->
     <h2>{{ evento|e }}</h2>
-    <hr>
-    <p>Prenotazione e gestione degli spazi espositivi.</p>
 
     {% if logged === false %}
+    <hr>
+    <p>Prenotazione e gestione degli spazi espositivi.</p>
     <p>Prego, effettuare il login.</p>
     <p><a class="btn btn-primary" href="/session/index">Login</a></p>
+    {% else %}
+    {{ partial('partials/dashboard') }}
     {% endif %}
 
   </div>

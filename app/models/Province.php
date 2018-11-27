@@ -32,7 +32,7 @@ class Province extends \Phalcon\Mvc\Model
      */
     public function initialize()
     {
-        $this->setSchema("falacosagiusta");
+        $this->setSchema("c5_espositori");
         $this->setSource("province");
     }
 

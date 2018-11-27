@@ -32,7 +32,8 @@ class ReservationsForm extends Form
     'altriservizi' => 'altriservizi',
     'interventoprogrammaculturale' => 'interventoprogrammaculturale',
     'prezzostandpersonalizzato' => 'prezzostandpersonalizzato',
-    'standpersonalizzato' => 'standpersonalizzato'
+    'standpersonalizzato' => 'standpersonalizzato',
+    'stato' => 'stato'
      */
     public function initialize($entity = null, $options = array())
     {

@@ -26,7 +26,7 @@ class Areas extends \Phalcon\Mvc\Model
      */
     public function initialize()
     {
-        $this->setSchema("falacosagiusta");
+        $this->setSchema("c5_espositori");
         $this->setSource("areas");
         $this->hasMany('id', 'Reservations', 'areas_id', ['alias' => 'Reservations']);
         $this->belongsTo('events_id', 'Events', 'id', ['alias' => 'Events']);

@@ -44,7 +44,7 @@ class LogStatiReservations extends \Phalcon\Mvc\Model
      */
     public function initialize()
     {
-        $this->setSchema("falacosagiusta");
+        $this->setSchema("c5_espositori");
         $this->setSource("log_stati_reservations");
         $this->belongsTo('reservations_id', '\Reservations', 'id', ['alias' => 'Reservations']);
         $this->belongsTo('stati_id', '\Stati', 'id', ['alias' => 'Stati']);

@@ -51,7 +51,7 @@ class Services extends \Phalcon\Mvc\Model
      */
     public function initialize()
     {
-        $this->setSchema("falacosagiusta");
+        $this->setSchema("c5_espositori");
         $this->setSource("services");
         $this->hasMany('id', 'ReservationServices', 'services_id', ['alias' => 'ReservationServices']);
         $this->belongsTo('events_id', 'Events', 'id', ['alias' => 'Events']);

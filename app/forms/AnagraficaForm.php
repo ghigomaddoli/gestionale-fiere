@@ -49,7 +49,7 @@ EXHIBITORS COLUMN MAP
             'catalogotwitter' => 'catalogotwitter',
             'catalogodescrizione' => 'catalogodescrizione',
 */
-class ExhibitorsForm extends Form
+class AnagraficaForm extends Form
 {
     /**
      * Initialize the products form
@@ -242,42 +242,6 @@ class ExhibitorsForm extends Form
             ]),
         ]);
         $this->add($fasciadiprezzo);
-
-        /* Scelta dello spazio espositivo */
-        $options = Services::find(
-            [
-                "events_id = {$this->evento->id}",
-                'order' => 'tipologia',
-            ]
-        );
-
-        foreach($options as $key => $servizio)
-        {
-            if ($servizio->tipologia == 1 || $servizio->tipologia == 2){
-                $optionsservices = array(
-                    'name'  => "services[{$servizio->id}]",
-                    'class' => 'form-control',
-                    'value' => 1,
-                );
-                if ($servizio->tipologia == 1) $optionsservices["checked"]='';
-                $services = new Check("service-".$servizio->id, $optionsservices);
-                $services->setLabel($servizio->descrizione." - prezzo &euro; ".number_format($servizio->prezzofasciaa,2,",","."));
-                $this->add($services);
-            }
-
-            if ($servizio->tipologia == 3 ){
-                $quantitaservices = new Numeric("services[".$servizio->id."]",['value'=> 0, 'min' => 0, 'max'=> 20,'id'=> 'service-'.$servizio->id]);
-                $quantitaservices->setLabel($servizio->descrizione);
-                $quantitaservices->setFilters(['striptags', 'string']);
-                $this->add($quantitaservices);
-            }
-        }
-
-        $altriservizi = new TextArea("altriservizi");
-        $altriservizi->setLabel("altri servizi");
-        $altriservizi->setFilters(['striptags', 'string']);
-        $this->add($altriservizi);
-
         
         $numerocoespositore = new Numeric("numerocoespositore");
         $numerocoespositore->setLabel("Numero dei coespositori");
@@ -307,35 +271,7 @@ class ExhibitorsForm extends Form
         $interventoprogrammaculturale->setLabel("Desidero partecipare al programma culturale");
         $interventoprogrammaculturale->setFilters(['striptags', 'string']);
         $this->add($interventoprogrammaculturale);
-
-        /* qui vanno i campi per l'inserimento delle prenotazioni */
         
-        $areas_id = new Select("areas_id",
-                Areas::find(),
-                [
-                    'using'      => [
-                        'id',
-                        'nome',
-                    ],
-                    'useEmpty'   => true,
-                    'emptyText'  => 'Seleziona un\'area tematica...',
-                    'emptyValue' => '',
-                ]
-        );
-        $areas_id->setLabel("Scelta dell'area tematica");
-        $areas_id->setFilters(['striptags', 'int']);
-        $areas_id->addValidators([
-            new PresenceOf([
-                'message' => 'È obbligatorio selezionare un\'area tematica'
-            ]),
-        ]);
-        $this->add($areas_id);
-
-        $codicestand = new Text("codicestand",["id"=>"primadelcatalogo"]);
-        $codicestand->setLabel("Codice stand");
-        $codicestand->setFilters(['striptags', 'string']);
-        $this->add($codicestand);
-
         $catalogonome = new Text("catalogonome");
         $catalogonome->setLabel("Nome");
         $catalogonome->setFilters(['striptags', 'string']);
@@ -421,7 +357,6 @@ class ExhibitorsForm extends Form
         $catalogodescrizione->setLabel("Descrizione azienda per il catalogo");
         $catalogodescrizione->setFilters(['striptags', 'string']);
         $this->add($catalogodescrizione);
-
 
     }
 }

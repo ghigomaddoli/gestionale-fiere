@@ -1,26 +1,5 @@
 $(document).ready(function(){
 
-    $("[name=fasciadiprezzo]").change(function(obj){
-        var fascia = this.value;
-
-        var arrstand = $("#arraystand").val().split(',');
-        if(arrstand.length > 0){
-            $.each( arrstand, function( key, value ) {
-               $("#prezzo-stand" + value).html('').append($("#stand"+value+fascia).val());
-            });
-        }
-
-        var arrserv = $("#arrayservizi").val().split(',');
-        if(arrserv.length > 0){
-            $.each( arrserv, function( key, value ) {
-               $("#prezzoserv" + value).val($("#prezzoserv"+value+fascia).val());
-            });
-        }
-
-    });
-
-
-
     $("#fespositori").submit(function(event){
 
         event.preventDefault();

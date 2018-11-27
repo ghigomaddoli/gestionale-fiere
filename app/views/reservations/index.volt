@@ -11,8 +11,6 @@
   <div class="container-fluid">
 
     {{ content() }}
-
-    <?php $this->flashSession->output() ?>
     
           <!-- DataTables Example -->
           <div class="card mb-3">
@@ -21,15 +19,13 @@
               Lista richieste</div>
             <div class="card-body">
               <div class="table-responsive">
-                <table class="table table-bordered table-hover table-sm" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-hover table-sm" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
                         <th class="text-nowrap">Ragione sociale</th>
-                        <th>Indirizzo</th>
-                        <th>Contatti</th>
-                        <th>Partita iva</th>
-                        <th>Referente</th>
-                        <th>Prodotti  esposti</th>
+                        <th>Contatti Azienda</th>
+                        <th>Referente Fiera</th>
+                        <th>Area Tematica</th>
                         <th>Stato</th>
                         <th>Info</th>
                         <th></th>
@@ -37,12 +33,10 @@
                   </thead>
                   <tfoot>
                     <tr>
-                        <th>Ragione sociale</th>
-                        <th>Indirizzo</th>
-                        <th>Contatti</th>
-                        <th>Partita iva</th>
-                        <th>Referente</th>
-                        <th>Prodotti esposti</th>
+                        <th class="text-nowrap">Ragione sociale</th>
+                        <th>Contatti Azienda</th>
+                        <th>Referente Fiera</th>
+                        <th>Area Tematica</th>
                         <th>Stato</th>
                         <th>Info</th>
                         <th></th>
@@ -52,22 +46,26 @@
                         <?php foreach ($page->items as $reservation): ?>
                         <tr>
                         <td class="text-nowrap"><?php echo $reservation->getExhibitors()->ragionesociale ?></td>
-                        <td><?php echo $reservation->getExhibitors()->indirizzo ?> <?php echo $reservation->getExhibitors()->cap ?> <?php echo $reservation->getExhibitors()->citta ?> <?php echo $reservation->getExhibitors()->provincia ?></td>
-                        <td><?php echo $reservation->getExhibitors()->telefono ?>  <?php echo $reservation->getExhibitors()->emailaziendale ?></td>
-                        <td><?php echo $reservation->getExhibitors()->pivacodfisc ?></td>
-                        <td><?php echo $reservation->getExhibitors()->referentenome ?> <?php echo $reservation->getExhibitors()->referentetelefono ?> <?php echo $reservation->getExhibitors()->referenteemail ?></td>
-                        <td><?php echo $reservation->getExhibitors()->prodottiesposti ?></td>
+                        <td><a href='tel:<?php echo $reservation->getExhibitors()->telefono ?>'><i class="fas fa-phone-square"> <?php echo $reservation->getExhibitors()->telefono ?></i></a><br>
+                            <a href='mailto:<?php echo $reservation->getExhibitors()->emailaziendale ?>'><i class="far fa-envelope"> <?php echo $reservation->getExhibitors()->emailaziendale ?></i></a></td>
+                        <td>
+                            <?php echo $reservation->getExhibitors()->referentenome ?> 
+                            <a href='tel:<?php echo $reservation->getExhibitors()->referentetelefono ?>'><i class="fas fa-phone-square"> <?php echo $reservation->getExhibitors()->referentetelefono ?></i></a> 
+                            <a href='mailto:<?php echo $reservation->getExhibitors()->referenteemail ?>'><i class="far fa-envelope"> <?php echo $reservation->getExhibitors()->referenteemail ?></i></a></td>
+                        <td>
+                            <span class="badge"><?php echo $reservation->getAreas()->nome ?></span>
+                        </td>
                         <td>
                             <span class="badge badge-<?php echo $reservation->getStati()->colore ?>"><?php echo $reservation->getStati()->descrizionebreve ?></span>
                         </td>
                         <td>
                             <span class="badge badge-secondary">Fascia <?php echo $reservation->getExhibitors()->fasciadiprezzo ?></span>
-                            <?php if (!empty($reservation->getExhibitors()->nomecoespositore)){ ?><a href="#" class="badge badge-info" data-toggle="popover" title="<?php echo $reservation->getExhibitors()->nomecoespositore ?>" data-content="<?php echo $reservation->getExhibitors()->numerocoespositore ?>">Coespos.</a><?php } ?>
+                            <?php if (!empty($reservation->getExhibitors()->nomecoespositore)){ ?><a href="#" class="badge badge-info" id="<?php echo $reservation->id ?>" data-toggle="popover" title="<?php echo $reservation->getExhibitors()->nomecoespositore ?>" data-content="<?php echo $reservation->getExhibitors()->numerocoespositore ?>">Coespos.</a><?php } ?>
                         </td>
                         <td class="text-nowrap">
                             <?php echo $this->tag->linkTo(["exhibitors/edit/" . $reservation->getExhibitors()->id, "<i class='fas fa-pencil-alt'></i>", "class" => "btn btn-sm btn-outline-secondary","title" => "Modifica i dati anagrafici dell'espositore"]); ?>
                             <?php echo $this->tag->linkTo(["exhibitors/delete/" . $reservation->getExhibitors()->id, "<i class='fas fa-trash-alt'></i>", "class" => "btn btn-sm btn-outline-secondary","title" => "Elimina espositore e tutte le sue richieste!"]); ?>
-                            <?php echo $this->tag->linkTo(["reservations/edit/" . $reservation->id, "Dettaglio Stand", "class" => "btn btn-sm btn-outline-secondary"]); ?>
+                            <?php echo $this->tag->linkTo(["reservations/edit/" . $reservation->id, "Dettaglio Stand", "class" => "btn btn-sm btn-outline-secondary","title" => "Apre il dettaglio di Stand e servizi richiesti"]); ?>
                         </td>
                         </tr>
                     <?php endforeach; ?>

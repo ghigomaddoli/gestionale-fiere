@@ -66,7 +66,7 @@
                     <div class="form-check form-control-lg">
                             {{ check_field(nome, 'value' : 1, 'checked' : checked, 'class' : 'form-check-input', 'id' : identificativo ) }} 
                                 <label class="form-check-label" for="inlineCheckbox1">{{ stand.descrizione }}
-                                    {% if reservation.getExhibitors().fasciadiprezzo === 'A' %}
+                                    {% if reservation.getExhibitors().fasciadiprezzo === 'a' %}
                                         € {{ '%.2f'|format(stand.prezzofasciaa) }}
                                     {% else %} 
                                         € {{ '%.2f'|format(stand.prezzofasciab) }}
@@ -92,7 +92,7 @@
                 
                     <div class="form-group row">
                         <label for="{{ identificativo }}" class="col-sm-6">{{ service.descrizione|trim }}
-                            {% if reservation.getExhibitors().fasciadiprezzo === 'A' %}
+                            {% if reservation.getExhibitors().fasciadiprezzo === 'a' %}
                             € {{ '%.2f'|format(service.prezzofasciaa) }}
                             {% else %}
                             € {{ '%.2f'|format(service.prezzofasciab) }}
@@ -201,7 +201,7 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text" id="fieldprezzofinale">Prezzo totale calcolato €</span>
                     </div>
-                    {{ numeric_field('prezzofinale', 'min': 0, "max" : 20000, "step" : 1, "class" : "form-control", "id" : "fieldprezzofinale", "value" : '%.2f'|format(reservation.prezzofinale),'disabled' : 'disabled') }}
+                    {{ text_field('prezzocalcolato', "class" : "form-control", "id" : "prezzocalcolato", "value" : '%.2f'|format(prezzocalcolato),'disabled' : 'disabled') }}
             </div>
         </div> 
         <div class="col-sm-6">

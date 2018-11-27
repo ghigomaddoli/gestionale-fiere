@@ -92,16 +92,12 @@ class ExhibitorsController extends ControllerBase
 
     public function createAction()
     {
-
-        if (!$this->request->isPost() ) {
-            return $this->dispatcher->forward(
-                [
-                    "controller" => "exhibitors",
-                    "action"     => "index",
-                ]
-            );
+        if (!$this->request->isAjax()) {
+            $ris["status"] = "KO";
+            $ris["incima"] = "Richiesta non valida";
+            return $this->response->setJsonContent($ris);
         }
-        
+
         // inizio della transaction
         $this->db->begin();
 
@@ -113,17 +109,44 @@ class ExhibitorsController extends ControllerBase
 
         if (!$form->isValid($data, $exhibitors)) {
 
-            foreach ($form->getMessages() as $message) {
-                $this->flash->error($message);
-            }
+            foreach($form->getElements() as $elemento){
 
-            return $this->dispatcher->forward(
-                [
-                    "controller" => "exhibitors",
-                    "action"     => "new",
-                ]
-            );
+                if($elemento->hasMessages()){
+                    $nomeelemento = $elemento->getName();
+                    
+                    foreach($elemento->getMessages() as $msg){
+                        $aa = $msg->getMessage();
+                    }
+                    $ris[$nomeelemento] = $aa;
+                    
+                }
+            }
+            $ris["status"] = "KO";
+            return $this->response->setJsonContent($ris);
         }
+
+        // verifico che almeno uno stand sia stato selezionato
+        $arrayservizi = $this->request->getPost('services');
+        $arrayserviziselezionati = array();
+        foreach($arrayservizi as $idservizio => $quantita){
+            if($quantita > 0) $arrayserviziselezionati[] = $idservizio;
+        }
+        \PhalconDebug::info('array dei seervizi ricevuto dal form',$arrayservizi);
+        $services = Services::find("tipologia=2");
+        $check = false;
+        foreach($services as $servizio){
+            \PhalconDebug::info('verifico se il servizio '.$servizio->id.' rientra tra questi:',$arrayserviziselezionati);
+            if(in_array($servizio->id,$arrayserviziselezionati)){
+                $check = true;
+                break;
+            }
+        }
+        if($check == false && $this->request->getPost('standpersonalizzato','trim')==''){
+            $ris["status"] = "KO";
+            $ris["stand"] = "Selezionare almeno uno stand o riempire il campo per uno stand personalizzato";
+            return $this->response->setJsonContent($ris);
+        }
+        // fine verifica che almeno uno stand sia stato selezionato
 
         \PhalconDebug::info("passo prima del save");
         \PhalconDebug::info($data);
@@ -131,19 +154,18 @@ class ExhibitorsController extends ControllerBase
         if ($exhibitors->save() === false) {
 
             \PhalconDebug::info("errore nel salvataggio exhibitors");
-
+            $i = 0;
             foreach ($exhibitors->getMessages() as $message) {
                 $this->flash->error("dal model: ".$message);
+                $ris['incima-'+$i] = $message;
+                $i++;
             }
             
             $this->db->rollback();
 
-            return $this->dispatcher->forward(
-                [
-                    "controller" => "exhibitors",
-                    "action"     => "new",
-                ]
-            );
+            $ris["status"] = "KO";
+            return $this->response->setJsonContent($ris);
+
         }
 
         \PhalconDebug::info(" save del model reservations..");
@@ -156,18 +178,17 @@ class ExhibitorsController extends ControllerBase
 
         if ($reservations->save() === false) {
 
+            $i=0;
             foreach ($reservations->getMessages() as $message) {
-                $this->flash->error("dal model reservations: ".$message);
+                $this->flash->error("dal model: ".$message);
+                $ris['incima-'+$i] = $message;
+                $i++;
             }
 
             $this->db->rollback();
 
-            return $this->dispatcher->forward(
-                [
-                    "controller" => "exhibitors",
-                    "action"     => "new",
-                ]
-            );
+            $ris["status"] = "KO";
+            return $this->response->setJsonContent($ris);
         }
 
         /* facciamo la insert dei servizi richiesti nella tabella reservation_services */
@@ -183,18 +204,17 @@ class ExhibitorsController extends ControllerBase
                 $reservationservices->quantita = $quantita;
                 if ($reservationservices->save() === false) {
 
+                    $i=0;
                     foreach ($reservationservices->getMessages() as $message) {
-                        $this->flash->error("dal model reservationservices: ".$message);
+                        $this->flash->error("dal model: ".$message);
+                        $ris['incima-'+$i] = $message;
+                        $i++;
                     }
 
                     $this->db->rollback();
-        
-                    return $this->dispatcher->forward(
-                        [
-                            "controller" => "exhibitors",
-                            "action"     => "new",
-                        ]
-                    );
+
+                    $ris["status"] = "KO";
+                    return $this->response->setJsonContent($ris);
                 }
             }
         }
@@ -208,18 +228,17 @@ class ExhibitorsController extends ControllerBase
         $logstatireservations->messaggio = "Nuova Prenotazione Inserita";
         if ($logstatireservations->save() === false) {
 
+            $i=0;
             foreach ($logstatireservations->getMessages() as $message) {
-                $this->flash->error("dal model logstatireservations: ".$message);
+                $this->flash->error("dal model: ".$message);
+                $ris['incima-'+$i] = $message;
+                $i++;
             }
 
             $this->db->rollback();
 
-            return $this->dispatcher->forward(
-                [
-                    "controller" => "exhibitors",
-                    "action"     => "new",
-                ]
-            );
+            $ris["status"] = "KO";
+            return $this->response->setJsonContent($ris);
         }
         \PhalconDebug::info(" tutto ok faccio la commit ");
         // Commit the transaction
@@ -227,16 +246,10 @@ class ExhibitorsController extends ControllerBase
 
         $form->clear();
 
-        $this->flashSession->success("I Dati della domanda di partecipazione dell'espositore sono stati inseriti con successo!");
-        $this->response->redirect('index');
-       /* 
-        return $this->dispatcher->forward(
-            [
-                "controller" => "exhibitors",
-                "action"     => "index",
-            ]
-        );
-        */
+        $ris["status"] = "OK";
+        $ris["modale"] = "I Dati della domanda di partecipazione dell'espositore sono stati inseriti con successo!";
+        return $this->response->setJsonContent($ris);
+
     }
 
 
@@ -282,6 +295,104 @@ class ExhibitorsController extends ControllerBase
                 ]
             );
     }
+
+    public function editAction($id)
+    {
+        if (!$this->request->isPost()) {
+
+            $this->view->province = Province::find();
+            $this->assets->addCss('css/style.css');
+            $this->assets->addJs('js/exhibitors-edit.js');
+            $exhibitors = Exhibitors::findFirstById($id);
+            $this->view->exhibitor = $exhibitors;
+            if (!$this->view->exhibitor) {
+                $this->flash->error("L'Espositore non è stato trovato");
+
+                return $this->dispatcher->forward(
+                    [
+                        "controller" => "products",
+                        "action"     => "index",
+                    ]
+                );
+            }
+
+        }
+
+    }
+    
+    public function saveAction()
+    {
+        if (!$this->request->isAjax()) {
+            $ris["status"] = "KO";
+            $ris["incima"] = "Richiesta non valida";
+            return $this->response->setJsonContent($ris);
+        }
+
+        // inizio della transaction
+        $this->db->begin();
+
+        $form = new AnagraficaForm;
+        $data = $this->request->getPost();
+        $id = $this->request->getPost("id", "int");
+        $exhibitors = Exhibitors::findFirstById($id);
+
+        if (!$exhibitors) {
+            $ris["status"] = "KO";
+            $ris["incima"] = "L'Espositore non esiste";
+            return $this->response->setJsonContent($ris);
+        }
+
+        \PhalconDebug::info("passo prima di validare i dati del form");
+
+        if (!$form->isValid($data, $exhibitors)) {
+
+            foreach($form->getElements() as $elemento){
+
+                if($elemento->hasMessages()){
+                    $nomeelemento = $elemento->getName();
+                    
+                    foreach($elemento->getMessages() as $msg){
+                        $aa = $msg->getMessage();
+                    }
+                    $ris[$nomeelemento] = $aa;
+                    
+                }
+            }
+            $ris["status"] = "KO";
+            return $this->response->setJsonContent($ris);
+        }
+
+        \PhalconDebug::info("passo prima del save");
+        \PhalconDebug::info($data);
+
+        if ($exhibitors->save() === false) {
+
+            \PhalconDebug::info("errore nel salvataggio exhibitors");
+            $i = 0;
+            foreach ($exhibitors->getMessages() as $message) {
+                $this->flash->error("dal model: ".$message);
+                $ris['incima-'+$i] = $message;
+                $i++;
+            }
+            
+            $this->db->rollback();
+
+            $ris["status"] = "KO";
+            return $this->response->setJsonContent($ris);
+
+        }
+
+        \PhalconDebug::info(" tutto ok faccio la commit ");
+        // Commit the transaction
+        $this->db->commit();
+
+        $form->clear();
+
+        $ris["status"] = "OK";
+        $ris["modale"] = "I Dati anagrafici dell'espositore sono stati modificati con successo!";
+        return $this->response->setJsonContent($ris);
+
+    }    
 
 }
 

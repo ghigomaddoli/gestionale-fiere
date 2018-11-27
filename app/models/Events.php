@@ -32,7 +32,7 @@ class Events extends \Phalcon\Mvc\Model
      */
     public function initialize()
     {
-        $this->setSchema("falacosagiusta");
+        $this->setSchema("c5_espositori");
         $this->setSource("events");
         $this->hasMany('id', 'Areas', 'events_id', ['alias' => 'Areas']);
         $this->hasMany('id', 'Reservations', 'events_id', ['alias' => 'Reservations']);

@@ -86,7 +86,7 @@ class Reservations extends \Phalcon\Mvc\Model
      */
     public function initialize()
     {
-        $this->setSchema("falacosagiusta");
+        $this->setSchema("c5_espositori");
         $this->setSource("reservations");
         $this->hasMany('id', 'ReservationServices', 'reservations_id', ['alias' => 'ReservationServices']);
         $this->belongsTo('exhibitors_id', 'Exhibitors', 'id', ['alias' => 'Exhibitors']);

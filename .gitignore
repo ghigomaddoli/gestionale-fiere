@@ -1,8 +1,7 @@
 /.phalcon
-/cache
+/cache/*
 /public/vendor
 /Runtime
 /vendor
-/app/logs
-app/logs/test.log
+/app/logs/test.log
 

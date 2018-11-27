@@ -23,7 +23,7 @@ class ReservationsController extends ControllerBase
         }
         \PhalconDebug::info('array dei parametri di ricerca',$parameters);
         //$reservations = reservations::find($parameters);
-        $reservations = reservations::find();
+        $reservations = Reservations::find();
         if (count($reservations) == 0) {
             $this->flash->notice("Nessun espositore da mostrare");
 
@@ -70,7 +70,19 @@ class ReservationsController extends ControllerBase
         $this->tag->setDefault('areas_id', $reservation->areas_id);
         $this->view->stands = Services::find("events_id = ".$reservation->events_id." AND tipologia IN (1,2)");
         $this->view->services = Services::find("events_id = ".$reservation->events_id." AND tipologia = 3");
-        $this->view->reservationservices = ReservationServices::find("reservations_id = ".$reservation->id);
+        $reservationservices = ReservationServices::find("reservations_id = ".$reservation->id);
+        $this->view->reservationservices = $reservationservices;
+
+        $prezzocalcolato = 0;
+        $campoprezzo = $reservation->getExhibitors()->fasciadiprezzo == 'a' ? 'prezzofasciaa' : 'prezzofasciab';
+
+        //calcolo del prezzo totale teorico:
+        foreach($reservationservices as $servizio){
+            $prezzo = $servizio->getServices()->$campoprezzo * $servizio->quantita;
+            \PhalconDebug::info($servizio->getServices()->descrizione.':'.$prezzo.', quantita:'.$servizio->quantita);
+            $prezzocalcolato = $prezzocalcolato + $prezzo;
+        }
+        $this->view->prezzocalcolato = $prezzocalcolato;
 
         $stati = Stati::find();
         $this->view->stati = $stati;
@@ -153,7 +165,7 @@ class ReservationsController extends ControllerBase
         }
 
         // cancello i records su reservation_services e li riinserisco aggiornati    
-        $rs = Reservationservices::find("reservations_id='{$id}'");
+        $rs = ReservationServices::find("reservations_id='{$id}'");
 
         if($rs->delete()== false){
             foreach ($rs->getMessages() as $message) {

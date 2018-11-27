@@ -55,6 +55,7 @@ class SecurityPlugin extends Plugin
 				'services'    => ['index', 'search', 'new', 'edit', 'save', 'create', 'delete'],
 				'statireservations'    => ['index', 'search', 'new', 'edit', 'save', 'create', 'delete'],
 				'users'    => ['index', 'search', 'new', 'edit', 'save', 'create', 'delete'],
+				'index' => ['csvespositori','csvcatalogo'],
 			];
 			foreach ($privateResources as $resource => $actions) {
 				$acl->addResource(new Resource($resource), $actions);
