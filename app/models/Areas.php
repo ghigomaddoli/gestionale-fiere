@@ -22,6 +22,12 @@ class Areas extends \Phalcon\Mvc\Model
     public $events_id;
 
     /**
+     *
+     * @var string
+     */
+    public $colore;
+
+    /**
      * Initialize method for model.
      */
     public function initialize()
@@ -75,7 +81,8 @@ class Areas extends \Phalcon\Mvc\Model
         return [
             'id' => 'id',
             'nome' => 'nome',
-            'events_id' => 'events_id'
+            'events_id' => 'events_id',
+            'colore' => 'colore'
         ];
     }
 

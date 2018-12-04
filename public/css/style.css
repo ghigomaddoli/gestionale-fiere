@@ -1,3 +1,9 @@
 .radio-left-pad {
     margin-left: 0.5em;
 }
+
+.fascia-rossa-flcgu {
+    background-color: #CD3F25;
+    border-radius: 3px;
+    padding-top: 0.4em;
+}

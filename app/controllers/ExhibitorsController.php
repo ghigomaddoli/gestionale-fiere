@@ -15,6 +15,7 @@ class ExhibitorsController extends ControllerBase
     {
         //$this->view->form = new ExhibitorsForm();
         $this->view->province = Province::find();
+        $this->view->provinciadefault = 'PG';
         $this->view->areas = Areas::find("events_id = ".$this->evento->id);
         $this->assets->addCss('css/style.css');
         $this->view->stands = Services::find("events_id = ".$this->evento->id." AND tipologia IN (1,2)");
@@ -30,71 +31,11 @@ class ExhibitorsController extends ControllerBase
         $this->view->arrayservizi = implode(",",$arrayservizi);
     }    
 
-    /* metodo che chiamo prima del create per la valizazione del form in ajax (evento jquery beforesubmit) */
-    public function validateAction(){
-        
-        if($this->request->isAjax()){
-
-            $form = new ExhibitorsForm;
-            $exhibitors = new Exhibitors();
-            $data = $this->request->getPost();
-    
-            if (!$form->isValid($data, $exhibitors)) {
-
-                foreach($form->getElements() as $elemento){
-
-                    if($elemento->hasMessages()){
-                        $nomeelemento = $elemento->getName();
-                        
-                        foreach($elemento->getMessages() as $msg){
-                            $aa = $msg->getMessage();
-                        }
-                        $ris[$nomeelemento] = $aa;
-                        
-                    }
-                }
-                $ris["status"] = "KO";
-                return $this->response->setJsonContent($ris);
-            }
-
-            // verifico che almeno uno stand sia stato selezionato
-            $arrayservizi = $this->request->getPost('services');
-            $arrayserviziselezionati = array();
-            foreach($arrayservizi as $idservizio => $quantita){
-                if($quantita > 0) $arrayserviziselezionati[] = $idservizio;
-            }
-            \PhalconDebug::info('array dei seervizi ricevuto dal form',$arrayservizi);
-            $services = Services::find("tipologia=2");
-            $check = false;
-            foreach($services as $servizio){
-                \PhalconDebug::info('verifico se il servizio '.$servizio->id.' rientra tra questi:',$arrayserviziselezionati);
-                if(in_array($servizio->id,$arrayserviziselezionati)){
-                    $check = true;
-                    break;
-                }
-            }
-            if($check == false && $this->request->getPost('standpersonalizzato','trim')==''){
-                $ris["status"] = "KO";
-                $ris["stand"] = "Selezionare almeno uno stand o riempire il campo per uno stand personalizzato";
-                return $this->response->setJsonContent($ris);
-            }
-       
-            
-            return $this->response->setJsonContent(
-                [
-                    "status" => "OK"
-                ]
-            );
-            
-
-        }
-    }
-
     public function createAction()
     {
         if (!$this->request->isAjax()) {
-            $ris["status"] = "KO";
             $ris["incima"] = "Richiesta non valida";
+            $ris["status"] = "KO";
             return $this->response->setJsonContent($ris);
         }
 
@@ -125,6 +66,26 @@ class ExhibitorsController extends ControllerBase
             return $this->response->setJsonContent($ris);
         }
 
+        // verifico che uno dei due campi tra partita iva e codicefiscale siano stati compilati
+        $piva = $this->request->getPost('piva');
+        $codfisc = $this->request->getPost('codfisc');
+        \PhalconDebug::info('piva: '.$piva.' codfisc: '.$codfisc);
+        if(empty($piva) && empty($codfisc)){
+            $ris["piva"] = "&Egrave; obbligatorio compilare almeno uno dei due campi Partita iva e codice Fiscale";
+            $ris["codfisc"] = "&Egrave; obbligatorio compilare almeno uno dei due campi Partita iva e codice Fiscale";
+            $ris["status"] = "KO";
+            return $this->response->setJsonContent($ris);
+        }
+        if(!empty($codfisc)){
+            // proviamo a verificare la validità formale del codice fiscale con regex presa da internet? boh
+            if(preg_match("/^[A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z]$/i",$codfisc)==false){
+                $ris["codfisc"] = "Il formato del codice fiscale non è valido";
+                $ris["status"] = "KO";
+                return $this->response->setJsonContent($ris);
+            }
+
+        }
+
         // verifico che almeno uno stand sia stato selezionato
         $arrayservizi = $this->request->getPost('services');
         $arrayserviziselezionati = array();
@@ -142,8 +103,8 @@ class ExhibitorsController extends ControllerBase
             }
         }
         if($check == false && $this->request->getPost('standpersonalizzato','trim')==''){
-            $ris["status"] = "KO";
             $ris["stand"] = "Selezionare almeno uno stand o riempire il campo per uno stand personalizzato";
+            $ris["status"] = "KO";
             return $this->response->setJsonContent($ris);
         }
         // fine verifica che almeno uno stand sia stato selezionato
@@ -175,6 +136,7 @@ class ExhibitorsController extends ControllerBase
         $reservations->areas_id = $this->request->getPost('areas_id','int!');
         $reservations->codicestand = $this->request->getPost('codicestand','alphanum');
         $reservations->standpersonalizzato = $this->request->getPost('standpersonalizzato','string');
+        
 
         if ($reservations->save() === false) {
 
@@ -310,7 +272,7 @@ class ExhibitorsController extends ControllerBase
 
                 return $this->dispatcher->forward(
                     [
-                        "controller" => "products",
+                        "controller" => "reservations",
                         "action"     => "index",
                     ]
                 );
@@ -323,8 +285,8 @@ class ExhibitorsController extends ControllerBase
     public function saveAction()
     {
         if (!$this->request->isAjax()) {
-            $ris["status"] = "KO";
             $ris["incima"] = "Richiesta non valida";
+            $ris["status"] = "KO";
             return $this->response->setJsonContent($ris);
         }
 
@@ -337,8 +299,8 @@ class ExhibitorsController extends ControllerBase
         $exhibitors = Exhibitors::findFirstById($id);
 
         if (!$exhibitors) {
-            $ris["status"] = "KO";
             $ris["incima"] = "L'Espositore non esiste";
+            $ris["status"] = "KO";
             return $this->response->setJsonContent($ris);
         }
 
@@ -362,8 +324,24 @@ class ExhibitorsController extends ControllerBase
             return $this->response->setJsonContent($ris);
         }
 
-        \PhalconDebug::info("passo prima del save");
-        \PhalconDebug::info($data);
+        // verifico che uno dei due campi tra partita iva e codicefiscale siano stati compilati
+        $piva = $this->request->getPost('piva');
+        $codfisc = $this->request->getPost('codfisc');
+        if(empty($piva) && empty($codfisc)){
+            $ris["piva"] = "&Egrave; obbligatorio compilare almeno uno dei due campi Partita iva e codice Fiscale";
+            $ris["codfisc"] = "&Egrave; obbligatorio compilare almeno uno dei due campi Partita iva e codice Fiscale";
+            $ris["status"] = "KO";
+            return $this->response->setJsonContent($ris);
+        }
+        if(!empty($codfisc)){
+            // proviamo a verificare la validità formale del codice fiscale con regex presa da internet? boh
+            if(preg_match("/^[A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z]$/i",$codfisc)==false){
+                $ris["codfisc"] = "Il formato del codice fiscale non è valido";
+                $ris["status"] = "KO";
+                return $this->response->setJsonContent($ris);
+            }
+
+        }
 
         if ($exhibitors->save() === false) {
 

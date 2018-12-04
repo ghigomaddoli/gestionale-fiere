@@ -31,17 +31,6 @@
                         <th></th>
                     </tr>
                   </thead>
-                  <tfoot>
-                    <tr>
-                        <th class="text-nowrap">Ragione sociale</th>
-                        <th>Contatti Azienda</th>
-                        <th>Referente Fiera</th>
-                        <th>Area Tematica</th>
-                        <th>Stato</th>
-                        <th>Info</th>
-                        <th></th>
-                </tr>
-                  </tfoot>
                   <tbody>
                         <?php foreach ($page->items as $reservation): ?>
                         <tr>

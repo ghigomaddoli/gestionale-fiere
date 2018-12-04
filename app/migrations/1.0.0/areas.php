@@ -48,6 +48,14 @@ class AreasMigration_100 extends Migration
                             'size' => 10,
                             'after' => 'nome'
                         ]
+                    ),
+                    new Column(
+                        'colore',
+                        [
+                            'type' => Column::TYPE_VARCHAR,
+                            'size' => 20,
+                            'after' => 'events_id'
+                        ]
                     )
                 ],
                 'indexes' => [
@@ -59,7 +67,7 @@ class AreasMigration_100 extends Migration
                         'areas_ibfk_1',
                         [
                             'referencedTable' => 'events',
-                            'referencedSchema' => 'falacosagiusta',
+                            'referencedSchema' => 'c5_espositori',
                             'columns' => ['events_id'],
                             'referencedColumns' => ['id'],
                             'onUpdate' => 'CASCADE',
@@ -69,7 +77,7 @@ class AreasMigration_100 extends Migration
                 ],
                 'options' => [
                     'TABLE_TYPE' => 'BASE TABLE',
-                    'AUTO_INCREMENT' => '12',
+                    'AUTO_INCREMENT' => '13',
                     'ENGINE' => 'InnoDB',
                     'TABLE_COLLATION' => 'latin1_swedish_ci'
                 ],

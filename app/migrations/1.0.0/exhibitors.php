@@ -95,13 +95,37 @@ class ExhibitorsMigration_100 extends Migration
                         ]
                     ),
                     new Column(
-                        'pivacodfisc',
+                        'piva',
                         [
                             'type' => Column::TYPE_VARCHAR,
                             'default' => "",
-                            'notNull' => true,
                             'size' => 16,
                             'after' => 'emailaziendale'
+                        ]
+                    ),
+                    new Column(
+                        'codfisc',
+                        [
+                            'type' => Column::TYPE_VARCHAR,
+                            'default' => "",
+                            'size' => 16,
+                            'after' => 'piva'
+                        ]
+                    ),
+                    new Column(
+                        'pec',
+                        [
+                            'type' => Column::TYPE_VARCHAR,
+                            'size' => 255,
+                            'after' => 'codfisc'
+                        ]
+                    ),
+                    new Column(
+                        'codicesdi',
+                        [
+                            'type' => Column::TYPE_VARCHAR,
+                            'size' => 255,
+                            'after' => 'pec'
                         ]
                     ),
                     new Column(
@@ -111,7 +135,7 @@ class ExhibitorsMigration_100 extends Migration
                             'default' => "",
                             'notNull' => true,
                             'size' => 100,
-                            'after' => 'pivacodfisc'
+                            'after' => 'codicesdi'
                         ]
                     ),
                     new Column(
@@ -147,7 +171,7 @@ class ExhibitorsMigration_100 extends Migration
                         'fasciadiprezzo',
                         [
                             'type' => Column::TYPE_CHAR,
-                            'default' => "A",
+                            'default' => "a",
                             'notNull' => true,
                             'size' => 1,
                             'after' => 'prodottiesposti'
@@ -281,12 +305,11 @@ class ExhibitorsMigration_100 extends Migration
                 ],
                 'indexes' => [
                     new Index('PRIMARY', ['id'], 'PRIMARY'),
-                    new Index('pivacodfisc', ['pivacodfisc'], 'UNIQUE'),
                     new Index('fasciadiprezzo', ['fasciadiprezzo'], null)
                 ],
                 'options' => [
                     'TABLE_TYPE' => 'BASE TABLE',
-                    'AUTO_INCREMENT' => '28',
+                    'AUTO_INCREMENT' => '15',
                     'ENGINE' => 'InnoDB',
                     'TABLE_COLLATION' => 'latin1_swedish_ci'
                 ],

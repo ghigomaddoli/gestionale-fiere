@@ -10,21 +10,22 @@ class IndexController extends ControllerBase
     {
 
        // $this->assets->addJs('/vendor/chart.js/Chart.js');
-        //$this->assets->addJs('js/demo/chart-pie-demo.js');
         $reservations = Reservations::find("events_id = ".$this->evento->id);
         $stati = Stati::find();
         $this->view->stati = $stati;
         $this->view->richieste = count($reservations);
         $labels = array();
         foreach($stati as $stato){
-            $labels[]=$stato->descrizionebreve;
+            $labels[]=$stato->descrizionestato;
         }
         $this->view->labels = implode("','",$labels);
+
+        
         $distribution = array();
         foreach($stati as $stato){
             $contatorearea = 0;
             foreach($reservations as $reservation){
-                if ($reservation->getStati()->descrizionebreve == $stato->descrizionebreve){
+                if ($reservation->getStati()->descrizionestato == $stato->descrizionestato){
                     $contatorearea++;
                 }
             }
@@ -32,24 +33,53 @@ class IndexController extends ControllerBase
         }
 
         $this->view->distribution = implode(",",$distribution);
+
+
+        // preparo il grafico aree tematiche
+        $areas = Areas::find();
+        $this->view->areas = $areas;
+        $labels = array();
+        foreach($areas as $area){
+            $labelareas[] = $area->nome;
+            $coloriareas[] = $area->colore;
+        }
+        $this->view->labelareas = implode("','",$labelareas);
+
+        $distributionareas = array();
+        foreach($areas as $area){
+            $contatoreareas = 0;
+            foreach($reservations as $reservation){
+                if ($reservation->getAreas()->nome == $area->nome){
+                    $contatoreareas++;
+                }
+            }
+            $distributionareas[]=$contatoreareas;
+        }
+
+        $this->view->distributionareas = implode(",",$distributionareas);
+        $this->view->coloriareas = implode("','",$coloriareas);
     }
 
     public function csvespositoriAction()
     {
-
+        
         $this->view->setRenderLevel(\Phalcon\Mvc\View::LEVEL_NO_RENDER);
-        $reservations = Reservations::find("events_id = ".$this->evento->id);
         $this->response->resetHeaders();
         $this->response->setHeader('Content-Type', 'application/csv');
         $this->response->setHeader('Content-Disposition', 'attachment; filename=espositori.csv');
-        $output = fopen('php://output', 'w');
+     
+        // elenco servizi esistenti per intestazione colonne
+        $elencoservizi = Services::find();
+        $reservations = Reservations::find("events_id = ".$this->evento->id);
 
-        fputcsv($output, array(
+        $nomiservizi = array();
+        foreach($elencoservizi as $nomeservizio){
+            $nomiservizi[] = $nomeservizio->descrizione;
+        }
+
+        $nomicolonne = array(
             'ragione sociale', 
             'area tematica',
-            'codicestand',
-            'servizi',
-            'altri servizi richiesti',
             'intervento programma culturale',
             'richiesta stand personalizzato',
             'stato della richiesta',
@@ -59,7 +89,8 @@ class IndexController extends ControllerBase
             'provincia',
             'telefono',
             'email aziendale',
-            'piva codfisc',
+            'piva',
+            'codfisc',
             'nome del referente',
             'telefono del referente',
             'email del referente',
@@ -67,22 +98,36 @@ class IndexController extends ControllerBase
             'fascia di prezzo',
             'quantita coespositori',
             'nomi coespositori',
-        ));
+            'codicestand',
+            'altri servizi richiesti',
+        );
+
+        $nomicolonne = array_merge($nomicolonne,$nomiservizi);
+
+        $output = fopen('php://output', 'w');
+        
+        fputcsv($output, $nomicolonne);
 
         foreach($reservations as $domandaespositore){
-
+            $sa = array();
             $serviziacquistati = array();
             $reservationservices = ReservationServices::find("reservations_id = ".$domandaespositore->id);
             foreach($reservationservices as $singoloservizio){
-                    $serviziacquistati[] = $singoloservizio->quantita." ".$singoloservizio->getServices()->descrizione;
+                        $serviziacquistati[$singoloservizio->services_id] = $singoloservizio->quantita;
+            }
+         //   \PhalconDebug::info('serv.ac.',$serviziacquistati);
+            foreach($elencoservizi as $servizio){
+                if(!empty($serviziacquistati[(int)$servizio->id])){
+                    $sa[] = (int)$serviziacquistati[$servizio->id];       
+                }
+                else{
+                    $sa[] = 0;
+                }
             }
 
-            fputcsv($output, array(
+            $righe = array(
                 $domandaespositore->getExhibitors()->ragionesociale, 
                 $domandaespositore->getAreas()->nome,
-                $domandaespositore->codicestand,
-                implode(", ",$serviziacquistati),
-                $domandaespositore->altriservizi,
                 $domandaespositore->interventoprogrammaculturale ? "si" : "no",
                 $domandaespositore->standpersonalizzato,
                 $domandaespositore->getStati()->descrizionebreve,
@@ -92,16 +137,24 @@ class IndexController extends ControllerBase
                 $domandaespositore->getExhibitors()->provincia,
                 $domandaespositore->getExhibitors()->telefono,
                 $domandaespositore->getExhibitors()->emailaziendale,
-                $domandaespositore->getExhibitors()->pivacodfisc,
+                $domandaespositore->getExhibitors()->piva,
+                $domandaespositore->getExhibitors()->codfisc,
                 $domandaespositore->getExhibitors()->referentenome,
                 $domandaespositore->getExhibitors()->referentetelefono,
                 $domandaespositore->getExhibitors()->referenteemail,
                 $domandaespositore->getExhibitors()->prodottiesposti,
                 $domandaespositore->getExhibitors()->fasciadiprezzo,
                 $domandaespositore->getExhibitors()->numerocoespositore,
-                $domandaespositore->getExhibitors()->nomecoespositore
-            ));
+                $domandaespositore->getExhibitors()->nomecoespositore,
+                $domandaespositore->codicestand,
+                $domandaespositore->altriservizi,
+            );
+            \PhalconDebug::info('riga prima',$righe,$sa);
+            $righe = array_merge($righe,$sa);
+            fputcsv($output, $righe);
+            \PhalconDebug::info('riga dopo',$righe);
         }
+        
         fclose($output);
 
     }
@@ -115,7 +168,7 @@ class IndexController extends ControllerBase
         $reservations = Reservations::find("events_id = ".$this->evento->id);
         $this->response->resetHeaders();
         $this->response->setHeader('Content-Type', 'application/csv');
-        $this->response->setHeader('Content-Disposition', 'attachment; filename=espositori.csv');
+        $this->response->setHeader('Content-Disposition', 'attachment; filename=catalogoespositori.csv');
         $output = fopen('php://output', 'w');
 
         fputcsv($output, array(

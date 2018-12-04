@@ -155,7 +155,7 @@ class ReservationsMigration_100 extends Migration
                         'reservations_ibfk_1',
                         [
                             'referencedTable' => 'exhibitors',
-                            'referencedSchema' => 'falacosagiusta',
+                            'referencedSchema' => 'c5_espositori',
                             'columns' => ['exhibitors_id'],
                             'referencedColumns' => ['id'],
                             'onUpdate' => 'CASCADE',
@@ -166,7 +166,7 @@ class ReservationsMigration_100 extends Migration
                         'reservations_ibfk_2',
                         [
                             'referencedTable' => 'events',
-                            'referencedSchema' => 'falacosagiusta',
+                            'referencedSchema' => 'c5_espositori',
                             'columns' => ['events_id'],
                             'referencedColumns' => ['id'],
                             'onUpdate' => 'CASCADE',
@@ -177,7 +177,7 @@ class ReservationsMigration_100 extends Migration
                         'reservations_ibfk_3',
                         [
                             'referencedTable' => 'areas',
-                            'referencedSchema' => 'falacosagiusta',
+                            'referencedSchema' => 'c5_espositori',
                             'columns' => ['areas_id'],
                             'referencedColumns' => ['id'],
                             'onUpdate' => 'CASCADE',
@@ -188,7 +188,7 @@ class ReservationsMigration_100 extends Migration
                         'reservations_ibfk_4',
                         [
                             'referencedTable' => 'exhibitors',
-                            'referencedSchema' => 'falacosagiusta',
+                            'referencedSchema' => 'c5_espositori',
                             'columns' => ['padre_id'],
                             'referencedColumns' => ['id'],
                             'onUpdate' => 'CASCADE',
@@ -199,7 +199,7 @@ class ReservationsMigration_100 extends Migration
                         'reservations_ibfk_5',
                         [
                             'referencedTable' => 'stati',
-                            'referencedSchema' => 'falacosagiusta',
+                            'referencedSchema' => 'c5_espositori',
                             'columns' => ['stato'],
                             'referencedColumns' => ['id'],
                             'onUpdate' => 'CASCADE',
@@ -209,7 +209,7 @@ class ReservationsMigration_100 extends Migration
                 ],
                 'options' => [
                     'TABLE_TYPE' => 'BASE TABLE',
-                    'AUTO_INCREMENT' => '8',
+                    'AUTO_INCREMENT' => '14',
                     'ENGINE' => 'InnoDB',
                     'TABLE_COLLATION' => 'latin1_swedish_ci'
                 ],

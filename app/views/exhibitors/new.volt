@@ -24,15 +24,19 @@
     
     <div class="form-group">
 
-        <div class="form-row">
+        <div class="form-row fascia-rossa-flcgu">
             <div class="col">
                 <h4>Dati espositore per la fatturazione</h4>
             </div>
         </div>
 
         <div class="form-row">
+            <div class="col">&nbsp;</div>
+        </div>        
+
+        <div class="form-row">
             <div class="col-md-6">
-                <label for="fieldRagionesociale" class="col-sm-2 control-label">Ragione Sociale</label>
+                <label for="fieldRagionesociale" class="col-sm-2 control-label">Ragione&nbsp;Sociale</label>
                 {{ text_field("ragionesociale", "size" : 30, "class" : "form-control", "id" : "fieldRagionesociale") }}
             </div>
             <div class="col-md-6">
@@ -57,28 +61,49 @@
             <div class="col-md-4">
                     <label for="fieldProvincia" class="col-sm-2 control-label">Provincia</label>
                     <div>
-                            {{ select('provincia', province, 'using': ['sigla_province', 'nome_province'], 'class' : 'form-control') }}
+                            {{ select('provincia', province, 'using': ['sigla_province', 'nome_province'], 'class' : 'form-control', 'value' : provinciadefault ) }}
                     </div>
             </div>
         </div>
 
         <div class="form-row">
-            <div class="col-md-4">
+            <div class="col-md-3">
                     <label for="fieldTelefono" class="col-sm-2 control-label">Telefono</label>
                     <div>
                             {{ text_field("telefono", "size" : 30, "class" : "form-control", "id" : "fieldTelefono") }}
                     </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                     <label for="fieldEmailaziendale" class="col-sm-2 control-label">Email&nbsp;Azienda</label>
                     <div>
                             {{ text_field("emailaziendale", "size" : 30, "class" : "form-control", "id" : "fieldEmailaziendale") }}
                     </div>
             </div>
-            <div class="col-md-4">
-                    <label for="fieldPartitaivaCodFisc" class="col-sm-2 control-label">Partita&nbsp;iva&nbsp;o&nbsp;Cod.&nbsp;Fisc.</label>
+            <div class="col-md-3">
+                    <label for="fieldPartitaiva" class="col-sm-2 control-label">Partita&nbsp;iva</label>
                     <div>
-                            {{ text_field("pivacodfisc", "type" : "number", "class" : "form-control", "id" : "fieldPartitaivaCodFisc") }}
+                            {{ text_field("piva", "type" : "number", "size" : "11", "maxlength" : "11", "class" : "form-control", "id" : "fieldPartitaiva") }}
+                    </div>
+            </div>
+            <div class="col-md-3">
+                <label for="fieldCodFisc" class="col-sm-2 control-label">Cod.&nbsp;Fisc.</label>
+                <div>
+                        {{ text_field("codfisc", "size" : "16", "maxlength" : "16", "class" : "form-control", "id" : "fieldCodFisc") }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col">
+                    <label for="fieldPec" class="control-label">PEC (Posta elettronica certificata)</label>
+                    <div>
+                            {{ text_field("pec", "size" : 255, "class" : "form-control", "id" : "fieldPec") }}
+                    </div>
+            </div>
+            <div class="col">
+                    <label for="fieldCodiceSDI" class="control-label">Codice del Sistema di Interscambio</label>
+                    <div>
+                            {{ text_field("codicesdi", "size" : 255, "class" : "form-control", "id" : "fieldCodiceSDI") }}
                     </div>
             </div>
         </div>
@@ -88,10 +113,14 @@
     <!-- Form group dati espositore --> 
     <div class="form-group">
 
-        <div class="form-row">
+        <div class="form-row fascia-rossa-flcgu">
                 <div class="col">
                     <h4>Referente espositore per contatti durante l'evento</h4>
                 </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col">&nbsp;</div>
         </div>
 
         <div class="form-row">
@@ -122,11 +151,15 @@
     <!-- Form group area tematica --> 
     <div class="form-group" id="grupposeztematica">
 
-            <div class="form-row">
+            <div class="form-row fascia-rossa-flcgu">
                     <div class="col">
                         <h4>Sezione Tematica</h4>
                     </div>
             </div>
+
+            <div class="form-row">
+                <div class="col">&nbsp;</div>
+            </div>            
 
             {% for index, area in areas %}
             {% if loop.first or (index % 3 == 0) %}
@@ -152,10 +185,14 @@
     
     <div class="form-group">
 
-            <div class="form-row">
+            <div class="form-row fascia-rossa-flcgu">
                     <div class="col">
                         <h4>Elenco prodotti</h4>
                     </div>
+            </div>
+
+            <div class="form-row">
+                <div class="col">&nbsp;</div>
             </div>
 
             <div class="form-row">
@@ -172,12 +209,15 @@
 
     <div class="form-group">
 
-            <div class="form-row">
+            <div class="form-row fascia-rossa-flcgu">
                     <div class="col">
                         <h4>Fascia di prezzo</h4>
                     </div>
             </div>
 
+            <div class="form-row">
+                <div class="col">&nbsp;</div>
+            </div>
 
             <div class="form-row">            
                 <div>
@@ -218,14 +258,37 @@
 
     <div class="form-group">
 
-            <div class="form-row">
-                    <div class="col">
-                        <h4>Scelta dello spazio</h4>
-                    </div>
+        <div class="form-row fascia-rossa-flcgu">
+                <div class="col">
+                    <h4>Scelta dello spazio</h4>
+                </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col">&nbsp;</div>
+        </div>
+
+        <div class="form-row">
+            <div class="col">
+                <label for="fieldCodiceStand" class="control-label">Codice Stand</label>
+                {{ text_field("codicestand", "class" : "form-control", "id" : "fieldCodiceStand", "maxlength" : "20", "data-toggle" : "tooltip", "data-placement" : "top", "title" : "Se hai consultato la mappa degli spazi espositivi nel nostro sito puoi indicare la tua preferenza") }}
             </div>
+            <div class="col"></div>
+        </div>
 
+        <div class="form-row">
+                <div class="col">&nbsp;</div>
+        </div>
 
-    <div class="form-row">
+        <div class="form-row">
+            <div class="col"><p class="text-center">Tutti i prezzi di seguito indicati sono da intendersi <strong>IVA ESCLUSA</strong></p></div>
+        </div>
+
+        <div class="form-row">
+        <div class="col">&nbsp;</div>
+        </div>
+
+        <div class="form-row">
             <div class="col">
                     {% for index, stand in stands %}
                     {% set checked = null %}
@@ -248,14 +311,15 @@
                         {{ text_field('descserv', "class" : "form-control", "value" : stand.descrizione, 'disabled' : 'disabled') }}
                         <div class="input-group-append">
                                 <span class="input-group-text">€</span>
-                                <span class="input-group-text" id="prezzo-{{ identificativo }}">{{ '%.2f'|format(stand.prezzofasciaa) }}</span>
+                                <span class="input-group-text" id="prezzo-{{ identificativo }}">{{ '%.2f'|format(stand.prezzofasciaa) ~ ' +IVA' }}</span>
+                                <span class="input-group-text"></span>
                         </div>
                     </div>
                     {{ hidden_field('stand' ~ stand.id ~ 'a', 'id' : 'stand' ~ stand.id ~ 'a', "value" : '%.2f'|format(stand.prezzofasciaa), 'disabled' : 'disabled') }}
                     {{ hidden_field('stand' ~ stand.id ~ 'b', 'id' : 'stand' ~ stand.id ~ 'b', "value" : '%.2f'|format(stand.prezzofasciab), 'disabled' : 'disabled') }}
                     {% endfor %}
             </div>
-    </div>
+        </div>
 
     <div class="form-row">
         <div class="col">
@@ -326,11 +390,15 @@
 
 <div class="form-group">
 
-    <div class="form-row">
+    <div class="form-row fascia-rossa-flcgu">
             <div class="col">
                 <h4>Co-espositore</h4>
             </div>
     </div>
+
+    <div class="form-row">
+        <div class="col">&nbsp;</div>
+    </div>    
 
     <div class="form-row">
         <div class="col-xs-12">
@@ -368,11 +436,15 @@
    
     <div class="form-group">
 
-        <div class="form-row">
+        <div class="form-row fascia-rossa-flcgu">
                 <div class="col">
                     <h4>Dati per il catalogo</h4>
                 </div>
         </div>
+
+        <div class="form-row">
+            <div class="col">&nbsp;</div>
+        </div>        
 
         <div class="form-row">
                 <div class="col-xs-12">
@@ -521,7 +593,11 @@
 <a class="scroll-to-top rounded" href="#page-top">
 <i class="fas fa-angle-up"></i>
 </a>
-
+{% if logged === false %}
+  {% set destinazione = '/index' %}
+{% else %}
+  {% set destinazione = '/reservations' %}
+{% endif %}
 <div class="modal fade" id="SuccessInsertModal" tabindex="-1" role="dialog" aria-labelledby="SuccessInsertModalLabel" aria-hidden="true">
     <div class="modal-dialog .modal-dialog-centered" role="document">
       <div class="modal-content">
@@ -533,7 +609,7 @@
         </div>
         <div class="modal-body" id="contenutosuccess">I dati dell'espositore sono stati salvati con successo!</div>
         <div class="modal-footer">
-          <a class="btn btn-primary" href="/index">OK</a>
+          <a class="btn btn-primary" href="{{ destinazione }}">OK</a>
         </div>
       </div>
     </div>

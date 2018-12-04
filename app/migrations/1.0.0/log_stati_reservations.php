@@ -87,7 +87,7 @@ class LogStatiReservationsMigration_100 extends Migration
                         'log_stati_reservations_ibfk_1',
                         [
                             'referencedTable' => 'reservations',
-                            'referencedSchema' => 'falacosagiusta',
+                            'referencedSchema' => 'c5_espositori',
                             'columns' => ['reservations_id'],
                             'referencedColumns' => ['id'],
                             'onUpdate' => 'CASCADE',
@@ -98,7 +98,7 @@ class LogStatiReservationsMigration_100 extends Migration
                         'log_stati_reservations_ibfk_2',
                         [
                             'referencedTable' => 'stati',
-                            'referencedSchema' => 'falacosagiusta',
+                            'referencedSchema' => 'c5_espositori',
                             'columns' => ['stati_id'],
                             'referencedColumns' => ['id'],
                             'onUpdate' => 'CASCADE',
@@ -108,7 +108,7 @@ class LogStatiReservationsMigration_100 extends Migration
                 ],
                 'options' => [
                     'TABLE_TYPE' => 'BASE TABLE',
-                    'AUTO_INCREMENT' => '5',
+                    'AUTO_INCREMENT' => '14',
                     'ENGINE' => 'InnoDB',
                     'TABLE_COLLATION' => 'latin1_swedish_ci'
                 ],

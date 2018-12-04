@@ -1,5 +1,8 @@
 <?php
 
+use Phalcon\Validation;
+use Phalcon\Validation\Validator\StringLength as StringLength;
+
 class Reservations extends \Phalcon\Mvc\Model
 {
 
@@ -94,6 +97,24 @@ class Reservations extends \Phalcon\Mvc\Model
         $this->belongsTo('areas_id', 'Areas', 'id', ['alias' => 'Areas']);
         $this->belongsTo('padre_id', 'Exhibitors', 'id', ['alias' => 'Padri']);
         $this->belongsTo('stato', 'Stati', 'id', ['alias' => 'Stati']);
+    }
+
+    public function validation()
+    {
+        $validator = new Validation();
+
+        $validator->add(
+            'codicestand',
+            new StringLength(
+                [
+                    "max"            => 20,
+                    "messageMaximum" => "Il Codice Stand è troppo lungo",
+                    "allowEmpty" => true,
+                ]
+            )
+        );
+
+        return $this->validate($validator);
     }
 
     /**

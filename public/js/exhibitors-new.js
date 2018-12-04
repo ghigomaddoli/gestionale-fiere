@@ -6,14 +6,14 @@ $(document).ready(function(){
         var arrstand = $("#arraystand").val().split(',');
         if(arrstand.length > 0){
             $.each( arrstand, function( key, value ) {
-               $("#prezzo-stand" + value).html('').append($("#stand"+value+fascia).val());
+               $("#prezzo-stand" + value).html('').append($("#stand"+value+fascia).val() + ' +IVA');
             });
         }
 
         var arrserv = $("#arrayservizi").val().split(',');
         if(arrserv.length > 0){
             $.each( arrserv, function( key, value ) {
-               $("#prezzoserv" + value).val($("#prezzoserv"+value+fascia).val());
+               $("#prezzoserv" + value).val($("#prezzoserv"+value+fascia).val() + ' +IVA');
             });
         }
 
@@ -75,12 +75,12 @@ $(document).ready(function(){
                             $( selettore ).after( "<div class='invalid-feedback'>" + messaggioerrore + "</div>" );
                     }
 
-                    if(indice==0){
+                    if(indice==0 && nomecampo != 'status'){
                         primoselettore = selettore;
                     } 
                     indice++;
                 });
-            
+                
                 $(primoselettore).focus();
             
             

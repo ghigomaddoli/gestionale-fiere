@@ -72,7 +72,7 @@ class ReservationServicesMigration_100 extends Migration
                         'reservation_services_ibfk_1',
                         [
                             'referencedTable' => 'reservations',
-                            'referencedSchema' => 'falacosagiusta',
+                            'referencedSchema' => 'c5_espositori',
                             'columns' => ['reservations_id'],
                             'referencedColumns' => ['id'],
                             'onUpdate' => 'CASCADE',
@@ -83,7 +83,7 @@ class ReservationServicesMigration_100 extends Migration
                         'reservation_services_ibfk_2',
                         [
                             'referencedTable' => 'services',
-                            'referencedSchema' => 'falacosagiusta',
+                            'referencedSchema' => 'c5_espositori',
                             'columns' => ['services_id'],
                             'referencedColumns' => ['id'],
                             'onUpdate' => 'CASCADE',
@@ -93,7 +93,7 @@ class ReservationServicesMigration_100 extends Migration
                 ],
                 'options' => [
                     'TABLE_TYPE' => 'BASE TABLE',
-                    'AUTO_INCREMENT' => '34',
+                    'AUTO_INCREMENT' => '83',
                     'ENGINE' => 'InnoDB',
                     'TABLE_COLLATION' => 'latin1_swedish_ci'
                 ],

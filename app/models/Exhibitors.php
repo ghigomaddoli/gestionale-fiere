@@ -1,5 +1,6 @@
 <?php
 
+
 class Exhibitors extends \Phalcon\Mvc\Model
 {
 
@@ -55,7 +56,25 @@ class Exhibitors extends \Phalcon\Mvc\Model
      *
      * @var string
      */
-    public $pivacodfisc;
+    public $piva;
+
+    /**
+     *
+     * @var string
+     */
+    public $codfisc;
+
+    /**
+     *
+     * @var string
+     */
+    public $pec;
+
+    /**
+     *
+     * @var string
+     */
+    public $codicesdi;
 
     /**
      *
@@ -179,6 +198,17 @@ class Exhibitors extends \Phalcon\Mvc\Model
         $this->setSchema("c5_espositori");
         $this->setSource("exhibitors");
         $this->hasMany('id', 'Reservations', 'exhibitors_id', ['alias' => 'Reservations']);
+        $this->hasMany('id', 'Reservations', 'padre_id', ['alias' => 'Reservations']);
+    }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource()
+    {
+        return 'exhibitors';
     }
 
     /**
@@ -204,16 +234,6 @@ class Exhibitors extends \Phalcon\Mvc\Model
     }
 
     /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'exhibitors';
-    }
-
-    /**
      * Independent Column Mapping.
      * Keys are the real names in the table and the values their names in the application
      *
@@ -230,7 +250,10 @@ class Exhibitors extends \Phalcon\Mvc\Model
             'provincia' => 'provincia',
             'telefono' => 'telefono',
             'emailaziendale' => 'emailaziendale',
-            'pivacodfisc' => 'pivacodfisc',
+            'piva' => 'piva',
+            'codfisc' => 'codfisc',
+            'pec' => 'pec',
+            'codicesdi' => 'codicesdi',
             'referentenome' => 'referentenome',
             'referentetelefono' => 'referentetelefono',
             'referenteemail' => 'referenteemail',
@@ -249,7 +272,7 @@ class Exhibitors extends \Phalcon\Mvc\Model
             'catalogofacebook' => 'catalogofacebook',
             'catalogoinstagram' => 'catalogoinstagram',
             'catalogotwitter' => 'catalogotwitter',
-            'catalogodescrizione' => 'catalogodescrizione',
+            'catalogodescrizione' => 'catalogodescrizione'
         ];
     }
 

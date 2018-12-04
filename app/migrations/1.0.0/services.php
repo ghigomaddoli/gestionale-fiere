@@ -98,7 +98,7 @@ class ServicesMigration_100 extends Migration
                         'services_ibfk_1',
                         [
                             'referencedTable' => 'events',
-                            'referencedSchema' => 'falacosagiusta',
+                            'referencedSchema' => 'c5_espositori',
                             'columns' => ['events_id'],
                             'referencedColumns' => ['id'],
                             'onUpdate' => 'CASCADE',

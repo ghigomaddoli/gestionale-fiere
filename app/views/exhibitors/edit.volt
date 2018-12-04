@@ -66,24 +66,45 @@
         </div>
 
         <div class="form-row">
-            <div class="col-md-4">
+            <div class="col-md-3">
                     <label for="fieldTelefono" class="col-sm-2 control-label">Telefono</label>
                     <div>
                             {{ text_field("telefono", "size" : 30, "class" : "form-control", "id" : "fieldTelefono", "value" : exhibitor.telefono) }}
                     </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                     <label for="fieldEmailaziendale" class="col-sm-2 control-label">Email&nbsp;Azienda</label>
                     <div>
                             {{ text_field("emailaziendale", "size" : 30, "class" : "form-control", "id" : "fieldEmailaziendale", "value" : exhibitor.emailaziendale) }}
                     </div>
             </div>
-            <div class="col-md-4">
-                    <label for="fieldPartitaivaCodFisc" class="col-sm-2 control-label">Partita&nbsp;iva&nbsp;o&nbsp;Cod.&nbsp;Fisc.</label>
+            <div class="col-md-3">
+                    <label for="fieldPartitaiva" class="col-sm-2 control-label">Partita&nbsp;iva</label>
                     <div>
-                            {{ text_field("pivacodfisc", "type" : "number", "class" : "form-control", "id" : "fieldPartitaivaCodFisc", "value" : exhibitor.pivacodfisc) }}
+                            {{ text_field("piva", "type" : "number", "class" : "form-control", "id" : "fieldPartitaiva", "value" : exhibitor.piva) }}
                     </div>
             </div>
+            <div class="col-md-3">
+                <label for="fieldCodFisc" class="col-sm-2 control-label">Cod.&nbsp;Fisc.</label>
+                <div>
+                        {{ text_field("codfisc", "type" : "number", "class" : "form-control", "id" : "fieldCodFisc", "value" : exhibitor.codfisc) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+                <div class="col">
+                        <label for="fieldPec" class="control-label">PEC (Posta elettronica certificata)</label>
+                        <div>
+                                {{ text_field("pec", "size" : 255, "class" : "form-control", "id" : "fieldPec", "value" : exhibitor.pec) }}
+                        </div>
+                </div>
+                <div class="col">
+                        <label for="fieldCodiceSDI" class="control-label">Codice del Sistema di Interscambio</label>
+                        <div>
+                                {{ text_field("codicesdi", "size" : 255, "class" : "form-control", "id" : "fieldCodiceSDI", "value" : exhibitor.codicesdi) }}
+                        </div>
+                </div>
         </div>
 
     </div> <!-- Fine form group dati fatturazione azienda --> 
@@ -393,9 +414,9 @@
             <span aria-hidden="true">×</span>
           </button>
         </div>
-        <div class="modal-body" id="contenutosuccess">I dati dell'espositore sono stati salvati con successo!</div>
+        <div class="modal-body" id="contenutosuccess">I dati anagrafici dell'espositore <i>{exhibitor.ragionesociale}</i> sono stati modificati con successo!</div>
         <div class="modal-footer">
-          <a class="btn btn-primary" href="/index">OK</a>
+          <a class="btn btn-primary" href="/reservations">OK</a>
         </div>
       </div>
     </div>

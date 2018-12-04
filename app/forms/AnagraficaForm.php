@@ -28,7 +28,10 @@ EXHIBITORS COLUMN MAP
             'provincia' => 'provincia',
             'telefono' => 'telefono',
             'emailaziendale' => 'emailaziendale',
-            'pivacodfisc' => 'pivacodfisc',
+            'piva' => 'piva',
+            'codfisc' => 'codfisc',
+            'pec' => 'pec',
+            'codicesdi' => 'codicesdi',
             'referentenome' => 'referentenome',
             'referentetelefono' => 'referentetelefono',
             'referenteemail' => 'referenteemail',
@@ -47,7 +50,7 @@ EXHIBITORS COLUMN MAP
             'catalogofacebook' => 'catalogofacebook',
             'catalogoinstagram' => 'catalogoinstagram',
             'catalogotwitter' => 'catalogotwitter',
-            'catalogodescrizione' => 'catalogodescrizione',
+            'catalogodescrizione' => 'catalogodescrizione'
 */
 class AnagraficaForm extends Form
 {
@@ -164,12 +167,12 @@ class AnagraficaForm extends Form
         ]);
         $this->add($emailaziendale);
 
-        $pivacodfisc = new Text("pivacodfisc");
-        $pivacodfisc->setLabel("Partita Iva o Codice Fiscale");
-        $pivacodfisc->setFilters(['striptags', 'string']);
-        $pivacodfisc->addValidators([
+        $piva = new Text("piva");
+        $piva->setLabel("Partita Iva");
+        $piva->setFilters(['striptags', 'string']);
+        $piva->addValidators([
             new PresenceOf([
-                'message' => 'Partita Iva o Codice Fiscale obbligatori'
+                'message' => 'Partita Iva obbligatoria'
             ]),
             new Uniqueness(
                 [
@@ -179,11 +182,65 @@ class AnagraficaForm extends Form
             new StringLength(
                 [
                     "max"            => 16,
-                    "messageMaximum" => "La Partita Iva o Codice Fiscale troppo lunga (max 16)",
+                    "messageMaximum" => "La Partita Iva troppo lunga (max 11)",
                 ]
             )
         ]);
-        $this->add($pivacodfisc);
+        $this->add($piva);
+
+        $piva = new Text("piva");
+        $piva->setLabel("Partita Iva");
+        $piva->setFilters(['striptags', 'string']);
+        $piva->addValidators([
+            new Uniqueness(
+                [
+                    'message' => 'Questa Partita Iva esiste già nel database.',
+                    "allowEmpty" => true,
+                ]
+                ),
+            new StringLength(
+                [
+                    "min"           => 11,
+                    "max"            => 11,
+                    "messageMaximum" => "La Partita Iva deve essere lunga 11 caratteri",
+                    "allowEmpty" => true,
+                ]
+            )
+        ]);
+        $this->add($piva);
+
+        $codfisc = new Text("codfisc");
+        $codfisc->setLabel("Codice Fiscale");
+        $codfisc->setFilters(['striptags', 'string']);
+        $codfisc->addValidators([
+            new StringLength(
+                [
+                    "min"   =>16,
+                    "max"            => 16,
+                    "messageMaximum" => "Codice Fiscale deve essere composto da 16 caratteri",
+                    "allowEmpty" => true,
+                ]
+            )
+        ]);
+        $this->add($codfisc);
+
+        $pec = new Text("pec");
+        $pec->setLabel("PEC - Posta elettronica certificata");
+        $pec->setFilters(['striptags', 'string', 'trim']);
+        $pec->addValidators([
+            new Email(
+                [
+                    'message' => 'L\'indirizzo email PEC non ha un formato valido',
+                    "allowEmpty" => true,
+                ]
+            )
+        ]);
+        $this->add($pec);
+
+        $codicesdi = new Text("codicesdi");
+        $codicesdi->setLabel("Codice del Sistema di Interscambio");
+        $codicesdi->setFilters(['striptags', 'string', 'trim']);
+        $this->add($codicesdi);
 
         $referentenome = new Text("referentenome");
         $referentenome->setLabel("Nome dell'espositore da poter contattare durante l'evento");

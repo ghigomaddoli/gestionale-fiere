@@ -69,7 +69,7 @@ $(document).ready(function(){
     });
 
     $('#SuccessInsertModal').on('hidden.bs.modal', function (e) {
-        window.location = "/index";
+        window.location = "/reservations";
     })
 
 });

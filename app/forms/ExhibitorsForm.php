@@ -28,7 +28,10 @@ EXHIBITORS COLUMN MAP
             'provincia' => 'provincia',
             'telefono' => 'telefono',
             'emailaziendale' => 'emailaziendale',
-            'pivacodfisc' => 'pivacodfisc',
+            'piva' => 'piva',
+            'codfisc' => 'codfisc',
+            'pec' => 'pec',
+            'codicesdi' => 'codicesdi',
             'referentenome' => 'referentenome',
             'referentetelefono' => 'referentetelefono',
             'referenteemail' => 'referenteemail',
@@ -47,7 +50,7 @@ EXHIBITORS COLUMN MAP
             'catalogofacebook' => 'catalogofacebook',
             'catalogoinstagram' => 'catalogoinstagram',
             'catalogotwitter' => 'catalogotwitter',
-            'catalogodescrizione' => 'catalogodescrizione',
+            'catalogodescrizione' => 'catalogodescrizione'
 */
 class ExhibitorsForm extends Form
 {
@@ -146,7 +149,8 @@ class ExhibitorsForm extends Form
             ]),
             new DigitValidator(
                 [
-                    "message" => "Il telefono deve contenere solo numeri",
+                    "message" => "Il telefono è obbligatorio e deve contenere solo numeri",
+                    "allowempty" => true,
                 ]
             )
         ]);
@@ -164,26 +168,63 @@ class ExhibitorsForm extends Form
         ]);
         $this->add($emailaziendale);
 
-        $pivacodfisc = new Text("pivacodfisc");
-        $pivacodfisc->setLabel("Partita Iva o Codice Fiscale");
-        $pivacodfisc->setFilters(['striptags', 'string']);
-        $pivacodfisc->addValidators([
-            new PresenceOf([
-                'message' => 'Partita Iva o Codice Fiscale obbligatori'
-            ]),
+        $piva = new Text("piva");
+        $piva->setLabel("Partita Iva");
+        $piva->setFilters(['striptags', 'string']);
+        $piva->addValidators([
+            new DigitValidator(
+                [
+                    "message" => "La Partita Iva deve contenere solo numeri",
+                    "allowEmpty" => true,
+                ]
+                ),
             new Uniqueness(
                 [
-                    'message' => 'La Partita Iva o Codice Fiscale per l\'azienda esiste già nel database.',
+                    'message' => 'Questa Partita Iva esiste già nel database.',
+                    "allowEmpty" => true,
                 ]
                 ),
             new StringLength(
                 [
-                    "max"            => 16,
-                    "messageMaximum" => "La Partita Iva o Codice Fiscale troppo lunga (max 16)",
+                    "min"           => 11,
+                    "messageMinimum" => "La Partita Iva deve essere lunga 11 caratteri",
+                    "allowEmpty" => true,
+                ]
+            )              
+        ]);
+        $this->add($piva);
+
+        $codfisc = new Text("codfisc");
+        $codfisc->setLabel("Codice Fiscale");
+        $codfisc->setFilters(['striptags', 'string']);
+        $codfisc->addValidators([
+            new StringLength(
+                [
+                    "min"   =>16,
+                    "messageMinimum" => "Il Codice Fiscale deve essere composto da 16 caratteri",
+                    "allowEmpty" => true,
                 ]
             )
         ]);
-        $this->add($pivacodfisc);
+        $this->add($codfisc);
+
+        $pec = new Text("pec");
+        $pec->setLabel("PEC - Posta elettronica certificata");
+        $pec->setFilters(['striptags', 'string', 'trim']);
+        $pec->addValidators([
+            new Email(
+                [
+                    'message' => 'L\'indirizzo email PEC non ha un formato valido',
+                    "allowEmpty" => true,
+                ]
+            )
+        ]);
+        $this->add($pec);
+
+        $codicesdi = new Text("codicesdi");
+        $codicesdi->setLabel("Codice del Sistema di Interscambio");
+        $codicesdi->setFilters(['striptags', 'string', 'trim']);
+        $this->add($codicesdi);
 
         $referentenome = new Text("referentenome");
         $referentenome->setLabel("Nome dell'espositore da poter contattare durante l'evento");
@@ -242,6 +283,20 @@ class ExhibitorsForm extends Form
             ]),
         ]);
         $this->add($fasciadiprezzo);
+
+        $codicestand = new Text("codicestand");
+        $codicestand->setLabel("Codice Stand");
+        $codicestand->setFilters(['striptags', 'string', 'trim']);
+        $codicestand->addValidators([
+            new StringLength(
+                [
+                    "max"            => 20,
+                    "messageMaximum" => "Il Codice Stand è troppo lungo",
+                    "allowEmpty" => true,
+                ]
+            )
+        ]);
+        $this->add($codicestand);
 
         /* Scelta dello spazio espositivo */
         $options = Services::find(

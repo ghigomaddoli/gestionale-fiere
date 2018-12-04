@@ -10,9 +10,10 @@ class ReservationsController extends ControllerBase
         $parameters = array();
 
         if ($this->request->isPost()) {
-            $this->persistent->searchParams = null; 
+            //$this->persistent->searchParams = null; 
             $query = Criteria::fromInput($this->di, "Reservations", $this->request->getPost());
-            //$this->persistent->searchParams = $query->getParams();
+            \PhalconDebug::info('oggetto query:',$query);
+            $this->persistent->searchParams = $query->getParams();
         } else {
             $numberPage = $this->request->getQuery("page", "int");
         }
@@ -22,7 +23,7 @@ class ReservationsController extends ControllerBase
             $parameters = $this->persistent->searchParams;
         }
         \PhalconDebug::info('array dei parametri di ricerca',$parameters);
-        //$reservations = reservations::find($parameters);
+        $reservations = reservations::find($parameters);
         $reservations = Reservations::find();
         if (count($reservations) == 0) {
             $this->flash->notice("Nessun espositore da mostrare");
@@ -214,7 +215,7 @@ class ReservationsController extends ControllerBase
 
         $form->clear();    
 
-        $this->flash->success("I dati della prenotazione sono stati aggiornati");
+        $this->flash->success("I dati della prenotazione dell'espositore {$reservation->getExhibitors()->ragionesociale} sono stati aggiornati");
 
         return $this->dispatcher->forward(
             [

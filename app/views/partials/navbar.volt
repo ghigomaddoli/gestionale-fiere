@@ -9,17 +9,17 @@
     </button>
 
     {% if logged === true %}
-    <!-- Navbar Search -->
-    <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+    <!-- Navbar Search -->s
+    {{ form('reservations/index', 'id' : 'fricerca', 'role': 'form', 'method': 'POST', 'autocomplete': 'off', 'class': 'd-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0') }} 
       <div class="input-group">
-        <input type="text" class="form-control" placeholder="Cerca..." aria-label="Cerca Espositore" aria-describedby="basic-addon2">
+        {{ text_field('codicestand', 'class' : 'form-control', 'placeholder' : 'Cerca...', 'aria-label' : 'Cerca Espositore', 'aria-describedby' : 'basic-addon2') }}
         <div class="input-group-append">
-          <button class="btn btn-primary" type="button">
+          <button type="submit" class="btn btn-primary" type="button">
             <i class="fas fa-search"></i>
           </button>
         </div>
       </div>
-    </form>
+      {{ end_form() }}
     
     <!-- Navbar -->
     <ul class="navbar-nav ml-auto ml-md-0">
