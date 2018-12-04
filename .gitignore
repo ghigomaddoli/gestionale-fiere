@@ -4,4 +4,4 @@
 /Runtime
 /vendor
 /app/logs/test.log
-
+app/config/config.php

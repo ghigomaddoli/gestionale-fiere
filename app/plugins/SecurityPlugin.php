@@ -112,7 +112,7 @@ class SecurityPlugin extends Plugin
 			$role = 'Users';
 		}
 
-		$this->miologger->log("ACL:: utente classificato come ".$role);
+		//$this->miologger->log("ACL:: utente classificato come ".$role);
 
 		$controller = $dispatcher->getControllerName();
 		$action = $dispatcher->getActionName();
