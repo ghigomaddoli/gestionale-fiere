@@ -53,8 +53,8 @@ class Services extends \Phalcon\Mvc\Model
     {
         $this->setSchema("c5_espositori");
         $this->setSource("services");
-        $this->hasMany('id', 'ReservationServices', 'services_id', ['alias' => 'ReservationServices']);
-        $this->belongsTo('events_id', 'Events', 'id', ['alias' => 'Events']);
+        $this->hasMany('id', 'ReservationServices', 'services_id', ['alias' => 'ReservationServices','reusable' => true]);
+        $this->belongsTo('events_id', 'Events', 'id', ['alias' => 'Events','reusable' => true]);
     }
 
     /**

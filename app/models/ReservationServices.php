@@ -35,8 +35,8 @@ class ReservationServices extends \Phalcon\Mvc\Model
     {
         $this->setSchema("c5_espositori");
         $this->setSource("reservation_services");
-        $this->belongsTo('reservations_id', 'Reservations', 'id', ['alias' => 'Reservations']);
-        $this->belongsTo('services_id', 'Services', 'id', ['alias' => 'Services']);
+        $this->belongsTo('reservations_id', 'Reservations', 'id', ['alias' => 'Reservations','reusable' => true]);
+        $this->belongsTo('services_id', 'Services', 'id', ['alias' => 'Services','reusable' => true]);
     }
 
     /**

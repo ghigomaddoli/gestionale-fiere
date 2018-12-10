@@ -165,3 +165,9 @@ $di->setShared('evento', function () {
        ]);
 });
 
+/**
+ * carico il nome degli stati una volta per tutte
+ */
+$di->setShared('stati', function () {
+    return Stati::find();
+});

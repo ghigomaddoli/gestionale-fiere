@@ -197,7 +197,7 @@ class Exhibitors extends \Phalcon\Mvc\Model
     {
         $this->setSchema("c5_espositori");
         $this->setSource("exhibitors");
-        $this->hasMany('id', 'Reservations', 'exhibitors_id', ['alias' => 'Reservations']);
+        $this->hasMany('id', 'Reservations', 'exhibitors_id', ['alias' => 'Reservations', 'reusable' => true]);
         $this->hasMany('id', 'Reservations', 'padre_id', ['alias' => 'Reservations']);
     }
 

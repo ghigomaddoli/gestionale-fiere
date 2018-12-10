@@ -34,9 +34,9 @@ class Events extends \Phalcon\Mvc\Model
     {
         $this->setSchema("c5_espositori");
         $this->setSource("events");
-        $this->hasMany('id', 'Areas', 'events_id', ['alias' => 'Areas']);
-        $this->hasMany('id', 'Reservations', 'events_id', ['alias' => 'Reservations']);
-        $this->hasMany('id', 'Services', 'events_id', ['alias' => 'Services']);
+        $this->hasMany('id', 'Areas', 'events_id', ['alias' => 'Areas','reusable' => true]);
+        $this->hasMany('id', 'Reservations', 'events_id', ['alias' => 'Reservations','reusable' => true]);
+        $this->hasMany('id', 'Services', 'events_id', ['alias' => 'Services','reusable' => true]);
     }
 
     /**

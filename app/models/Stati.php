@@ -34,7 +34,7 @@ class Stati extends \Phalcon\Mvc\Model
     {
         $this->setSchema("c5_espositori");
         $this->setSource("stati");
-        $this->hasMany('id', 'LogStatiReservations', 'stati_id', ['alias' => 'LogStatiReservations']);
+        $this->hasMany('id', 'LogStatiReservations', 'stati_id', ['alias' => 'LogStatiReservations','reusable' => true]);
     }
 
     /**

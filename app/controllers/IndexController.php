@@ -30,10 +30,11 @@ class IndexController extends ControllerBase
                 }
             }
             $distribution[]=$contatorearea;
+            $tbldistribstati[] = $contatorearea;
         }
 
         $this->view->distribution = implode(",",$distribution);
-
+        $this->view->tbldistribstati = $tbldistribstati;
 
         // preparo il grafico aree tematiche
         $areas = Areas::find();
@@ -54,10 +55,12 @@ class IndexController extends ControllerBase
                 }
             }
             $distributionareas[]=$contatoreareas;
+            $tbldistribarea[$area->nome] = $contatoreareas;
         }
 
         $this->view->distributionareas = implode(",",$distributionareas);
         $this->view->coloriareas = implode("','",$coloriareas);
+        $this->view->tbldistribarea = $tbldistribarea;
     }
 
     public function csvespositoriAction()
@@ -151,7 +154,7 @@ class IndexController extends ControllerBase
             );
             \PhalconDebug::info('riga prima',$righe,$sa);
             $righe = array_merge($righe,$sa);
-            fputcsv($output, $righe);
+            fputcsv($output, $righe, ";");
             \PhalconDebug::info('riga dopo',$righe);
         }
         

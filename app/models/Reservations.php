@@ -92,11 +92,11 @@ class Reservations extends \Phalcon\Mvc\Model
         $this->setSchema("c5_espositori");
         $this->setSource("reservations");
         $this->hasMany('id', 'ReservationServices', 'reservations_id', ['alias' => 'ReservationServices']);
-        $this->belongsTo('exhibitors_id', 'Exhibitors', 'id', ['alias' => 'Exhibitors']);
-        $this->belongsTo('events_id', 'Events', 'id', ['alias' => 'Events']);
-        $this->belongsTo('areas_id', 'Areas', 'id', ['alias' => 'Areas']);
+        $this->belongsTo('exhibitors_id', 'Exhibitors', 'id', ['alias' => 'Exhibitors', 'reusable' => true]);
+        $this->belongsTo('events_id', 'Events', 'id', ['alias' => 'Events','reusable' => true]);
+        $this->belongsTo('areas_id', 'Areas', 'id', ['alias' => 'Areas','reusable' => true]);
         $this->belongsTo('padre_id', 'Exhibitors', 'id', ['alias' => 'Padri']);
-        $this->belongsTo('stato', 'Stati', 'id', ['alias' => 'Stati']);
+        $this->belongsTo('stato', 'Stati', 'id', ['alias' => 'Stati','reusable' => true]);
     }
 
     public function validation()

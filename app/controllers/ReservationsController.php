@@ -1,49 +1,95 @@
 <?php
 use Phalcon\Mvc\Model\Criteria;
-use Phalcon\Paginator\Adapter\Model as Paginator;
+use Phalcon\Mvc\Model\Query;
+use Phalcon\Paginator\Adapter\QueryBuilder as PaginatorQueryBuilder;
+
+
 class ReservationsController extends ControllerBase
 {
     public function indexAction()
     {
-
+        $this->view->areas = Areas::find("events_id = ".$this->evento->id);
+        $this->view->stati = $this->stati;
         $numberPage = 1;
+        $par = array();
         $parameters = array();
+        $orderby = '';
 
         if ($this->request->isPost()) {
-            //$this->persistent->searchParams = null; 
-            $query = Criteria::fromInput($this->di, "Reservations", $this->request->getPost());
-            \PhalconDebug::info('oggetto query:',$query);
-            $this->persistent->searchParams = $query->getParams();
+
+            $areas_id = $this->request->getPost('areas_id', 'int');
+            $stato = $this->request->getPost('stato', 'int');
+            $ragionesociale = $this->request->getPost('ragionesociale', 'string');
+            $interventoprogrammaculturale = $this->request->getPost('interventoprogrammaculturale', 'int');
+            $orderby = $this->request->getPost('orderby', 'string');
+
+            if(!empty($areas_id)){
+                $par["areas_id"] = $areas_id;
+            }
+            if(!empty($stato)){
+                $par["stato"] = $stato;
+            }
+            if(!empty($ragionesociale)){
+                $par["ragionesociale"] = $ragionesociale;
+            }
+            if(!empty($interventoprogrammaculturale)){
+                $par["interventoprogrammaculturale"] = $interventoprogrammaculturale;
+            }            
+            if(!empty($orderby)){
+                $par["orderby"] = $orderby;
+            }
+          //  \PhalconDebug::info($par);
+            $this->persistent->searchParams = $par;
         } else {
             $numberPage = $this->request->getQuery("page", "int");
         }
 
-        
-        if ($this->persistent->searchParams) {
+        $builder = $this->modelsManager->createBuilder()
+        ->from('Reservations')
+        ->join('exhibitors')
+        ->where('1 = 1');
+
+        if ($this->persistent->searchParams && count($this->persistent->searchParams)) {
             $parameters = $this->persistent->searchParams;
         }
-        \PhalconDebug::info('array dei parametri di ricerca',$parameters);
-        $reservations = reservations::find($parameters);
-        $reservations = Reservations::find();
-        if (count($reservations) == 0) {
-            $this->flash->notice("Nessun espositore da mostrare");
 
-            return $this->dispatcher->forward(
-                [
-                    "controller" => "index",
-                    "action"     => "index",
-                ]
-            );
+       // \PhalconDebug::info("this->persistent->searchParams",$this->persistent->searchParams);
+
+        foreach($parameters as $campo => $valore){
+            switch($campo){
+                case "ragionesociale":
+                    $builder->andWhere("exhibitors.{$campo} like '%".$valore."%'");
+                break;
+                case "orderby":
+                    $builder->orderBy($valore);
+                break;
+                default:
+                    $builder->andWhere("{$campo} = {$valore}");
+                break;
+            }
         }
-        $this->view->richieste = count($reservations);
 
-        $paginator = new Paginator(array(
-            "data"  => $reservations,
-            "limit" => 10,
-            "page"  => $numberPage
-        ));
+        if(empty($parameters['orderby'])){
+            $builder->orderBy('Reservations.id DESC');
+        }
+
+        
+
+       $paginator = new PaginatorQueryBuilder(
+            [
+                'builder' => $builder,
+                'limit'   => 10,
+                'page'    => $numberPage,
+            ]
+        );
 
         $this->view->page = $paginator->getPaginate();
+
+        if ($this->view->page->total_items == 0) {
+            $this->flash->notice("Nessun espositore da mostrare con questi criteri di ricerca");
+            $this->persistent->searchParams = null;
+        }     
+
     }
 
     public function initialize()

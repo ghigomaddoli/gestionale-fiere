@@ -34,8 +34,8 @@ class Areas extends \Phalcon\Mvc\Model
     {
         $this->setSchema("c5_espositori");
         $this->setSource("areas");
-        $this->hasMany('id', 'Reservations', 'areas_id', ['alias' => 'Reservations']);
-        $this->belongsTo('events_id', 'Events', 'id', ['alias' => 'Events']);
+        $this->hasMany('id', 'Reservations', 'areas_id', ['alias' => 'Reservations','reusable' => true]);
+        $this->belongsTo('events_id', 'Events', 'id', ['alias' => 'Events','reusable' => true]);
     }
 
     /**

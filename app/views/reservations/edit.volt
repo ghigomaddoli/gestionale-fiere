@@ -31,11 +31,22 @@
     {{ form('reservations/save', 'method': 'post', "autocomplete" : "off", "class" : "form-horizontal") }}
 
     <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-4">
             <label for="fieldAreasId" class="control-label">Area Tematica</label>
             {{ select('areas_id', areas, 'using': ['id', 'nome'],'class' : 'form-control') }}
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-4">
+                <label class="control-label">&nbsp;</label>
+                {% set cipc = null %} 
+                {% if reservation.interventoprogrammaculturale == 1 %} 
+                    {% set cipc = 'checked' %} 
+                {% endif %}
+                <div class="form-check form-control-lg">
+                {{ check_field('interventoprogrammaculturale', 'value': 1, 'checked' : cipc, 'class' : 'form-check-input', 'id' : 'cbipc') }}
+                <label class="form-check-label" for="cbipc"> Intervento Programma Culturale</label>
+                </div>
+        </div>
+        <div class="col-sm-4">
             <label for="fieldCodicestand" class="control-label">Codice stand</label>
             {{ text_field('codicestand', 'size': 20,  "class" : "form-control", "id" : "fieldCodicestand", "value" : reservation.codicestand) }}
         </div>
@@ -65,7 +76,7 @@
                 
                     <div class="form-check form-control-lg">
                             {{ check_field(nome, 'value' : 1, 'checked' : checked, 'class' : 'form-check-input', 'id' : identificativo ) }} 
-                                <label class="form-check-label" for="inlineCheckbox1">{{ stand.descrizione }}
+                                <label class="form-check-label" for="{{ identificativo }}">{{ stand.descrizione }}
                                     {% if reservation.getExhibitors().fasciadiprezzo === 'a' %}
                                         € {{ '%.2f'|format(stand.prezzofasciaa) }}
                                     {% else %} 

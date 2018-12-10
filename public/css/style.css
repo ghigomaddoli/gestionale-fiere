@@ -7,3 +7,11 @@
     border-radius: 3px;
     padding-top: 0.4em;
 }
+
+.table-riepilogo td {
+    font-size: 0.9rem !important;
+}
+
+.table-riepilogo td, .table-riepilogo th {
+    padding: .45rem !important;
+}
