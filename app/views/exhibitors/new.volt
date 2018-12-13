@@ -115,7 +115,7 @@
 
         <div class="form-row fascia-rossa-flcgu">
                 <div class="col">
-                    <h4>Referente espositore per contatti durante l'evento</h4>
+                    <h4>Referente espositore per contatti prima e durante l'evento</h4>
                 </div>
         </div>
 
@@ -131,7 +131,7 @@
                         </div>
                 </div>
                 <div class="col-md-3">
-                        <label for="fieldReferentetelefono" class="col-sm-2 control-label">Tel.&nbsp;espositore</label>
+                        <label for="fieldReferentetelefono" class="col-sm-2 control-label">Cell.&nbsp;espositore</label>
                         <div>
                                 {{ text_field("referentetelefono", "size" : 30, "class" : "form-control", "id" : "fieldReferentetelefono") }}
                         </div>

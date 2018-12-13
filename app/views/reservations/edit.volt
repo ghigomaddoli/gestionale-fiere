@@ -242,6 +242,17 @@
 
     {{ end_form() }}
     
+    <!-- Sezione per la generazione della Lettera di ammissione -->
+    <div class="jumbotron">
+        <h3>Lettera di ammissione</h3>
+        <p>Cliccando sul pulsante sottostante puoi decidere di generare il pdf in anteprima oppure di inviarlo anche all'espositore come allegato email</p>
+        <hr class="my-4">
+        <div class="row text-center">
+            <div class="col">{{ link_to('reservations/anteprimalettera/' ~ reservation.id, "Anteprima Lettera di ammissione", 'target' : '_blank', 'role': 'button', 'class': 'btn btn-primary btn-lg') }}</div>
+            <div class="col">{{ link_to('#', "&nbsp;<i class='far fa-envelope'></i>&nbsp;&nbsp;Invia la Lettera di ammissione all'espositore", 'role': 'button', 'class': 'btn btn-lg btn-warning', "data-toggle" : "tooltip", "data-placement" : "top", "title" : "La lettera di ammissione verrà inviata all'indirizzo " ~ reservation.exhibitors.emailaziendale) }}</div>
+        </div>
+    </div>
+    </div>
 
   </div>
   <!-- /.container-fluid -->

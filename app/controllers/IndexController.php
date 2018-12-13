@@ -109,7 +109,7 @@ class IndexController extends ControllerBase
 
         $output = fopen('php://output', 'w');
         
-        fputcsv($output, $nomicolonne);
+        fputcsv($output, $nomicolonne, ";");
 
         foreach($reservations as $domandaespositore){
             $sa = array();

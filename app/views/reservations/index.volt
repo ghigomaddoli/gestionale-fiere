@@ -21,14 +21,17 @@
                            {{ select('stato', stati, 'using': ['id', 'descrizionebreve'], 'class' : 'form-control', 'useEmpty' : true, 'emptyText'  : 'Tutti gli stati', 'id' : 'FiltroStato') }}
                            &nbsp;&nbsp; 
                            <label for="OrderBy" class="control-label">Ordina i risultati per:&nbsp; </label>
-                           {{ select_static('orderby', ['exhibitors.ragionesociale' :'Ragione Sociale', 'stato' : 'Stato', 'areas_id' : 'Area Tematica'],'useEmpty' : true, 'emptyText'  : 'Più recenti', 'class' : 'form-control', 'id' : 'OrderBy') }}                         
+                           {{ select_static('orderby', ['' : 'Più recenti', 'exhibitors.ragionesociale' :'Ragione Sociale', 'stato' : 'Stato', 'areas_id' : 'Area Tematica'], 'class' : 'form-control', 'id' : 'OrderBy') }}                         
                            &nbsp;&nbsp; 
                            <label for="Filtroprogcult" class="control-label">Prog. Culturale:&nbsp; </label>
                            {{ check_field('interventoprogrammaculturale', 'value' : '1', 'class' : 'form-control', 'id' : 'Filtroprogcult') }}                                                  
-                           &nbsp;<button type="submit" class="btn btn-primary">&nbsp;<i class="fas fa-search"></i>&nbsp;</button>
-                           &nbsp;<input type="reset" value="Reset" class="btn btn-primary">
-                      </div>
+                           &nbsp;<button type="submit" class="btn btn-primary">&nbsp;<i class="fas fa-search"></i>&nbsp;Cerca</button>
+                           &nbsp;<button type="submit" class="btn btn-primary" data-toggle="tooltip" title="Scarica in formato csv i dati con i criteri di ricerca impostati">&nbsp;<i class="fas fa-file-excel"></i>&nbsp;Scarica</button>
                       {{ end_form() }}
+                      {{ form('reservations/index', 'id' : 'freset', 'role': 'form', 'method': 'POST', 'autocomplete': 'off') }} 
+                      &nbsp;<input type="submit" id="ResetFiltri" value="Reset" class="btn btn-primary">
+                      {{ end_form() }}
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -51,7 +54,7 @@
                 <table class="table table-hover table-sm" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
-                        <th class="text-nowrap">Ragione sociale</th>
+                        <th>Ragione sociale</th>
                         <th>Contatti Azienda</th>
                         <th>Referente Fiera</th>
                         <th>Area Tematica</th>
@@ -68,7 +71,7 @@
                         {% set colorefascia = 'warning' %}
                         {% endif %}
                         <tr>
-                        <td class="text-nowrap">{{ reservation.exhibitors.ragionesociale }}</td>
+                        <td>{{ reservation.exhibitors.ragionesociale }}</td>
                         <td><a href='tel:{{ reservation.exhibitors.telefono }}'><i class="fas fa-phone-square"> {{ reservation.exhibitors.telefono }}</i></a><br>
                             <a href='mailto:{{ reservation.exhibitors.emailaziendale }}'><i class="far fa-envelope"> {{ reservation.exhibitors.emailaziendale }}</i></a></td>
                         <td>

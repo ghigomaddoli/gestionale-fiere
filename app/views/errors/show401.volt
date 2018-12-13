@@ -1,8 +1,64 @@
 
-{{ content() }}
+{{ partial('partials/navbar') }}
 
-<div class="jumbotron">
-    <h1>Unauthorized</h1>
-    <p>You don't have access to this option. Contact an administrator</p>
-    <p>{{ link_to('index', 'Home', 'class': 'btn btn-primary') }}</p>
+<div id="wrapper">
+
+<!-- Sidebar -->
+{{ partial('partials/sidebar') }}
+
+<div id="content-wrapper">
+
+  <div class="container-fluid">
+
+    {{ content() }}
+
+    <div class="jumbotron">
+        <h1>Accesso non autorizzato</h1>
+        <p>Non disponi dei permessi per accedere a questa pagina.</p>
+        <p>{{ link_to('index', 'Home', 'class': 'btn btn-primary') }}</p>
+    </div>
+
+  </div>
+  <!-- /.container-fluid -->
+
+  <!-- Sticky Footer -->
+  <footer class="sticky-footer">
+    <div class="container my-auto">
+      <div class="copyright text-center my-auto">
+        <span>Copyright © Fairlab 2018</span>
+      </div>
+    </div>
+  </footer>
+
 </div>
+<!-- /.content-wrapper -->
+
+
+</div>
+<!-- /#wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+<i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+      <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+      <a class="btn btn-primary" href="/session/end">Logout</a>
+    </div>
+  </div>
+</div>
+</div>
+
+

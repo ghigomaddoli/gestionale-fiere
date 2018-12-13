@@ -9,7 +9,7 @@
     </button>
 
     {% if logged === true %}
-    <!-- Navbar Search -->s
+    <!-- Navbar Search -->
     {{ form('reservations/index', 'id' : 'fricerca', 'role': 'form', 'method': 'POST', 'autocomplete': 'off', 'class': 'd-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0') }} 
       <div class="input-group">
         {{ text_field('ragionesociale', 'class' : 'form-control', 'placeholder' : 'Cerca Espositore..') }}
@@ -23,7 +23,7 @@
     
     <!-- Navbar -->
     <ul class="navbar-nav ml-auto ml-md-0">
-      <li class="nav-item dropdown no-arrow mx-1">
+      <!--li class="nav-item dropdown no-arrow mx-1">
         <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-bell fa-fw"></i>
           <span class="badge badge-danger">9+</span>
@@ -46,7 +46,7 @@
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#">Something else here</a>
         </div>
-      </li>
+      </li-->
       
       <li class="nav-item dropdown no-arrow">
         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -56,9 +56,8 @@
  
           <a class="dropdown-item">{{ elements.getNomeUtente() }}</a>
 
-          <a class="dropdown-item" href="#">Attività</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
+          <a class="dropdown-item" href="session/end" data-toggle="modal" data-target="#logoutModal">Logout</a>
         </div>
       </li>
     </ul>
