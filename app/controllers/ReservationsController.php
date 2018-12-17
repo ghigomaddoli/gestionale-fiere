@@ -305,13 +305,26 @@ class ReservationsController extends ControllerBase
             );
         }
 
+        $string = strtolower($reservation->getExhibitors()->ragionesociale);
+        $string = preg_replace("/[^0-9A-Za-z ]/", "", $string);
+        $string = str_replace(" ", "-", $string);
+        while (strstr($string, "--")) {
+            $string = preg_replace("/--/", "-", $string);
+        }
+        $permalink = (utf8_decode($string));
+        
+        \PhalconDebug::info($permalink);
         $this->view->setRenderLevel(\Phalcon\Mvc\View::LEVEL_NO_RENDER);
-        $this->response->resetHeaders();
+        $this->response->resetHeaders();   
         $this->response->setHeader('Content-Type', 'application/pdf');
-        $this->response->setHeader('Content-Disposition', "attachment; filename=lettera-ammissione-{$reservation->id}.pdf");
+        $this->response->setHeader('Content-Disposition', "attachment; filename=lettera-ammissione-{$permalink}.pdf");
 
         // Instanciation of inherited class
         $pdf = new Mypdf();
+        $pdf->SetAuthor(utf8_decode("Fairlab S.r.l."));
+        $pdf->SetCreator(utf8_decode("Gestionale fiere Fairlab S.r.l."));
+        $pdf->SetTitle(utf8_decode("Lettera di ammissione per ".utf8_decode($this->evento->descrizione)));
+        $pdf->SetSubject(utf8_decode($this->evento->descrizione));
         $pdf->AliasNbPages();
         $pdf->AddPage();
 
@@ -425,6 +438,91 @@ class ReservationsController extends ControllerBase
         $pdf->Cell(54,6,utf8_decode("Firma"),0,0,'L');
         $pdf->Ln();
 
+        // pagina nuova per tutte le clausole e accettazioni:
+        $pdf->SetTopMargin(25);
+        $pdf->AddPage();
+        $pdf->SetFont('Times','',8);
+        $pdf->Write(4,utf8_decode("- L'espositore dichiara che i prodotti, i servizi e i progetti presentati in fiera sono conformi ai criteri generali e specifici della sezione tematica di appartenenza dettagliati nel documento \"Criteri di Ammissione\" e dalla \"Carta Etica\"."));
+        $pdf->Ln();
+        $pdf->Write(4,utf8_decode("- L'espositore dichiara di accettare e di impegnarsi a rispettare scrupolosamente quanto disposto e dal Regolamento per gli espositori e dal Regolamento Tecnico di Quartiere."));
+        $pdf->Ln();
+        $pdf->Write(4,utf8_decode("- L'espositore dichiara e garantisce che durante Fa' la cosa giusta! Umbria saranno osservate le vigenti disposizioni in materia di sicurezza sul lavoro ed in particolare quanto previsto dal Dlgs 81/2008 e successive modifiche e integrazioni."));
+        $pdf->Ln();
+        $pdf->Write(4,utf8_decode("- L'espositore dichiara di condividere, accettare e rispettare i principi enunciati nella carta etica della manifestazione."));
+        $pdf->Ln();
+        $pdf->Ln();
+        $pdf->SetFont('Times','B',8);
+        $pdf->Write(4,utf8_decode("L'espositore dichiara che (indicare con una X l'ipotesi che interessa):"));
+        $pdf->SetFont('Times','',8);
+        $pdf->Ln();
+
+        $pdf->Write(4,utf8_decode("  Durante Fa' la cosa giusta! Umbria NON saranno utilizzati allestimenti propri in aggiunta a quelli forniti dall'Organizzazione"));
+        $pdf->Ln();
+        $pdf->Write(4,utf8_decode("  Durante Fa' la cosa giusta! Umbria SARANNO UTILIZZATI allestimenti propri in aggiunta a quelli forniti dall'Organizzazione e 	che tali rispettano le norme antinfortunistiche e di prevenzione antincendio. (Allegare certificazioni)"));
+        $pdf->Ln();
+        $pdf->Ln();
+        $pdf->SetFont('Times','B',8);
+        $pdf->Write(4,utf8_decode("L'espositore dichiara che (indicare con una X l'ipotesi che interessa):"));
+        $pdf->SetFont('Times','',8);
+        $pdf->Ln();
+        $pdf->Write(4,utf8_decode("  Durante Fa' la cosa giusta! Umbria NON saranno presenti macchinari e apparecchiature in funzione;"));
+        $pdf->Ln();
+        $pdf->Write(4,utf8_decode("  Durante Fa' la cosa giusta! Umbria SARANNO PRESENTI macchinari e apparecchiature in funzione, (non rientrano in questa classificazione apparecchiature quali ad. Es. registratori di cassa, PC, proiettori, monitor) quali __________________________"));
+        $pdf->Ln();
+        $pdf->Write(4,utf8_decode("e che gli stessi non costituiscono  pericolo o molestia per gli espositori e per i visitatori, essendo dotati di tutti i dispositivi atti a 	prevenire infortuni, cattivi odori, emissione di gas e di liquidi; che sarà evitato il manifestarsi di rischi potenziali per i visitatori e/o non addetti ai lavori durante il funzionamento dei macchinari e delle apparecchiature."));
+        $pdf->Ln();
+        $pdf->Ln();
+        $pdf->Write(4,utf8_decode("Data e luogo __________________________________     Firma per accettazione __________________________________"));
+        $pdf->Ln();
+        $pdf->Ln();
+        $pdf->SetFont('Times','B',8);
+        $pdf->Write(4,utf8_decode("L'espositore dichiara:"));
+        $pdf->SetFont('Times','',8);
+        $pdf->Ln();
+        $pdf->Write(4,utf8_decode("di aver letto attentamente e di aver compilato correttamente il presente modulo;\ndi sollevare l'Organizzatore da qualsiasi responsabilità derivante dall'inosservanza delle norme riportate e delle dichiarazioni qui rese."));
+        $pdf->Ln();
+        $pdf->Ln();
+        $pdf->Write(4,utf8_decode("Data e luogo __________________________________     Firma per accettazione __________________________________"));
+        $pdf->Ln();
+        $pdf->Ln();
+        $pdf->SetFont('Times','B',8);
+        $pdf->Write(4,utf8_decode("Tutela della privacy. "));
+        $pdf->SetFont('Times','',8);
+        $pdf->Write(4,utf8_decode("Dopo aver letto la \"nota informativa\" allegata al documento \"regolamento degli espositori\" e l'art. 20 dello stesso, accetto quanto in esso prescritto e contenuto"));
+        $pdf->Ln();
+        $pdf->Ln();
+        $pdf->Write(4,utf8_decode("Data e luogo __________________________________     Firma per accettazione __________________________________"));
+        $pdf->Ln();
+        $pdf->Ln();
+        $pdf->Write(4,utf8_decode("    Autorizzo                   Non autorizzo"));
+        $pdf->Ln();
+        $pdf->Ln();
+        $pdf->Write(4,utf8_decode("Fair Lab srls al trattamento dei miei dati esclusivamente per le finalità correlate alla prestazione del servizio e per l'invio di materiale informativo, secondo quanto previsto dall'art. 13 del D.Lgs n. 196 del 30.06.2003. N.B. La mancata accettazione del trattamento dei dati implica l'impossibilità di adesione."));
+        $pdf->Ln();
+        $pdf->Ln();
+        $pdf->Write(4,utf8_decode("Data e luogo __________________________________     Firma per accettazione __________________________________"));
+        $pdf->Ln();
+        $pdf->Ln();
+        $pdf->SetFont('Times','B',8);
+        $pdf->Write(4,utf8_decode("Cogliamo l'occasione per ricordare quanto già pattuito verbalmente, ovvero l'obbligo tassativo di rispetto, a pena di esclusione dalla fiera, di alcune norme previste per tutti gli espositori della fiera:"));
+        $pdf->Ln();
+        $pdf->SetFont('Times','',8);
+        $pdf->Write(4,utf8_decode("- Autorizzazione alla somministrazione e vendita esclusivamente dei prodotti da Lei indicati nel modulo di ammissione ed approvati dall'Organizzazione;\n"));
+        $pdf->Write(4,utf8_decode("- Divieto assoluto di vendita di acqua in bottiglia, di bibite o bevande di marchi o società multinazionali (ad esempio, a titolo esemplificativo, ma non esaustivo: Coca Cola - Estathè - Fanta - Sprite - Heineken - Ceres etc);\n"));
+        $pdf->Write(4,utf8_decode("- Tutti gli espositori presenti in fiera sono tenuti ad utilizzare stoviglie, posate, bicchieri e shopper in materiale biodegradabile e compostabile, conforme agli standard europei EN 13432. In particolare Le ricordiamo che la vigente normativa nazionale vieta l'uso di buste in plastica monouso e, dal 21 agosto 2014, prevede l'applicazione di sanzioni per le eventuali violazioni (per ulteriori informazioni visiti il sito www.assobioplastiche.it).\n"));
+        $pdf->Write(4,utf8_decode("- E' facoltà dell'organizzazione effettuare controlli per la verifica del rispetto degli impegni assunti dagli espositori o concordati espressamente con l'organizzazione, in relazione ai prodotti posti in vendita o somministrati. In caso vendita o somministrazione di prodotti non elencati nel modulo di ammissione è facoltà dell'Organizzazione disporre l'esclusione dell'espositore dalla manifestazione, senza diritto di questi alla restituzione della quota di ammissione.\n"));
+        $pdf->Ln();
+        $pdf->Ln();
+        $pdf->Write(4,utf8_decode("Data e luogo __________________________________     Firma per accettazione __________________________________"));
+
+        // aggiungiamo gli assets grafici dei quadratini
+        $pdf->Image('img/quadrato.png',9,82,2);
+        $pdf->Image('img/quadrato.png',9,86,2);
+        $pdf->Image('img/quadrato.png',9,102,2);
+        $pdf->Image('img/quadrato.png',9,106,2);
+        // autorizzo e non autorizzo
+        $pdf->Image('img/quadrato.png',11,182,2);
+        $pdf->Image('img/quadrato.png',35,182,2);
 
         $pdf->Output();
 
