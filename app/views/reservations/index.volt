@@ -12,7 +12,7 @@
                 <div class="row">
                     <div class="col-1"><strong>Filtra per:</strong> </div>
                     <div class="col-11">
-                      {{ form('reservations/index', 'id' : 'fricerca', 'role': 'form', 'method': 'POST', 'autocomplete': 'off', 'class': 'd-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0') }} 
+                      {{ form('reservations/index', 'id' : 'filtriricerca', 'role': 'form', 'method': 'POST', 'autocomplete': 'off', 'class': 'd-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0') }} 
                       <div class="input-group">
                               <label for="FiltroArea" class="control-label">Area Tematica:&nbsp;</label>
                             {{ select('areas_id', areas, 'using': ['id', 'nome'], 'class' : 'form-control', 'useEmpty' : true, 'emptyText'  : 'Tutte le aree', 'id' : 'FiltroArea') }}
@@ -21,16 +21,22 @@
                            {{ select('stato', stati, 'using': ['id', 'descrizionebreve'], 'class' : 'form-control', 'useEmpty' : true, 'emptyText'  : 'Tutti gli stati', 'id' : 'FiltroStato') }}
                            &nbsp;&nbsp; 
                            <label for="OrderBy" class="control-label">Ordina i risultati per:&nbsp; </label>
-                           {{ select_static('orderby', ['' : 'Più recenti', 'exhibitors.ragionesociale' :'Ragione Sociale', 'stato' : 'Stato', 'areas_id' : 'Area Tematica'], 'class' : 'form-control', 'id' : 'OrderBy') }}                         
+                           {{ select_static('orderby', ['' : 'Più recenti', 'Exhibitors.ragionesociale' :'Ragione Sociale', 'stato' : 'Stato', 'areas_id' : 'Area Tematica'], 'class' : 'form-control', 'id' : 'OrderBy') }}                         
                            &nbsp;&nbsp; 
                            <label for="Filtroprogcult" class="control-label">Prog. Culturale:&nbsp; </label>
                            {{ check_field('interventoprogrammaculturale', 'value' : '1', 'class' : 'form-control', 'id' : 'Filtroprogcult') }}                                                  
                            &nbsp;<button type="submit" class="btn btn-primary">&nbsp;<i class="fas fa-search"></i>&nbsp;Cerca</button>
-                           &nbsp;<button type="submit" class="btn btn-primary" data-toggle="tooltip" title="Scarica in formato csv i dati con i criteri di ricerca impostati">&nbsp;<i class="fas fa-file-excel"></i>&nbsp;Scarica</button>
-                      {{ end_form() }}
-                      {{ form('reservations/index', 'id' : 'freset', 'role': 'form', 'method': 'POST', 'autocomplete': 'off') }} 
-                      &nbsp;<input type="submit" id="ResetFiltri" value="Reset" class="btn btn-primary">
-                      {{ end_form() }}
+                           {{ end_form() }}
+                           {{ form('reservations/excelgen', 'id' : 'fexcelgen', 'role': 'form', 'method': 'POST', 'autocomplete': 'off') }} 
+                           {{ hidden_field('areas_id', 'id' : 'FiltroAreaexcel') }}
+                           {{ hidden_field('stato', 'id' : 'FiltroStatoexcel') }}
+                           {{ hidden_field('orderby', 'id' : 'FiltroOrderbyexcel') }}
+                           {{ hidden_field('interventoprogrammaculturale', 'id' : 'Filtroprogcultexcel') }}
+                           &nbsp;<button type="button" id="excelgen" class="btn btn-primary" data-toggle="tooltip" title="Scarica in formato csv i dati con i criteri di ricerca impostati">&nbsp;<i class="fas fa-file-excel"></i>&nbsp;Scarica</button>
+                           {{ end_form() }}
+                           {{ form('reservations/index', 'id' : 'freset', 'role': 'form', 'method': 'POST', 'autocomplete': 'off') }} 
+                           &nbsp;<input type="submit" id="ResetFiltri" value="Reset" class="btn btn-primary">
+                           {{ end_form() }}
                         </div>
                     </div>
                 </div>

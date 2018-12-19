@@ -2,6 +2,8 @@
 use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Mvc\Model\Query;
 use Phalcon\Paginator\Adapter\QueryBuilder as PaginatorQueryBuilder;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class ReservationsController extends ControllerBase
 {
@@ -37,7 +39,6 @@ class ReservationsController extends ControllerBase
             if(!empty($orderby)){
                 $par["orderby"] = $orderby;
             }
-          //  \PhalconDebug::info($par);
             $this->persistent->searchParams = $par;
         } else {
             $numberPage = $this->request->getQuery("page", "int");
@@ -51,8 +52,6 @@ class ReservationsController extends ControllerBase
         if ($this->persistent->searchParams && count($this->persistent->searchParams)) {
             $parameters = $this->persistent->searchParams;
         }
-
-       // \PhalconDebug::info("this->persistent->searchParams",$this->persistent->searchParams);
 
         foreach($parameters as $campo => $valore){
             switch($campo){
@@ -127,7 +126,6 @@ class ReservationsController extends ControllerBase
         //calcolo del prezzo totale teorico:
         foreach($reservationservices as $servizio){
             $prezzo = $servizio->getServices()->$campoprezzo * $servizio->quantita;
-            \PhalconDebug::info($servizio->getServices()->descrizione.':'.$prezzo.', quantita:'.$servizio->quantita);
             $prezzocalcolato = $prezzocalcolato + $prezzo;
         }
         $this->view->prezzocalcolato = $prezzocalcolato;
@@ -231,7 +229,7 @@ class ReservationsController extends ControllerBase
             );
         }
         $servizi = $this->request->getPost("services");
-        \PhalconDebug::info("servizi",$servizi);
+      //  \PhalconDebug::info("servizi",$servizi);
         if(is_array($servizi) && count($servizi)){
             foreach($servizi as $idservizio => $quantita){
                 if($quantita == 0) continue;
@@ -313,7 +311,6 @@ class ReservationsController extends ControllerBase
         }
         $permalink = (utf8_decode($string));
         
-        \PhalconDebug::info($permalink);
         $this->view->setRenderLevel(\Phalcon\Mvc\View::LEVEL_NO_RENDER);
         $this->response->resetHeaders();   
         $this->response->setHeader('Content-Type', 'application/pdf');
@@ -528,6 +525,184 @@ class ReservationsController extends ControllerBase
 
 
     }    
+
+    public function excelgenAction()
+    {
+        
+        $this->view->setRenderLevel(\Phalcon\Mvc\View::LEVEL_NO_RENDER);
+        $this->response->resetHeaders();
+        $this->response->setHeader('Content-Type', 'application/csv');
+        $this->response->setHeader('Content-Disposition', 'attachment; filename=catalogoespositori.xlsx');
+
+        $par = array();
+        $parameters = array();
+        $orderby = '';
+
+        if ($this->request->isPost()) {
+
+            $areas_id = $this->request->getPost('areas_id', 'int');
+            $stato = $this->request->getPost('stato', 'int');
+            $ragionesociale = $this->request->getPost('ragionesociale', 'string');
+            $interventoprogrammaculturale = $this->request->getPost('interventoprogrammaculturale', 'int');
+            $orderby = $this->request->getPost('orderby', 'string');
+
+            if(!empty($areas_id)){
+                $par["areas_id"] = $areas_id;
+            }
+            if(!empty($stato)){
+                $par["stato"] = $stato;
+            }
+            if(!empty($ragionesociale)){
+                $par["ragionesociale"] = $ragionesociale;
+            }
+            if(!empty($interventoprogrammaculturale)){
+                $par["interventoprogrammaculturale"] = $interventoprogrammaculturale;
+            }            
+            if(!empty($orderby)){
+                $par["orderby"] = $orderby;
+            }
+            $this->persistent->searchParams = $par;
+        }
+
+        if ($this->persistent->searchParams && count($this->persistent->searchParams)) {
+            $parameters = $this->persistent->searchParams;
+        }
+
+        // elenco servizi esistenti per intestazione colonne
+        $elencoservizi = Services::find("events_id = ".$this->evento->id);
+
+        $areetematiche = Areas::find("events_id = ".$this->evento->id);
+
+        $nomiservizi = array();
+        foreach($elencoservizi as $nomeservizio){
+            $nomiservizi[] = $nomeservizio->descrizione;
+        }
+
+        $nomicolonne = array(
+            'ragione sociale', 
+            'area tematica',
+            'intervento programma culturale',
+            'richiesta stand personalizzato',
+            'stato della richiesta',
+            'indirizzo',
+            'cap',
+            'citta',
+            'provincia',
+            'telefono',
+            'email aziendale',
+            'piva',
+            'codfisc',
+            'nome del referente',
+            'telefono del referente',
+            'email del referente',
+            'prodotti esposti',
+            'fascia di prezzo',
+            'quantita coespositori',
+            'nomi coespositori',
+            'codicestand',
+            'altri servizi richiesti',
+        );
+
+        $nomicolonne = array_merge($nomicolonne,$nomiservizi);
+
+        $spreadsheet = new Spreadsheet();
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, "Xlsx");
+
+        foreach ($areetematiche as $area){ 
+            if(!empty($areas_id) && $area->id != $areas_id){
+                continue;
+            }  
+
+            $builder = $this->modelsManager->createBuilder()
+            ->from('Reservations')
+            ->join('Exhibitors')
+            ->where("events_id = ".$this->evento->id)
+            ->andWhere("areas_id = ".$area->id);
+    
+            foreach($parameters as $campo => $valore){
+                switch($campo){
+                    case "ragionesociale":
+                        $builder->andWhere("Exhibitors.{$campo} like '%".$valore."%'");
+                    break;
+                    case "orderby":
+                        $builder->orderBy($valore);
+                    break;
+                    default:
+                        $builder->andWhere("{$campo} = {$valore}");
+                    break;
+                }
+            }
+    
+            if(empty($parameters['orderby'])){
+                $builder->orderBy('Reservations.id DESC');
+            }
+    
+            $reservations = null;
+            $reservations = $builder->getQuery()->execute();
+            $this->view->laquery = $builder->getQuery()->getSql();
+
+            if(count($reservations) > 0){
+                
+                $myWorkSheet = new \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet($spreadsheet, $area->nome); 
+                $spreadsheet->addSheet($myWorkSheet, 0);
+                $sheet = $spreadsheet->setActiveSheetIndex(0);
+                $sheet->fromArray($nomicolonne,Null,'A1');             
+                $contatorerighe=2;
+                foreach($reservations as $domandaespositore){
+                    $sa = array();
+                    $serviziacquistati = array();
+                    $reservationservices = ReservationServices::find("reservations_id = ".$domandaespositore->id);
+                    foreach($reservationservices as $singoloservizio){
+                                $serviziacquistati[$singoloservizio->services_id] = $singoloservizio->quantita;
+                    }
+                    foreach($elencoservizi as $servizio){
+                        if(!empty($serviziacquistati[(int)$servizio->id])){
+                            $sa[] = (int)$serviziacquistati[$servizio->id];       
+                        }
+                        else{
+                            $sa[] = 0;
+                        }
+                    }
+        
+                    $righe = array(
+                        $domandaespositore->getExhibitors()->ragionesociale, 
+                        $domandaespositore->getAreas()->nome,
+                        $domandaespositore->interventoprogrammaculturale ? "si" : "no",
+                        $domandaespositore->standpersonalizzato,
+                        $domandaespositore->getStati()->descrizionebreve,
+                        $domandaespositore->getExhibitors()->indirizzo,
+                        $domandaespositore->getExhibitors()->cap,
+                        $domandaespositore->getExhibitors()->citta,
+                        $domandaespositore->getExhibitors()->provincia,
+                        $domandaespositore->getExhibitors()->telefono,
+                        $domandaespositore->getExhibitors()->emailaziendale,
+                        $domandaespositore->getExhibitors()->piva,
+                        $domandaespositore->getExhibitors()->codfisc,
+                        $domandaespositore->getExhibitors()->referentenome,
+                        $domandaespositore->getExhibitors()->referentetelefono,
+                        $domandaespositore->getExhibitors()->referenteemail,
+                        $domandaespositore->getExhibitors()->prodottiesposti,
+                        $domandaespositore->getExhibitors()->fasciadiprezzo,
+                        $domandaespositore->getExhibitors()->numerocoespositore,
+                        $domandaespositore->getExhibitors()->nomecoespositore,
+                        $domandaespositore->codicestand,
+                        $domandaespositore->altriservizi,
+                    );
+                    $righe = array_merge($righe,$sa);
+                    $sheet->fromArray( $righe, NULL, 'A'.$contatorerighe );  
+                    $contatorerighe++;
+                }
+            }
+
+        }   
+        $sheetIndex = $spreadsheet->getIndex(
+            $spreadsheet->getSheetByName('Worksheet')
+        );
+        $spreadsheet->removeSheetByIndex($sheetIndex);
+        $writer->save('php://output');
+
+    }
+
 
 }
 

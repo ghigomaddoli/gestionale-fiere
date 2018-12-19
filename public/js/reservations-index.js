@@ -1,7 +1,13 @@
 $(document).ready(function(){
-    $("#ResetFiltri").click(function(){
-       $("#FiltroArea option:first").attr('selected','selected'); 
-       $("#FiltroStato").val($("#FiltroStato option:first").val());
-       $("#OrderBy").val($("#OrderBy option:first").val());
-    });
+    $("#excelgen").click(function(){
+        $("#FiltroAreaexcel").val($("#FiltroArea").val());
+        $("#FiltroStatoexcel").val($("#FiltroStato").val());
+        $("#FiltroOrderbyexcel").val($("#OrderBy").val());
+        if($('#Filtroprogcult:checked').length > 0){
+           alert('filtro programma culturale checked');
+            $("#Filtroprogcultexcel").val($("#Filtroprogcult").val());
+        }
+        console.log($("#fexcelgen"));
+        $("#fexcelgen").submit();
+     });
 });

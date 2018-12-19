@@ -3,6 +3,7 @@
         "snowair/phalcon-debugbar": "^1.2"
     },
     "require": {
-        "fpdf/fpdf": "^1.81"
+        "fpdf/fpdf": "^1.81",
+        "phpoffice/phpspreadsheet": "^1.5"
     }
 }

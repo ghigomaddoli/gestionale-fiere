@@ -93,7 +93,7 @@ class ExhibitorsController extends ControllerBase
             if($quantita > 0) $arrayserviziselezionati[] = $idservizio;
         }
         \PhalconDebug::info('array dei seervizi ricevuto dal form',$arrayservizi);
-        $services = Services::find("tipologia=2");
+        $services = Services::find("events_id = ".$this->evento->id." AND tipologia=2");
         $check = false;
         foreach($services as $servizio){
             \PhalconDebug::info('verifico se il servizio '.$servizio->id.' rientra tra questi:',$arrayserviziselezionati);

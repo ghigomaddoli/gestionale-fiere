@@ -1,5 +1,6 @@
 <?php
-
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 
 class IndexController extends ControllerBase
@@ -72,7 +73,7 @@ class IndexController extends ControllerBase
         $this->response->setHeader('Content-Disposition', 'attachment; filename=espositori.csv');
      
         // elenco servizi esistenti per intestazione colonne
-        $elencoservizi = Services::find();
+        $elencoservizi = Services::find("events_id = ".$this->evento->id);
         $reservations = Reservations::find("events_id = ".$this->evento->id);
 
         $nomiservizi = array();
@@ -219,6 +220,191 @@ class IndexController extends ControllerBase
         fclose($output);
 
     }
+
+
+    public function xlsespositoriAction()
+    {
+        
+        $this->view->setRenderLevel(\Phalcon\Mvc\View::LEVEL_NO_RENDER);
+        $this->response->resetHeaders();
+        $this->response->setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        $this->response->setHeader('Content-Disposition', 'attachment; filename=espositori.xlsx');
+        
+        // elenco servizi esistenti per intestazione colonne
+        $elencoservizi = Services::find("events_id = ".$this->evento->id);
+       
+        $areetematiche = Areas::find("events_id = ".$this->evento->id);
+
+        $nomiservizi = array();
+        foreach($elencoservizi as $nomeservizio){
+            $nomiservizi[] = $nomeservizio->descrizione;
+        }
+
+        $nomicolonne = array(
+            'ragione sociale', 
+            'area tematica',
+            'intervento programma culturale',
+            'richiesta stand personalizzato',
+            'stato della richiesta',
+            'indirizzo',
+            'cap',
+            'citta',
+            'provincia',
+            'telefono',
+            'email aziendale',
+            'piva',
+            'codfisc',
+            'nome del referente',
+            'telefono del referente',
+            'email del referente',
+            'prodotti esposti',
+            'fascia di prezzo',
+            'quantita coespositori',
+            'nomi coespositori',
+            'codicestand',
+            'altri servizi richiesti',
+        );
+
+        $nomicolonne = array_merge($nomicolonne,$nomiservizi);
+
+        $spreadsheet = new Spreadsheet();
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, "Xlsx");
+
+        foreach ($areetematiche as $area){          
+
+            $reservations = null;
+            $reservations = Reservations::find("events_id = ".$this->evento->id." AND areas_id = ".$area->id);
+            if(count($reservations) > 0){
+                
+                $myWorkSheet = new \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet($spreadsheet, $area->nome); 
+                $spreadsheet->addSheet($myWorkSheet, 0);
+                $sheet = $spreadsheet->setActiveSheetIndex(0);
+                $sheet->fromArray($nomicolonne,Null,'A1');             
+                $contatorerighe=2;
+                foreach($reservations as $domandaespositore){
+                    $sa = array();
+                    $serviziacquistati = array();
+                    $reservationservices = ReservationServices::find("reservations_id = ".$domandaespositore->id);
+                    foreach($reservationservices as $singoloservizio){
+                                $serviziacquistati[$singoloservizio->services_id] = $singoloservizio->quantita;
+                    }
+                    foreach($elencoservizi as $servizio){
+                        if(!empty($serviziacquistati[(int)$servizio->id])){
+                            $sa[] = (int)$serviziacquistati[$servizio->id];       
+                        }
+                        else{
+                            $sa[] = 0;
+                        }
+                    }
+        
+                    $righe = array(
+                        $domandaespositore->getExhibitors()->ragionesociale, 
+                        $domandaespositore->getAreas()->nome,
+                        $domandaespositore->interventoprogrammaculturale ? "si" : "no",
+                        $domandaespositore->standpersonalizzato,
+                        $domandaespositore->getStati()->descrizionebreve,
+                        $domandaespositore->getExhibitors()->indirizzo,
+                        $domandaespositore->getExhibitors()->cap,
+                        $domandaespositore->getExhibitors()->citta,
+                        $domandaespositore->getExhibitors()->provincia,
+                        $domandaespositore->getExhibitors()->telefono,
+                        $domandaespositore->getExhibitors()->emailaziendale,
+                        $domandaespositore->getExhibitors()->piva,
+                        $domandaespositore->getExhibitors()->codfisc,
+                        $domandaespositore->getExhibitors()->referentenome,
+                        $domandaespositore->getExhibitors()->referentetelefono,
+                        $domandaespositore->getExhibitors()->referenteemail,
+                        $domandaespositore->getExhibitors()->prodottiesposti,
+                        $domandaespositore->getExhibitors()->fasciadiprezzo,
+                        $domandaespositore->getExhibitors()->numerocoespositore,
+                        $domandaespositore->getExhibitors()->nomecoespositore,
+                        $domandaespositore->codicestand,
+                        $domandaespositore->altriservizi,
+                    );
+                    $righe = array_merge($righe,$sa);
+                    $sheet->fromArray( $righe, NULL, 'A'.$contatorerighe );  
+                    $contatorerighe++;
+                }
+            }
+
+        }   
+        $sheetIndex = $spreadsheet->getIndex(
+            $spreadsheet->getSheetByName('Worksheet')
+        );
+        $spreadsheet->removeSheetByIndex($sheetIndex);
+         $writer->save('php://output');
+
+    }
+
+    public function xlscatalogoAction()
+    {
+
+        $this->view->setRenderLevel(\Phalcon\Mvc\View::LEVEL_NO_RENDER);
+        $reservations = Reservations::find("events_id = ".$this->evento->id);
+        $this->response->resetHeaders();
+        $this->response->setHeader('Content-Type', 'application/csv');
+        $this->response->setHeader('Content-Disposition', 'attachment; filename=catalogoespositori.xlsx');
+
+        $areetematiche = Areas::find("events_id = ".$this->evento->id);
+
+        $nomicolonne = array(
+            'nome',
+            'indirizzo',
+            'cap',
+            'citta',
+            'provincia',
+            'telefono',
+            'email',
+            'sito web',
+            'pagina facebook',
+            'profilo instagram',
+            'profilo twitter',
+            'descrizione',
+        );
+
+        $spreadsheet = new Spreadsheet();
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, "Xlsx");
+        $reservations = null;
+
+        foreach ($areetematiche as $area){
+
+            $reservations = Reservations::find("events_id = ".$this->evento->id." ANd areas_id = ".$area->id);
+            if(count($reservations) > 0){
+                $myWorkSheet = new \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet($spreadsheet, $area->nome); 
+                $spreadsheet->addSheet($myWorkSheet, 0);
+                $sheet = $spreadsheet->setActiveSheetIndex(0);
+                $sheet->fromArray($nomicolonne,Null,'A1');
+                
+                $contatorerighe=2;
+                foreach($reservations as $domandaespositore){
+
+                    $lariga =  array(
+                        $domandaespositore->getExhibitors()->catalogonome,
+                        $domandaespositore->getExhibitors()->catalogoindirizzo,
+                        $domandaespositore->getExhibitors()->catalogocap,
+                        $domandaespositore->getExhibitors()->catalogocitta,
+                        $domandaespositore->getExhibitors()->catalogoprovincia,
+                        $domandaespositore->getExhibitors()->catalogotelefono,
+                        $domandaespositore->getExhibitors()->catalogoemail,
+                        $domandaespositore->getExhibitors()->catalogositoweb,
+                        $domandaespositore->getExhibitors()->catalogofacebook,
+                        $domandaespositore->getExhibitors()->catalogoinstagram,
+                        $domandaespositore->getExhibitors()->catalogotwitter,
+                        $domandaespositore->getExhibitors()->catalogodescrizione,
+                    );
+                    $sheet->fromArray( $lariga, NULL, 'A'.$contatorerighe );  
+                    $contatorerighe++;
+
+                }
+            }
+        }
+        $sheetIndex = $spreadsheet->getIndex(
+            $spreadsheet->getSheetByName('Worksheet')
+        );
+        $spreadsheet->removeSheetByIndex($sheetIndex);
+        $writer->save('php://output');
+
+    }    
 
 
 }

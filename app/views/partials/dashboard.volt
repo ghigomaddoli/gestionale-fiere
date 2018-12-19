@@ -49,9 +49,10 @@
             <div class="card-body-icon">
             <i class="fas fa-fw fa-comments"></i>
             </div>
-            <div class="mr-5">Estrazione domande espositori in formato csv per Excel</div>
+            <div class="mr-5">Estrazione domande espositori in formato csv o Excel</div>
             </div>
-            {{ link_to('index/csvespositori', '<span class="float-left">Scarica!</span><span class="float-right"><i class="fas fa-angle-right"></i></span>', 'class': 'card-footer text-white clearfix small z-1') }}
+            {{ link_to('index/csvespositori', '<span class="float-left">Scarica csv</span>', 'class': 'card-footer text-white clearfix small z-1') }}
+            {{ link_to('index/xlsespositori', '<span class="float-left">Scarica Excel</span>', 'class': 'card-footer text-white clearfix small z-1') }}
             </div>
         </div>
         <div class="col-sm-6 mb-6">
@@ -60,9 +61,10 @@
             <div class="card-body-icon">
             <i class="fas fa-fw fa-list"></i>
             </div>
-            <div class="mr-5">Estrazione dati per il catalogo in formato csv per Excel</div>
+            <div class="mr-5">Estrazione dati per il catalogo in formato csv o Excel</div>
             </div>
-            {{ link_to('index/csvcatalogo', '<span class="float-left">Scarica!</span><span class="float-right"><i class="fas fa-angle-right"></i></span>', 'class': 'card-footer text-white clearfix small z-1') }}
+            {{ link_to('index/csvcatalogo', '<span class="float-left">Scarica csv</span>', 'class': 'card-footer text-white clearfix small z-1') }}
+            {{ link_to('index/xlscatalogo', '<span class="float-left">Scarica Excel</span>', 'class': 'card-footer text-white clearfix small z-1') }}
             </div>
         </div>
       </div>
