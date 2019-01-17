@@ -62,6 +62,12 @@ class Reservations extends \Phalcon\Mvc\Model
 
     /**
      *
+     * @var double
+     */
+    public $prezzoaltriservizi;    
+
+    /**
+     *
      * @var integer
      */
     public $interventoprogrammaculturale;
@@ -83,6 +89,30 @@ class Reservations extends \Phalcon\Mvc\Model
      * @var integer
      */
     public $stato;
+
+    /**
+     *
+     * @var string
+     */
+    public $numerofattura; 
+    
+    /**
+     *
+     * @var integer
+     */
+    public $anticiporichiesto;
+    
+    /**
+     *
+     * @var integer
+     */
+    public $anticipopagato;
+    
+    /**
+     *
+     * @var integer
+     */
+    public $pagamentocompleto;
 
     /**
      * Initialize method for model.
@@ -157,12 +187,19 @@ class Reservations extends \Phalcon\Mvc\Model
             'prezzofinale' => 'prezzofinale',
             'notepagamento' => 'notepagamento',
             'altriservizi' => 'altriservizi',
+            'prezzoaltriservizi' => 'prezzoaltriservizi',
             'interventoprogrammaculturale' => 'interventoprogrammaculturale',
             'prezzostandpersonalizzato' => 'prezzostandpersonalizzato',
             'standpersonalizzato' => 'standpersonalizzato',
-            'stato' => 'stato'
+            'stato' => 'stato',
+            'numerofattura' => 'numerofattura',
+            'anticiporichiesto' => 'anticiporichiesto',
+            'anticipopagato' => 'anticipopagato',
+            'pagamentocompleto' => 'pagamentocompleto'
         ];
     }
+   
+
 
     /**
      * Returns table name mapped in the model.

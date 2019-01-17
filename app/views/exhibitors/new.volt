@@ -403,8 +403,9 @@
     <div class="form-row">
         <div class="col-xs-12">
             &Egrave; possibile ospitare una o più realtà espositive all’interno del proprio stand. 
-            Indicare il numero e il nome dei co-espositori. N.B. Per ogni co-espositore dovrà essere 
-            compilato l’apposito form presente su www.falacosagiustaumbria.it nella sezione "esponi in fiera".
+            Indicare il numero e il nome dei co-espositori. Se l'espositore segnala uno o più co-espositori, 
+            al termine della compilazione di questo form verrà chiesto di inserire i anche dati del co-espositore (dati per fatturazione 
+            e descrizione catalogo). Sarà possibile inserire questi dati anche in un successivo momento, chiedendo di ricevere il link per email.
         </div>
     </div>
 
@@ -448,7 +449,8 @@
 
         <div class="form-row">
                 <div class="col-xs-12">
-                    Saranno inseriti nel catalogo solo gli espositori che si iscrivono entro il 20 luglio e che compilano la seguente sezione
+                    N.B. La correttezza e la completezza delle informazioni fornite in questo riquadro sono a cura ed interesse dell'espositore. 
+                    L'organizzazione non risponde di eventuali errori e/o carenze dovute ad una compilazione non accurata di questo modulo.
                 </div>
         </div>
 
@@ -534,8 +536,8 @@
         <div class="form-row">
             
             <div class="col">
-                <label for="fieldCatalogodescrizione" class="control-label">Descrizione</label>
-                {{ text_field("catalogodescrizione", "cols" : 30, "rows" : 4, "class" : "form-control", "id" : "fieldCatalogodescrizione") }}
+                <label for="fieldCatalogodescrizione" class="control-label">Descrizione (massimo 300 caratteri)</label>
+                {{ text_field("catalogodescrizione", "maxlength" : 300, "class" : "form-control", "id" : "fieldCatalogodescrizione") }}
             </div>
 
         </div>

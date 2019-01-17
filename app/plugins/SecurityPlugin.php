@@ -50,7 +50,7 @@ class SecurityPlugin extends Plugin
 				'events'    => ['index', 'search', 'new', 'edit', 'save', 'create', 'delete'],
 				'exhibitors'    => ['index','search', 'edit', 'delete'],
 				'notereservations'    => ['index', 'search', 'new', 'edit', 'save', 'create', 'delete'],
-				'reservations'    => ['index','search', 'edit', 'delete', 'anteprimalettera','excelgen'],
+				'reservations'    => ['index','search', 'edit', 'delete', 'anteprimalettera','excelgen','facsimilefattura'],
 				'reservationservices'    => ['index', 'search', 'new', 'edit', 'save', 'create', 'delete'],
 				'services'    => ['index', 'search', 'new', 'edit', 'save', 'create', 'delete'],
 				'statireservations'    => ['index', 'search', 'new', 'edit', 'save', 'create', 'delete'],

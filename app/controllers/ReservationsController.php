@@ -125,7 +125,7 @@ class ReservationsController extends ControllerBase
 
         //calcolo del prezzo totale teorico:
         foreach($reservationservices as $servizio){
-            $prezzo = $servizio->getServices()->$campoprezzo * $servizio->quantita;
+            $prezzo = $servizio->services->$campoprezzo * $servizio->quantita;
             $prezzocalcolato = $prezzocalcolato + $prezzo;
         }
         $this->view->prezzocalcolato = $prezzocalcolato;
@@ -191,6 +191,27 @@ class ReservationsController extends ControllerBase
                     "params"     => [$id]
                 ]
             );
+        }
+
+        // tutti i campi flag che non arrivano sono = 0
+        $interventoprogrammaculturale = $this->request->getPost('interventoprogrammaculturale', 'int');
+        if(empty($interventoprogrammaculturale)){
+            $reservation->interventoprogrammaculturale = 0;
+        }
+
+        $anticiporichiesto = $this->request->getPost('anticiporichiesto', 'int');
+        if(empty($anticiporichiesto)){
+            $reservation->anticiporichiesto = 0;
+        }
+
+        $anticipopagato = $this->request->getPost('anticipopagato', 'int');
+        if(empty($anticipopagato)){
+            $reservation->anticipopagato = 0;
+        }
+
+        $pagamentocompleto = $this->request->getPost('pagamentocompleto', 'int');
+        if(empty($pagamentocompleto)){
+            $reservation->pagamentocompleto = 0;
         }
 
 
@@ -392,16 +413,40 @@ class ReservationsController extends ControllerBase
         $totale = 0;
         $costifissi = 200;
         foreach($reservationservices as $reservationservice){
-            if($reservationservice->getServices()->descrizione == "Costo fisso di iscrizione") $costifissi = $reservationservice->getServices()->$fieldprezzo;
-            $pdf->Cell(82,6,$reservationservice->getServices()->descrizione,1);
+            if($reservationservice->services->descrizione == "Costo fisso di iscrizione") $costifissi = $reservationservice->services->$fieldprezzo;
+            $pdf->Cell(82,6,$reservationservice->services->descrizione,1);
             $pdf->Cell(27,6,$reservationservice->quantita,1,0,'R');
-            $pdf->Cell(27,6,number_format($reservationservice->getServices()->$fieldprezzo,2,",","."),1,0,'R');
-            $pdf->Cell(27,6,number_format($reservationservice->quantita * $reservationservice->getServices()->$fieldprezzo,2,",","."),1,0,'R'); //prezzo = quantita * prezzofascia
-            $pr = $reservationservice->quantita * $reservationservice->getServices()->$fieldprezzo;
-            $iva = $reservationservice->quantita * $reservationservice->getServices()->$fieldprezzo * 0.22;
+            $pdf->Cell(27,6,number_format($reservationservice->services->$fieldprezzo,2,",","."),1,0,'R');
+            $pdf->Cell(27,6,number_format($reservationservice->quantita * $reservationservice->services->$fieldprezzo,2,",","."),1,0,'R'); //prezzo = quantita * prezzofascia
+            $pr = $reservationservice->quantita * $reservationservice->services->$fieldprezzo;
+            $iva = $reservationservice->quantita * $reservationservice->services->$fieldprezzo * 0.22;
             $totale += $pr;
             $pdf->Cell(27,6,number_format($pr + $iva,2,",","."),1,0,'R'); //prezzo inclusivo di iva
             $pdf->Ln();
+        }
+        // rigo stand personalizzato
+        if ($reservation->prezzostandpersonalizzato > 0){
+            $pdf->Cell(82,6,"Stand personalizzato",1);
+            $pdf->Cell(27,6,1,1,0,'R');
+            $pdf->Cell(27,6,number_format($reservation->prezzostandpersonalizzato,2,",","."),1,0,'R');
+            $pdf->Cell(27,6,number_format($reservation->prezzostandpersonalizzato,2,",","."),1,0,'R'); //prezzo = quantita * prezzofascia
+            $pr = $reservation->prezzostandpersonalizzato;
+            $iva = $reservation->prezzostandpersonalizzato * 0.22;
+            $totale += $pr;
+            $pdf->Cell(27,6,number_format($pr + $iva,2,",","."),1,0,'R'); //prezzo inclusivo di iva
+            $pdf->Ln();            
+        }
+        // rigo altri servizi
+        if ($reservation->prezzoaltriservizi > 0){
+            $pdf->Cell(82,6,utf8_decode("Altri servizi: ".$reservation->altriservizi),1);
+            $pdf->Cell(27,6,1,1,0,'R');
+            $pdf->Cell(27,6,number_format($reservation->prezzoaltriservizi,2,",","."),1,0,'R');
+            $pdf->Cell(27,6,number_format($reservation->prezzoaltriservizi,2,",","."),1,0,'R'); //prezzo = quantita * prezzofascia
+            $pr = $reservation->prezzoaltriservizi;
+            $iva = $reservation->prezzoaltriservizi * 0.22;
+            $totale += $pr;
+            $pdf->Cell(27,6,number_format($pr + $iva,2,",","."),1,0,'R'); //prezzo inclusivo di iva
+            $pdf->Ln();            
         }
         // rigo del totale
         $pdf->SetFillColor(220, 158, 5); // giallo
@@ -410,11 +455,26 @@ class ReservationsController extends ControllerBase
         $pdf->Cell(54,6,"EURO ".number_format($totale + $totale * 0.22,2,",","."),1,0,'C'); //prezzo TOTALE inclusivo di iva
         $pdf->Ln();
 
-        // rigo del totale meno il costo fisso
-        $pdf->SetFillColor(219, 84, 6); // arancio chiaro        
-        $pdf->Cell(136,6,'COSTO TOTALE DA CORRISPONDERE',1,0,'L');
-        $pdf->Cell(54,6,"EURO ".number_format(($totale + $totale * 0.22)-$costifissi,2,",","."),'LTR',0,'C'); //prezzo TOTALE meno anticipo
-        $pdf->Ln();
+        if($reservation->prezzofinale > 0){
+            // rigo del totale scontato
+            $pdf->Cell(136,6,'COSTO TOTALE SCONTATO',1,0,'L');
+            $pdf->Cell(54,6,"EURO ".number_format($reservation->prezzofinale + $reservation->prezzofinale * 0.22,2,",","."),1,0,'C'); //prezzo TOTALE scontato inclusivo di iva
+            $pdf->Ln();
+
+            // rigo del totale meno il costo fisso
+            $pdf->SetFillColor(219, 84, 6); // arancio chiaro        
+            $pdf->Cell(136,6,'COSTO TOTALE DA CORRISPONDERE',1,0,'L');
+            $pdf->Cell(54,6,"EURO ".number_format(($reservation->prezzofinale + $reservation->prezzofinale * 0.22)-$costifissi,2,",","."),'LTR',0,'C'); //prezzo TOTALE meno anticipo
+            $pdf->Ln();
+        }
+        else{
+            // rigo del totale meno il costo fisso
+            $pdf->SetFillColor(219, 84, 6); // arancio chiaro        
+            $pdf->Cell(136,6,'COSTO TOTALE DA CORRISPONDERE',1,0,'L');
+            $pdf->Cell(54,6,"EURO ".number_format(($totale + $totale * 0.22)-$costifissi,2,",","."),'LTR',0,'C'); //prezzo TOTALE meno anticipo
+            $pdf->Ln();
+        }
+        
 
         $pdf->SetFillColor(0); // arancio chiaro    
         $pdf->Cell(136,6,'(Costo totale meno costo fisso di iscrizione gia versato)','LRB',0,'L');
@@ -703,6 +763,156 @@ class ReservationsController extends ControllerBase
 
     }
 
+
+    /**
+     * genera il file pdf della "Lettera di ammissione"
+     *
+     * @param string $id
+     */
+    public function facsimilefatturaAction($id){
+
+        if (!$this->request->isGet()) {
+            $this->flash->error("Richiesta non valida");
+
+            return $this->dispatcher->forward(
+                [
+                    "controller" => "reservations",
+                    "action"     => "edit",
+                    "params"     => [$id]
+                ]
+            );
+        }
+
+        $reservation = Reservations::findFirstById($id);
+
+        if (!$reservation) {
+            $this->flash->error("la Prenotazione non esiste");
+
+            return $this->dispatcher->forward(
+                [
+                    "controller" => "index",
+                    "action"     => "index",
+                ]
+            );
+        }
+
+        $string = strtolower($reservation->getExhibitors()->ragionesociale);
+        $string = preg_replace("/[^0-9A-Za-z ]/", "", $string);
+        $string = str_replace(" ", "-", $string);
+        while (strstr($string, "--")) {
+            $string = preg_replace("/--/", "-", $string);
+        }
+        $permalink = (utf8_decode($string));
+        
+        $this->view->setRenderLevel(\Phalcon\Mvc\View::LEVEL_NO_RENDER);
+        $this->response->resetHeaders();   
+        $this->response->setHeader('Content-Type', 'application/octet-stream');
+        $this->response->setHeader('Content-Disposition', "attachment; filename=fac-simile-fattura-{$permalink}.txt");
+
+        // titolo evento
+        echo($this->evento->descrizione." - ");
+        echo("Dati per la fattura\n\n");
+
+        $datifatturazione["Ragione Sociale"] = utf8_decode($reservation->exhibitors->ragionesociale);
+        $datifatturazione["Indirizzo"] = utf8_decode($reservation->exhibitors->indirizzo." - ".$reservation->exhibitors->cap." - ".ucfirst($reservation->exhibitors->citta)." (".$reservation->exhibitors->provincia.")");
+        echo "RAGIONE SOCIALE: ".$datifatturazione["Ragione Sociale"]."\n";
+        echo "INDIRIZZO: ".$datifatturazione["Indirizzo"]."\n";
+        echo "TELEFONO: ".$reservation->exhibitors->telefono."\n";
+        echo "EMAIL AZIENDA: ".$reservation->exhibitors->emailaziendale."\n";
+        echo "PARTITA IVA: ".$reservation->exhibitors->piva."\n";
+        echo "PEC: ".$reservation->exhibitors->pec."\n";
+        echo "CODICE SDI: ".$reservation->exhibitors->codicesdi."\n";
+        echo "NOME REFERENTE: ".$reservation->exhibitors->referentenome."\n";
+        echo "TELEFONO REFERENTE: ".$reservation->exhibitors->referentetelefono."\n";
+        echo "EMAIL REFERENTE: ".$reservation->exhibitors->referenteemail."\n";
+        echo "FASCIA DI PREZZO: ".$reservation->exhibitors->fasciadiprezzo."\n\n";
+        echo "NUMERO FATTURA: ".$reservation->numerofattura."\n\n";
+
+        echo "--------------------------------------------------------------\n";
+        echo("RIGHI FATTURA\n");
+        echo "--------------------------------------------------------------\n";
+
+        $reservationservices = ReservationServices::find("reservations_id = ".$reservation->id);
+        $fieldprezzo = 'prezzofasciaa';
+        switch($reservation->getExhibitors()->fasciadiprezzo){
+            case 'b':
+                $fieldprezzo = 'prezzofasciab';
+            break;
+            default:
+                $fieldprezzo = 'prezzofasciaa';
+            break;
+        }
+
+        // servizi acquistati, quantità e prezzo
+        echo("DESCRIZIONE\t");
+        echo("QUANTITA\t");
+        echo("COSTO UNITARIO\t");
+        echo("COSTO\t"); //prezzo = quantita * prezzofascia
+        echo(utf8_decode("COSTO+IVA\n")); //prezzo inclusivo di iva
+        echo "--------------------------------------------------------------\n";
+        
+        $totale = 0;
+        $costifissi = 200;
+        foreach($reservationservices as $reservationservice){
+            if($reservationservice->services->descrizione == "Costo fisso di iscrizione") $costifissi = $reservationservice->services->$fieldprezzo;
+            echo($reservationservice->services->descrizione."\t");
+            echo("X".$reservationservice->quantita."\t");
+            echo(number_format($reservationservice->services->$fieldprezzo,2,",",".")."\t");
+            echo(number_format($reservationservice->quantita * $reservationservice->services->$fieldprezzo,2,",",".")."\t"); //prezzo = quantita * prezzofascia
+            $pr = $reservationservice->quantita * $reservationservice->services->$fieldprezzo;
+            $iva = $reservationservice->quantita * $reservationservice->services->$fieldprezzo * 0.22;
+            $totale += $pr;
+            echo(number_format($pr + $iva,2,",",".")."\n"); //prezzo inclusivo di iva
+            echo "--------------------------------------------------------------\n";
+        }
+        
+        // rigo stand personalizzato
+        if ($reservation->prezzostandpersonalizzato > 0){
+            echo("Stand personalizzato\t1\t");
+            echo(number_format($reservation->prezzostandpersonalizzato,2,",",".")."\t");
+            echo(number_format($reservation->prezzostandpersonalizzato,2,",",".")."\t"); //prezzo = quantita * prezzofascia
+            $pr = $reservation->prezzostandpersonalizzato;
+            $iva = $reservation->prezzostandpersonalizzato * 0.22;
+            $totale += $pr;
+            echo(number_format($pr + $iva,2,",",".")."\n"); //prezzo inclusivo di iva
+            echo "--------------------------------------------------------------\n";
+        }
+        // rigo altri servizi
+        if ($reservation->prezzoaltriservizi > 0){
+            echo(utf8_decode("Altri servizi: ".$reservation->altriservizi)."\t1\t");
+            echo(number_format($reservation->prezzoaltriservizi,2,",",".")."\t");
+            echo(number_format($reservation->prezzoaltriservizi,2,",",".")."\t"); //prezzo = quantita * prezzofascia
+            $pr = $reservation->prezzoaltriservizi;
+            $iva = $reservation->prezzoaltriservizi * 0.22;
+            $totale += $pr;
+            echo(number_format($pr + $iva,2,",",".")."\n"); //prezzo inclusivo di iva
+            echo "--------------------------------------------------------------\n";
+        }
+
+        // rigo del totale        
+        echo('COSTO TOTALE DA LISTINO: ');
+        echo("EURO ".number_format($totale + $totale * 0.22,2,",",".")."\n"); //prezzo TOTALE inclusivo di iva
+        echo "--------------------------------------------------------------\n";
+
+        if($reservation->prezzofinale > 0 && $reservation->prezzofinale < $totale){
+            echo('COSTO TOTALE SCONTATO: ');
+            echo("EURO ".number_format($reservation->prezzofinale + $reservation->prezzofinale * 0.22,2,",",".")."\n"); //prezzo TOTALE inclusivo di iva
+            echo "--------------------------------------------------------------\n";
+            
+        // rigo del totale scontato meno il costo fisso
+        echo('COSTO TOTALE SCONTATO DA CORRISPONDERE (MENO ANTICIPO): ');
+        echo("EURO ".number_format(($reservation->prezzofinale + $reservation->prezzofinale * 0.22)-$costifissi,2,",",".")."\n"); //prezzo TOTALE meno anticipo
+        echo "--------------------------------------------------------------\n";
+        }
+        else{
+        // rigo del totale meno il costo fisso
+        echo('COSTO TOTALE DA CORRISPONDERE (MENO ANTICIPO): ');
+        echo("EURO ".number_format(($totale + $totale * 0.22)-$costifissi,2,",",".")."\n"); //prezzo TOTALE meno anticipo
+        echo "--------------------------------------------------------------\n";
+        }
+
+
+    }    
 
 }
 

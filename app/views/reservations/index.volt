@@ -32,7 +32,7 @@
                            {{ hidden_field('stato', 'id' : 'FiltroStatoexcel') }}
                            {{ hidden_field('orderby', 'id' : 'FiltroOrderbyexcel') }}
                            {{ hidden_field('interventoprogrammaculturale', 'id' : 'Filtroprogcultexcel') }}
-                           &nbsp;<button type="button" id="excelgen" class="btn btn-primary" data-toggle="tooltip" title="Scarica in formato csv i dati con i criteri di ricerca impostati">&nbsp;<i class="fas fa-file-excel"></i>&nbsp;Scarica</button>
+                           &nbsp;<button type="button" id="excelgen" class="btn btn-primary" data-toggle="tooltip" title="Scarica in formato Excel i dati con i criteri di ricerca impostati">&nbsp;<i class="fas fa-file-excel"></i>&nbsp;Scarica</button>
                            {{ end_form() }}
                            {{ form('reservations/index', 'id' : 'freset', 'role': 'form', 'method': 'POST', 'autocomplete': 'off') }} 
                            &nbsp;<input type="submit" id="ResetFiltri" value="Reset" class="btn btn-primary">
@@ -102,7 +102,7 @@
                         <td class="text-nowrap">
                             {{ link_to('exhibitors/edit/' ~ reservation.exhibitors.id, "<i class='fas fa-pencil-alt'></i>", 'class': 'btn btn-sm btn-outline-secondary', 'title' :  "Modifica i dati anagrafici di fatturazione espositore", 'data-toggle' : 'tooltip') }}
                             {{ link_to('exhibitors/delete/' ~ reservation.exhibitors.id, "<i class='fas fa-trash-alt'></i>", 'class': 'btn btn-sm btn-outline-secondary', 'title' :  "Elimina espositore e tutte le sue richieste!", 'data-toggle' : 'tooltip') }}
-                            {{ link_to('reservations/edit/' ~ reservation.id, "<i class='fas fa-euro-sign'></i>", 'class': 'btn btn-sm btn-outline-secondary', 'title' :  "Dettaglio di Stand, Servizi e pagamenti", 'data-toggle' : 'tooltip') }}
+                            {{ link_to('reservations/edit/' ~ reservation.id, "<i class='fas fa-cogs'></i>", 'class': 'btn btn-sm btn-outline-secondary', 'title' :  "Dettaglio di Stand, Servizi e pagamenti", 'data-toggle' : 'tooltip') }}
                         </td>
                         </tr>
                     {% endfor %} 

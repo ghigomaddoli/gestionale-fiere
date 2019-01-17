@@ -1,12 +1,12 @@
 <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
+  
+    <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
+      <i class="fas fa-bars"></i>
+    </button>&nbsp;&nbsp;
 
     <a href="/" class="navbar-left"><img src="/img/logoflcgu.png" height="40px"></a>
     <li class="divider"></li>
     <a class="navbar-brand mr-1" href="/">Fa' la cosa giusta Umbria</a>
-    
-    <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
-      <i class="fas fa-bars"></i>
-    </button>
 
     {% if logged === true %}
     <!-- Navbar Search -->

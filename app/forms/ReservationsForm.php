@@ -30,6 +30,7 @@ class ReservationsForm extends Form
     'prezzofinale' => 'prezzofinale',
     'notepagamento' => 'notepagamento',
     'altriservizi' => 'altriservizi',
+    'prezzoaltriservizi' => 'prezzoaltriservizi',
     'interventoprogrammaculturale' => 'interventoprogrammaculturale',
     'prezzostandpersonalizzato' => 'prezzostandpersonalizzato',
     'standpersonalizzato' => 'standpersonalizzato',
@@ -115,6 +116,11 @@ class ReservationsForm extends Form
         $altriservizi->setFilters(['striptags', 'string']);
         $this->add($altriservizi);
 
+        $prezzoaltriservizi = new Text("prezzoaltriservizi");
+        $prezzoaltriservizi->setLabel("prezzo altri servizi");
+        $prezzofinale->setFilters(['striptags', 'string']);
+        $this->add($prezzoaltriservizi);
+
         $optionspc = array(
             'name'  => "interventoprogrammaculturale",
             'class' => 'form-control',
@@ -136,7 +142,7 @@ class ReservationsForm extends Form
         $this->add($standpersonalizzato);
 
         $stato = new Text("stato");
-        $stato->setLabel("descrizione stand personalizzato");
+        $stato->setLabel("stato della richiesta");
         $stato->setFilters(['striptags', 'string']);
         $stato->addValidators([
             new PresenceOf([
@@ -144,6 +150,26 @@ class ReservationsForm extends Form
             ])
         ]);
         $this->add($stato);
+
+        $numerofattura = new Text("numerofattura");
+        $numerofattura->setLabel("Numero Fattura");
+        $numerofattura->setFilters(['striptags', 'string', 'trim']);
+        $this->add($numerofattura);
+
+        $anticiporichiesto = new Text("anticiporichiesto");
+        $anticiporichiesto->setLabel("richiesta anticipo inviata");
+        $anticiporichiesto->setFilters(['striptags', 'string','trim']);
+        $this->add($anticiporichiesto);
+
+        $anticipopagato = new Text("anticipopagato");
+        $anticipopagato->setLabel("anticipo pagato");
+        $anticipopagato->setFilters(['striptags', 'string','trim']);
+        $this->add($anticipopagato);
+
+        $pagamentocompleto = new Text("pagamentocompleto");
+        $pagamentocompleto->setLabel("pagamento completo");
+        $pagamentocompleto->setFilters(['striptags', 'string','trim']);
+        $this->add($pagamentocompleto);
 
     }
 }
