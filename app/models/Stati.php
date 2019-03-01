@@ -27,6 +27,12 @@ class Stati extends \Phalcon\Mvc\Model
      */
     public $colore;
 
+        /**
+     *
+     * @var string
+     */
+    public $esadecimale;
+
     /**
      * Initialize method for model.
      */
@@ -70,8 +76,9 @@ class Stati extends \Phalcon\Mvc\Model
         return [
             'id' => 'id',
             'descrizionestato' => 'descrizionestato',
+            'descrizionebreve' => 'descrizionebreve',
             'colore' => 'colore',
-            'descrizionebreve' => 'descrizionebreve'
+            'esadecimale' => 'esadecimale',
         ];
     }
 

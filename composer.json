@@ -4,6 +4,7 @@
     },
     "require": {
         "fpdf/fpdf": "^1.81",
-        "phpoffice/phpspreadsheet": "^1.5"
+        "phpoffice/phpspreadsheet": "^1.5",
+        "swiftmailer/swiftmailer": "^6.0"
     }
 }

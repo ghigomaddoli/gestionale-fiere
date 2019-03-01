@@ -28,7 +28,8 @@ class SessionController extends ControllerBase
             'id' => $user->id,
             'nome' => $user->nome,
             'username' => $user->username,
-            'avatar' => $user->avatar
+            'avatar' => $user->avatar,
+            'email' => $user->email
         ]);
     }
 

@@ -32,10 +32,12 @@ class IndexController extends ControllerBase
             }
             $distribution[]=$contatorearea;
             $tbldistribstati[] = $contatorearea;
+            $coloristato[] = $stato->esadecimale;
         }
 
         $this->view->distribution = implode(",",$distribution);
         $this->view->tbldistribstati = $tbldistribstati;
+        $this->view->coloristato = implode("','",$coloristato);
 
         // preparo il grafico aree tematiche
         $areas = Areas::find();

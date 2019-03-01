@@ -1,6 +1,7 @@
 <?php
 use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Paginator\Adapter\Model as Paginator;
+use Phalcon\Mvc\View;
 
 class ExhibitorsController extends ControllerBase
 {
@@ -117,8 +118,8 @@ class ExhibitorsController extends ControllerBase
             \PhalconDebug::info("errore nel salvataggio exhibitors");
             $i = 0;
             foreach ($exhibitors->getMessages() as $message) {
-                $this->flash->error("dal model: ".$message);
-                $ris['incima-'+$i] = $message;
+                \PhalconDebug::info("errore: ".$message);
+                $ris['incima'] .= ' '. $message;
                 $i++;
             }
             
@@ -142,8 +143,8 @@ class ExhibitorsController extends ControllerBase
 
             $i=0;
             foreach ($reservations->getMessages() as $message) {
-                $this->flash->error("dal model: ".$message);
-                $ris['incima-'+$i] = $message;
+                \PhalconDebug::info("errore: ".$message);
+                $ris['incima'] .= ' '.$message;
                 $i++;
             }
 
@@ -154,9 +155,10 @@ class ExhibitorsController extends ControllerBase
         }
 
         /* facciamo la insert dei servizi richiesti nella tabella reservation_services */
-        \PhalconDebug::info(" save del model reservations_services..");
+       // \PhalconDebug::info(" save del model reservations_services..");
 
         $servizirichiesti = $this->request->getPost('services');
+        $ammontaredeiservizirichiesti = "";
 
         foreach($servizirichiesti as $services_id => $quantita){
             if($quantita > 0){
@@ -168,8 +170,8 @@ class ExhibitorsController extends ControllerBase
 
                     $i=0;
                     foreach ($reservationservices->getMessages() as $message) {
-                        $this->flash->error("dal model: ".$message);
-                        $ris['incima-'+$i] = $message;
+                        \PhalconDebug::info("errore: ".$message);
+                        $ris['incima'] .= ' '.$message;
                         $i++;
                     }
 
@@ -178,11 +180,15 @@ class ExhibitorsController extends ControllerBase
                     $ris["status"] = "KO";
                     return $this->response->setJsonContent($ris);
                 }
+                else{
+                    // mi salvo la stringa contenente quantita e descrizione servizio
+                    // per poter inviare email di conferma:
+                    $ammontaredeiservizirichiesti .= "<p>{$reservationservices->quantita} {$reservationservices->services->descrizione}</p>";
+                }
             }
         }
 
         /* facciamo una insert anche nella tabella degli stati */
-        \PhalconDebug::info(" facciamo una insert anche nella tabella degli stati ");
         $logstatireservations = new LogStatiReservations();
         $logstatireservations->reservations_id = $reservations->id;
         $logstatireservations->stati_id = 1; // 1= richiesta prenotazione pendente
@@ -192,8 +198,8 @@ class ExhibitorsController extends ControllerBase
 
             $i=0;
             foreach ($logstatireservations->getMessages() as $message) {
-                $this->flash->error("dal model: ".$message);
-                $ris['incima-'+$i] = $message;
+                \PhalconDebug::info("errore: ".$message);
+                $ris['incima'] .= ' '.$message;
                 $i++;
             }
 
@@ -202,7 +208,6 @@ class ExhibitorsController extends ControllerBase
             $ris["status"] = "KO";
             return $this->response->setJsonContent($ris);
         }
-        \PhalconDebug::info(" tutto ok faccio la commit ");
         // Commit the transaction
         $this->db->commit();
 
@@ -210,6 +215,27 @@ class ExhibitorsController extends ControllerBase
 
         $ris["status"] = "OK";
         $ris["modale"] = "I Dati della domanda di partecipazione dell'espositore sono stati inseriti con successo!";
+
+        $parametri = array(
+            'exhibitors' => $exhibitors,
+            'evento' => $this->evento->descrizione, 
+            'destinatari' => array('federico@desegno.it' => 'Federico Maddoli', $exhibitors->emailaziendale => $exhibitors->ragionesociale, $exhibitors->referenteemail => $exhibitors->referentenome),
+            'servizi' => $ammontaredeiservizirichiesti
+        );
+        $result = MyEmailSender::inviaEmail($this, 'confermaiscrizione', $parametri,'Conferma Iscrizione per '.$this->evento->descrizione);
+
+        $parametri = array(
+            'exhibitors' => $exhibitors,
+            'evento' => $this->evento->descrizione, 
+            'destinatari' => $this->config->swift->avviso_iscrizione,
+            'servizi' => $ammontaredeiservizirichiesti
+        );
+        $result = MyEmailSender::inviaEmail($this, 'nuovaiscrizione', $parametri,'Nuova Iscrizione ricevuta:'.$exhibitors->ragionesociale);
+
+        if($result){
+            $ris["modale"] = "I Dati della domanda di partecipazione dell'espositore sono stati inseriti con successo. Riceverete un'email di conferma con il riepilogo dei dati inseriti.";
+        }
+
         return $this->response->setJsonContent($ris);
 
     }
@@ -348,8 +374,8 @@ class ExhibitorsController extends ControllerBase
             \PhalconDebug::info("errore nel salvataggio exhibitors");
             $i = 0;
             foreach ($exhibitors->getMessages() as $message) {
-                $this->flash->error("dal model: ".$message);
-                $ris['incima-'+$i] = $message;
+                \PhalconDebug::info("errore: ".$message);
+                $ris['incima'] .= ' '.$message;
                 $i++;
             }
             
@@ -370,7 +396,39 @@ class ExhibitorsController extends ControllerBase
         $ris["modale"] = "I Dati anagrafici dell'espositore sono stati modificati con successo!";
         return $this->response->setJsonContent($ris);
 
-    }    
+    }
+    
+    public function testinvioAction($id){
+
+        $exhibitors = Exhibitors::findFirstById($id);
+        
+        $parametri = array(
+            'exhibitors' => $exhibitors,
+            'evento' => $this->evento->descrizione, 
+            'destinatari' => array($exhibitors->emailaziendale => $exhibitors->ragionesociale, $exhibitors->referenteemail => $exhibitors->referentenome),
+            'servizi' => "Per ora non ci preoccupiamo di questi"
+        );        
+        $result = MyEmailSender::inviaEmail($this, 'confermaiscrizione', $parametri,"Conferma iscrizione ricevuta per ".$this->evento->descrizione);
+
+
+        $parametri = array(
+            'exhibitors' => $exhibitors,
+            'evento' => $this->evento->descrizione, 
+            'destinatari' => $this->config->swift->avviso_iscrizione,
+            'servizi' => "Per ora non ci preoccupiamo di questi"
+        );
+        $result = MyEmailSender::inviaEmail($this, 'nuovaiscrizione', $parametri,"Nuova iscrizione ricevuta da ".$exhibitors->ragionesociale);
+
+
+
+        if($result){
+            $this->flash->success("Invio effettuato con successo! ".$result);
+        }
+        else{
+            $this->flash->error("errore di invio email. codice ritorno: ".$result);
+        }
+        
+
+    }
 
 }
-

@@ -33,11 +33,11 @@
     {{ form('reservations/save', 'method': 'post', "autocomplete" : "off", "class" : "form-horizontal") }}
 
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <label for="fieldAreasId" class="control-label">Area Tematica</label>
             {{ select('areas_id', areas, 'using': ['id', 'nome'],'class' : 'form-control') }}
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-3">
                 <label class="control-label">&nbsp;</label>
                 {% set cipc = null %} 
                 {% if reservation.interventoprogrammaculturale == 1 %} 
@@ -48,10 +48,14 @@
                 <label class="form-check-label" for="cbipc"> Intervento Programma Culturale</label>
                 </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <label for="fieldCodicestand" class="control-label">Codice stand</label>
             {{ text_field('codicestand', 'size': 20,  "class" : "form-control", "id" : "fieldCodicestand", "value" : reservation.codicestand) }}
-        </div>
+        </div>          
+        <div class="col-sm-3">
+            <label for="fieldCodicestand" class="control-label">Padiglione</label>
+            {{ text_field('padiglione', 'size': 20,  "class" : "form-control", "id" : "fieldPadiglione", "value" : reservation.padiglione) }}
+        </div>      
     </div>
 
     <div class="row">
@@ -140,39 +144,45 @@
             </div>
             <div class="col-sm-4"><h4>Riepilogo contabile</h4>
                 <table id="riepilogocontabile" class="table table-sm table-riepilogo">
-                    <tr><th>descrizione</th><th class="text-right">costo&nbsp;un.</th><th class="text-right">quant.</th><th class="text-right">tot</th><th class="text-right">tot+iva</th></tr>
+                    <tr><th>descrizione</th><th class="text-right">costo&nbsp;un.</th><th class="text-right">quant.</th><th class="text-right">tot</th><th class="text-right">iva</th></tr>
                     {% set totale = 0 %}
+                    {% set totiva = 0 %}
                     {% for indice, reservationservice in reservationservices %}
                     <tr>                    
                     <td>{{ reservationservice.services.descrizione }}</td>
                     {% if reservation.exhibitors.fasciadiprezzo === 'a' %}
-                        <td class="text-right">€ {{ '%.2f'|format(reservationservice.services.prezzofasciaa)}}</td>
+                        <td class="text-right">€&nbsp;{{ '%.2f'|format(reservationservice.services.prezzofasciaa)}}</td>
                         <td class="text-right">{{ reservationservice.quantita }}</td>
-                        <td class="text-right">€ {{ '%.2f'|format(reservationservice.services.prezzofasciaa * reservationservice.quantita) }}</td>
-                        <td class="text-right">€ {{ '%.2f'|format(reservationservice.services.prezzofasciaa * reservationservice.quantita + reservationservice.services.prezzofasciaa * reservationservice.quantita * 0.22) }}</td>
+                        <td class="text-right">€&nbsp;{{ '%.2f'|format(reservationservice.services.prezzofasciaa * reservationservice.quantita) }}</td>
+                        <td class="text-right">€&nbsp;{{ '%.2f'|format(reservationservice.services.prezzofasciaa * reservationservice.quantita * 0.22) }}</td>
                         {% set totale = totale + reservationservice.services.prezzofasciaa * reservationservice.quantita %}
+                        {% set totiva = totiva + reservationservice.services.prezzofasciaa * reservationservice.quantita * 0.22 %}
                     {% else %} 
-                        <td class="text-right">€ {{ '%.2f'|format(reservationservice.services.prezzofasciab) }}</td>
+                        <td class="text-right">€&nbsp;{{ '%.2f'|format(reservationservice.services.prezzofasciab) }}</td>
                         <td class="text-right">{{ reservationservice.quantita }}</td>
-                        <td class="text-right">€ {{ '%.2f'|format(reservationservice.services.prezzofasciab * reservationservice.quantita) }}</td>
-                        <td class="text-right">€ {{ '%.2f'|format(reservationservice.services.prezzofasciab * reservationservice.quantita + reservationservice.services.prezzofasciab * reservationservice.quantita * 0.22) }}</td>
+                        <td class="text-right">€&nbsp;{{ '%.2f'|format(reservationservice.services.prezzofasciab * reservationservice.quantita) }}</td>
+                        <td class="text-right">€&nbsp;{{ '%.2f'|format(reservationservice.services.prezzofasciab * reservationservice.quantita * 0.22) }}</td>
                         {% set totale = totale + reservationservice.services.prezzofasciab * reservationservice.quantita %}
+                        {% set totiva = totiva + reservationservice.services.prezzofasciab * reservationservice.quantita * 0.22 %}
                     {% endif %}
                     </tr>
                     {% endfor %}
                     <!-- prezzo stand personalizzato -->
                     {% if reservation.prezzostandpersonalizzato > 0 %}
-                    <tr><td>Stand Personalizzato</td><td class="text-right">€ {{ '%.2f'|format(reservation.prezzostandpersonalizzato) }}</td><td class="text-right">1</td><td class="text-right">€ {{ '%.2f'|format(reservation.prezzostandpersonalizzato) }}</td><td class="text-right">€ {{ '%.2f'|format(reservation.prezzostandpersonalizzato + reservation.prezzostandpersonalizzato * 0.22) }}</td></tr>
+                    <tr><td>Stand Personalizzato</td><td class="text-right">€&nbsp;{{ '%.2f'|format(reservation.prezzostandpersonalizzato) }}</td><td class="text-right">1</td><td class="text-right">€ {{ '%.2f'|format(reservation.prezzostandpersonalizzato) }}</td><td class="text-right">€ {{ '%.2f'|format(reservation.prezzostandpersonalizzato + reservation.prezzostandpersonalizzato * 0.22) }}</td></tr>
                     {% set totale = totale + reservation.prezzostandpersonalizzato %}
+                    {% set totiva = totiva + reservation.prezzostandpersonalizzato * 0.22 %}
                     {% endif %}
                     <tr></tr>
                     <!-- prezzo altri servizi -->
                     {% if reservation.prezzoaltriservizi > 0 %}
-                    <tr><td>Altri servizi: {{ reservation.altriservizi }}</td><td class="text-right">€ {{ '%.2f'|format(reservation.prezzoaltriservizi) }}</td><td class="text-right">1</td><td class="text-right">€ {{ '%.2f'|format(reservation.prezzoaltriservizi) }}</td><td class="text-right">€ {{ '%.2f'|format(reservation.prezzoaltriservizi + reservation.prezzoaltriservizi * 0.22) }}</td></tr>
+                    <tr><td>Altri servizi: {{ reservation.altriservizi }}</td><td class="text-right">€&nbsp;{{ '%.2f'|format(reservation.prezzoaltriservizi) }}</td><td class="text-right">1</td><td class="text-right">€ {{ '%.2f'|format(reservation.prezzoaltriservizi) }}</td><td class="text-right">€ {{ '%.2f'|format(reservation.prezzoaltriservizi + reservation.prezzoaltriservizi * 0.22) }}</td></tr>
                     {% set totale = totale + reservation.prezzoaltriservizi %}
+                    {% set totiva = totiva + reservation.prezzoaltriservizi * 0.22 %}
                     {% endif %}
                     <tr></tr>                    
-                    <tr><td></td><td></td><td></td><th class="text-right">€ {{ '%.2f'|format(totale) }}</th><th class="text-right">€ {{ '%.2f'|format(totale + totale * 0.22) }}</th></tr>
+                    <tr><td></td><td></td><td></td><th class="text-right">€&nbsp;{{ '%.2f'|format(totale) }}</th><th class="text-right">€&nbsp;{{ '%.2f'|format(totiva) }}</th></tr>
+                    <tr><td></td><th class="text-right" colspan="2">Tot. iva comp.</th><th class="text-right" colspan="2">€&nbsp;{{ '%.2f'|format(totale + totale * 0.22) }}</th></tr>
                 </table>
             </div>
     </div>
@@ -227,7 +237,7 @@
                 <div class="col">
                         <div class="input-group">
                                 <div class="input-group-prepend">
-                                  <span class="input-group-text">Prezzo totale concordato €</span>
+                                  <span class="input-group-text">Prezzo finale €</span>
                                 </div>
                                 {% if reservation.prezzofinale is empty or reservation.prezzofinale == 0 %}
                                 {% set prezzofinale = totale %}
@@ -235,7 +245,7 @@
                                 {% set prezzofinale = reservation.prezzofinale %}
                                 {% endif %}
                                 {{ numeric_field('prezzofinale', 'min': 0, "max" : 20000, "step" : 1, "class" : "form-control", "id" : "fieldprezzofinale", "value" : '%.2f'|format(prezzofinale)) }}
-                                <span class="input-group-text" id="fieldprezzofinaleivato">Prezzo totale concordato + iva € {{ '%.2f'|format(prezzofinale + prezzofinale * 0.22) }}</span>
+                                <span class="input-group-text" id="fieldprezzofinaleivato">Prezzo finale + iva € {{ '%.2f'|format(prezzofinale + prezzofinale * 0.22) }}</span>
                         </div>
                 </div>
             </div>
@@ -252,7 +262,7 @@
         </div>           
     </div>
 
-    {{ hidden_field("id", "value" : reservation.id) }}
+    {{ hidden_field("id", "value" : reservation.id, "id" : "reservationid") }}
     {# { hidden_field("stato", "value" : reservation.stato, "id" : "statohidden") } #}
 
     <div class="row">
@@ -280,10 +290,10 @@
     <div class="jumbotron">
         <h3>Lettera di ammissione</h3>
         <p>Cliccando sul pulsante sottostante puoi decidere di generare il pdf in anteprima oppure di inviarlo anche all'espositore come allegato email</p>
-        <hr class="my-4">
         <div class="row text-center">
+            <!--div class="col">{{ link_to('exhibitors/testinvio/' ~ reservation.exhibitors.id, "Test invio email conferma", 'role': 'button', 'class': 'btn btn-danger btn-lg') }}</div-->
             <div class="col">{{ link_to('reservations/anteprimalettera/' ~ reservation.id, "Anteprima Lettera di ammissione", 'target' : '_blank', 'role': 'button', 'class': 'btn btn-primary btn-lg') }}</div>
-            <div class="col">{{ link_to('#', "&nbsp;<i class='far fa-envelope'></i>&nbsp;&nbsp;Invia la Lettera di ammissione all'espositore", 'role': 'button', 'class': 'btn btn-lg btn-warning', "data-toggle" : "tooltip", "data-placement" : "top", "title" : "La lettera di ammissione verrà inviata all'indirizzo " ~ reservation.exhibitors.emailaziendale) }}</div>
+            <div class="col">{{ link_to('reservations/invialettera/' ~ reservation.id, "&nbsp;<i class='far fa-envelope'></i>&nbsp;&nbsp;Invia la Lettera di ammissione all'espositore", 'id':'inviolettera', 'role': 'button', 'class': 'btn btn-lg btn-warning', "data-toggle" : "tooltip", "data-placement" : "top", "title" : "La lettera di ammissione verrà inviata all'indirizzo " ~ reservation.exhibitors.emailaziendale) }}</div>
         </div>
     </div>
 
@@ -291,7 +301,6 @@
     <div class="jumbotron">
             <h3>Generazione Fattura</h3>
             <p>Cliccando sul pulsante sottostante puoi generare la fattura</p>
-            <hr class="my-4">
             <div class="row text-center">
                     <div class="col-4">
                             <div class="input-group">
@@ -301,8 +310,8 @@
                                     {{ text_field('numerofattura', "class" : "form-control", "id" : "numerofattura", "value" : reservation.numerofattura) }}
                             </div>
                     </div>
-                <div class="col-4">{{ link_to('reservations/facsimilefattura/' ~ reservation.id, "&nbsp;<i class='fas fa-file-invoice-dollar'></i>&nbsp;&nbsp;Genera il Fac Simile della fattura", 'role': 'button', 'class': 'btn btn-lg btn-warning', "data-toggle" : "tooltip", "data-placement" : "top", "title" : "Verranno generati in formato txt tutti i dati necessari alla fattura") }}</div>
-                <div class="col-4 text-left">
+                <div class="col-8">{{ link_to('reservations/facsimilefattura/' ~ reservation.id, "&nbsp;<i class='fas fa-file-invoice-dollar'></i>&nbsp;&nbsp;Genera il Fac Simile della fattura", 'role': 'button', 'class': 'btn btn-lg btn-warning', "data-toggle" : "tooltip", "data-placement" : "top", "title" : "Verranno generati in formato txt tutti i dati necessari alla fattura") }}</div>
+                <!--div class="col-4 text-left">
                         {% set car = null %} 
                         {% if reservation.anticiporichiesto == 1 %} 
                             {% set car = 'checked' %} 
@@ -329,17 +338,17 @@
                         {{ check_field('pagamentocompleto', 'value': 1, 'checked' : cpc, 'class' : 'form-check-input', 'id' : 'cbpc') }}
                         <label class="form-check-label" for="cbipc">Pagamento Completo</label>
                         </div>  
-                </div>
+                </div-->
             </div>
     </div>
 
 
     <div class="row">
-            <div class="col-sm-12"><hr></div>
+            <div class="col-sm-12">&nbsp;</div>
     </div>    
     
     <div class="row">
-            <div class="col-sm-12"><h4>Stato della richiesta</h4></div>
+            <div class="col-sm-12"><h4>Stato pagamenti</h4></div>
     </div>   
     
     <div class="row">
@@ -369,6 +378,46 @@
         </div>
     
         {{ end_form() }}
+
+    <!-- Sezione dei dati catalogo -->
+    <div class="row">
+            <div class="col-sm-12">&nbsp;</div>
+    </div>
+
+    <div class="jumbotron">
+        <h3>Generazione dati per il catalogo</h3>
+        <p>Cliccando sul bottone sottostante puoi generare un file di testo con i dati del catalogo di questo espositore.</p>
+
+        <div class="row">
+                <div class="col-8">{{ link_to('reservations/daticatalogo/' ~ reservation.id, "&nbsp;<i class='fas fa-file-invoice-dollar'></i>&nbsp;&nbsp;Genera i dati per il catalogo", 'role': 'button', 'class': 'btn btn-lg btn-warning', "data-toggle" : "tooltip", "data-placement" : "top", "title" : "Verranno generati in formato txt tutti i dati del catalogo") }}</div>
+        </div>
+
+    </div>
+
+
+    <!-- Sezione del diario/log-->
+    <div class="row">
+            <div class="col-sm-12">&nbsp;</div>
+    </div>
+
+    <div class="jumbotron">
+        <h3>Diario dell'espositore</h3>
+        <p>Di seguito sono riportate le fasi salienti del flussso di lavoro per questo espositore, e le vostre note.</p>
+        {% for index, log in logstatireservations %}
+        <div class="row">
+                <div class="col-12">
+ 
+                <p>    
+                    {{ log.dataora }} 
+                    {{ log.users_id }}
+                    {{ log.messaggio }}
+                </p>
+                    
+                </div>
+        </div>
+        {% endfor %}
+    </div>
+
   </div>
   <!-- /.container-fluid -->
 
@@ -392,3 +441,31 @@
 <a class="scroll-to-top rounded" href="#page-top">
 <i class="fas fa-angle-up"></i>
 </a>
+
+<!-- modale per la risposta ajax -->
+<div class="modal fade" id="SuccessInsertModal" tabindex="-1" role="dialog" aria-labelledby="SuccessInsertModalLabel" aria-hidden="true">
+    <div class="modal-dialog .modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="SuccessInsertModalLabel">Invio della lettare di ammissione</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body" id="contenutosuccess"></div>
+        <div class="modal-footer">
+          <a class="btn btn-primary" data-dismiss="modal">OK</a>
+        </div>
+      </div>
+    </div>
+</div>
+<!-- spinner per attesa alla risposta ajax -->
+<div class="modal fade" id="modalspinner" tabindex="-1" role="dialog" aria-labelledby="modalspinner" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+            <i class="fas fa-spinner fa-spin"></i> controllo dati in corso...
+        </div>
+      </div>
+    </div>
+  </div>

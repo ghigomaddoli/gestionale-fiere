@@ -12,7 +12,7 @@
     <!-- Navbar Search -->
     {{ form('reservations/index', 'id' : 'fricerca', 'role': 'form', 'method': 'POST', 'autocomplete': 'off', 'class': 'd-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0') }} 
       <div class="input-group">
-        {{ text_field('ragionesociale', 'class' : 'form-control', 'placeholder' : 'Cerca Espositore..') }}
+        {{ text_field('cercaragionesociale', 'class' : 'form-control', 'placeholder' : 'Cerca Espositore..') }}
         <div class="input-group-append">
           <button type="submit" class="btn btn-primary" type="button">
             <i class="fas fa-search"></i>

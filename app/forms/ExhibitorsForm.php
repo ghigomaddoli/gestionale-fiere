@@ -18,44 +18,10 @@ use Phalcon\Validation\Validator\InclusionIn;
 
 use Phalcon\Forms\Element;
 
-/*
-EXHIBITORS COLUMN MAP
-            'id' => 'id',
-            'ragionesociale' => 'ragionesociale',
-            'indirizzo' => 'indirizzo',
-            'cap' => 'cap',
-            'citta' => 'citta',
-            'provincia' => 'provincia',
-            'telefono' => 'telefono',
-            'emailaziendale' => 'emailaziendale',
-            'piva' => 'piva',
-            'codfisc' => 'codfisc',
-            'pec' => 'pec',
-            'codicesdi' => 'codicesdi',
-            'referentenome' => 'referentenome',
-            'referentetelefono' => 'referentetelefono',
-            'referenteemail' => 'referenteemail',
-            'prodottiesposti' => 'prodottiesposti',
-            'fasciadiprezzo' => 'fasciadiprezzo',
-            'numerocoespositore' => 'numerocoespositore',
-            'nomecoespositore' => 'nomecoespositore',
-            'catalogonome' => 'catalogonome',
-            'catalogoindirizzo' => 'catalogoindirizzo',
-            'catalogocap' => 'catalogocap',
-            'catalogocitta' => 'catalogocitta',
-            'catalogoprovincia' => 'catalogoprovincia',
-            'catalogotelefono' => 'catalogotelefono',
-            'catalogoemail' => 'catalogoemail',
-            'catalogositoweb' => 'catalogositoweb',
-            'catalogofacebook' => 'catalogofacebook',
-            'catalogoinstagram' => 'catalogoinstagram',
-            'catalogotwitter' => 'catalogotwitter',
-            'catalogodescrizione' => 'catalogodescrizione'
-*/
 class ExhibitorsForm extends Form
 {
     /**
-     * Initialize the products form
+     * Initialize the form
      */
     public function initialize($entity = null, $options = array())
     {
@@ -284,19 +250,19 @@ class ExhibitorsForm extends Form
         ]);
         $this->add($fasciadiprezzo);
 
-        $codicestand = new Text("codicestand");
-        $codicestand->setLabel("Codice Stand");
-        $codicestand->setFilters(['striptags', 'string', 'trim']);
-        $codicestand->addValidators([
+        $padiglione = new Text("padiglione");
+        $padiglione->setLabel("Padiglione");
+        $padiglione->setFilters(['striptags', 'string', 'trim']);
+        $padiglione->addValidators([
             new StringLength(
                 [
                     "max"            => 20,
-                    "messageMaximum" => "Il Codice Stand è troppo lungo",
+                    "messageMaximum" => "Il campo Padiglione è troppo lungo (max 20 caratteri)",
                     "allowEmpty" => true,
                 ]
             )
         ]);
-        $this->add($codicestand);
+        $this->add($padiglione);        
 
         /* Scelta dello spazio espositivo */
         $options = Services::find(
@@ -388,8 +354,17 @@ class ExhibitorsForm extends Form
 
         $codicestand = new Text("codicestand",["id"=>"primadelcatalogo"]);
         $codicestand->setLabel("Codice stand");
-        $codicestand->setFilters(['striptags', 'string']);
-        $this->add($codicestand);
+        $codicestand->setFilters(['striptags', 'string', 'trim']);
+        $codicestand->addValidators([
+            new StringLength(
+                [
+                    "max"            => 20,
+                    "messageMaximum" => "Il Codice Stand è troppo lungo",
+                    "allowEmpty" => true,
+                ]
+            )
+        ]);
+        $this->add($codicestand);        
 
         $catalogonome = new Text("catalogonome");
         $catalogonome->setLabel("Nome");

@@ -19,23 +19,6 @@ use Phalcon\Forms\Element;
 
 class ReservationsForm extends Form
 {
-    /*
-     * Initialize the products form
-    'id' => 'id',
-    'exhibitors_id' => 'exhibitors_id',
-    'events_id' => 'events_id',
-    'areas_id' => 'areas_id',
-    'codicestand' => 'codicestand',
-    'padre_id' => 'padre_id',
-    'prezzofinale' => 'prezzofinale',
-    'notepagamento' => 'notepagamento',
-    'altriservizi' => 'altriservizi',
-    'prezzoaltriservizi' => 'prezzoaltriservizi',
-    'interventoprogrammaculturale' => 'interventoprogrammaculturale',
-    'prezzostandpersonalizzato' => 'prezzostandpersonalizzato',
-    'standpersonalizzato' => 'standpersonalizzato',
-    'stato' => 'stato'
-     */
     public function initialize($entity = null, $options = array())
     {
         
@@ -84,6 +67,11 @@ class ReservationsForm extends Form
         $codicestand->setLabel("codice stand");
         $codicestand->setFilters(['striptags', 'string']);
         $this->add($codicestand);
+
+        $padiglione = new Text("padiglione");
+        $padiglione->setLabel("Padiglione");
+        $padiglione->setFilters(['striptags', 'string']);
+        $this->add($padiglione);
 
         $padre_id = new Select("padre_id",
             Exhibitors::find(),

@@ -38,6 +38,12 @@ class Reservations extends \Phalcon\Mvc\Model
 
     /**
      *
+     * @var string
+     */
+    public $padiglione;
+
+    /**
+     *
      * @var integer
      */
     public $padre_id;
@@ -144,8 +150,21 @@ class Reservations extends \Phalcon\Mvc\Model
             )
         );
 
+        $validator->add(
+            'padiglione',
+            new StringLength(
+                [
+                    "max"            => 20,
+                    "messageMaximum" => "Il campo Padiglione non può essere più lungo di 20 caratteri",
+                    "allowEmpty" => true,
+                ]
+            )
+        );
+
         return $this->validate($validator);
     }
+
+
 
     /**
      * Allows to query a set of records that match the specified conditions
@@ -183,6 +202,7 @@ class Reservations extends \Phalcon\Mvc\Model
             'events_id' => 'events_id',
             'areas_id' => 'areas_id',
             'codicestand' => 'codicestand',
+            'padiglione' => 'padiglione',            
             'padre_id' => 'padre_id',
             'prezzofinale' => 'prezzofinale',
             'notepagamento' => 'notepagamento',

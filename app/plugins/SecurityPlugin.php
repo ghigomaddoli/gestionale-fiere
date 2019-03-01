@@ -48,9 +48,9 @@ class SecurityPlugin extends Plugin
 			$privateResources = [
 				'areas'    => ['index', 'search', 'new', 'edit', 'save', 'create', 'delete'],
 				'events'    => ['index', 'search', 'new', 'edit', 'save', 'create', 'delete'],
-				'exhibitors'    => ['index','search', 'edit', 'delete'],
+				'exhibitors'    => ['index','search', 'edit', 'delete','testinvio'],
 				'notereservations'    => ['index', 'search', 'new', 'edit', 'save', 'create', 'delete'],
-				'reservations'    => ['index','search', 'edit', 'delete', 'anteprimalettera','excelgen','facsimilefattura'],
+				'reservations'    => ['index','search', 'edit', 'delete', 'anteprimalettera','excelgen','facsimilefattura','invialettera','daticatalogo'],
 				'reservationservices'    => ['index', 'search', 'new', 'edit', 'save', 'create', 'delete'],
 				'services'    => ['index', 'search', 'new', 'edit', 'save', 'create', 'delete'],
 				'statireservations'    => ['index', 'search', 'new', 'edit', 'save', 'create', 'delete'],

@@ -46,8 +46,9 @@ class LogStatiReservations extends \Phalcon\Mvc\Model
     {
         $this->setSchema("c5_espositori");
         $this->setSource("log_stati_reservations");
-        $this->belongsTo('reservations_id', '\Reservations', 'id', ['alias' => 'Reservations','reusable' => true]);
-        $this->belongsTo('stati_id', '\Stati', 'id', ['alias' => 'Stati','reusable' => true]);
+        $this->belongsTo('reservations_id', 'Reservations', 'id', ['alias' => 'Reservations','reusable' => true]);
+        $this->belongsTo('stati_id', 'Stati', 'id', ['alias' => 'Stati','reusable' => true]);
+        $this->belongsTo('users_id', 'Users', 'id', ['alias' => 'Users','reusable' => true]);
     }
 
     /**

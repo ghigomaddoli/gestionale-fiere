@@ -12,7 +12,7 @@
       <div class="card mb-3">
       <div class="card-header">
           <i class="fas fa-chart-pie"></i>
-          Andamento iscrizioni per Stato</div>
+          Andamento iscrizioni per Stato Pagamento</div>
       <div class="card-body">
           <canvas id="myPieChart" width="100%" height="100"></canvas>
       </div>
@@ -163,7 +163,8 @@
       labels: ['{{ labels }}'],
       datasets: [{
         data: [{{ distribution }}],
-        backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745'],
+        //backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745'],
+        backgroundColor: ['{{ coloristato }}'],
       }],
     },
     options: {

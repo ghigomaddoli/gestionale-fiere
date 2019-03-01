@@ -129,6 +129,18 @@ public function getUserName(){
     }
 }
 
+public function getUserEmail(){
+    $auth = $this->session->get('auth');
+
+    if ($auth) {
+        $ses =  $this->session->get('auth');
+        return $ses['email'];
+    }
+    else{
+        return '';
+    }
+}
+
 public function getAvatar(){
     $auth = $this->session->get('auth');
     if ($auth) {

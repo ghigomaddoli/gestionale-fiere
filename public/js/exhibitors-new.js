@@ -41,12 +41,11 @@ $(document).ready(function(){
             cache: false,
             processData:false
         }).done(function(response){
-            console.log(response);
-
                 var selettore = '';
                 var primoselettore = '';
                 var indice = 0;
                 $.each( response, function( nomecampo, messaggioerrore ) {
+   
                     selettore = "[name="+ nomecampo +"]";
                     $(selettore).addClass(' is-invalid');
                     
@@ -60,15 +59,21 @@ $(document).ready(function(){
                             break;
                         case 'stand':
                         $( '#msgerrstand' ).html( "<div class=\"alert alert-danger darimuovere\" role=\"alert\">" + messaggioerrore + "</div>" );
-                        primoselettore = "[name^="+ nomecampo +"]";
+                        //primoselettore = "[name^="+ nomecampo +"]";
+                        primoselettore = "#fieldStandpersonalizzato";
+                        console.log(nomecampo);
                             break;
                         case 'modale':
                         $( '#contenutosuccess' ).html( "<div class=\"alert alert-success darimuovere\" role=\"alert\">" + messaggioerrore + "</div>" );
                         primoselettore = "#contenutosuccess";
                             break;  
+                        case 'incima':
+                        $( '#incima' ).html( "<div class=\"alert alert-success darimuovere\" role=\"alert\">" + messaggioerrore + "</div>" );
+                        primoselettore = "#incima";
+                            break;                              
                         case 'status':
                         if(messaggioerrore == 'OK'){
-                        $('#SuccessInsertModal').modal('show');
+                            $('#SuccessInsertModal').modal('show');
                         }
                             break;                           
                         default:
@@ -80,7 +85,6 @@ $(document).ready(function(){
                     } 
                     indice++;
                 });
-                
                 $(primoselettore).focus();
             
             
@@ -91,6 +95,17 @@ $(document).ready(function(){
 
     $('#SuccessInsertModal').on('hidden.bs.modal', function (e) {
         window.location = "/index";
-    })
+    });
+
+    $('.copiagiu').click(function(){
+        $("#fieldCatalogonome").val($("#fieldRagionesociale").val());
+        $("#fieldCatalogoindirizzo").val($("#fieldIndirizzo").val());
+        $("#fieldCatalogocap").val($("#fieldCap").val());
+        $("#fieldCatalogocitta").val($("#fieldCitta").val());
+        $("#catalogoprovincia").val($("#provincia").val());
+        $("#fieldCatalogotelefono").val($("#fieldTelefono").val());
+        $("#fieldCatalogoemail").val($("#fieldEmailaziendale").val());
+        $("#fieldCatalogodescrizione").val($("#fieldProdottiesposti").val());
+    });
 
 });

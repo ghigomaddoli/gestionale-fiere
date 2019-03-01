@@ -20,7 +20,7 @@ class ReservationsController extends ControllerBase
 
             $areas_id = $this->request->getPost('areas_id', 'int');
             $stato = $this->request->getPost('stato', 'int');
-            $ragionesociale = $this->request->getPost('ragionesociale', 'string');
+            $ragionesociale = $this->request->getPost('cercaragionesociale', 'string');
             $interventoprogrammaculturale = $this->request->getPost('interventoprogrammaculturale', 'int');
             $orderby = $this->request->getPost('orderby', 'string');
 
@@ -133,6 +133,8 @@ class ReservationsController extends ControllerBase
         $stati = Stati::find();
         $this->view->stati = $stati;
         $this->view->statimax = count($stati);
+
+        $this->view->logstatireservations = LogStatiReservations::find("reservations_id = ".$reservation->id." ORDER BY dataora DESC");
 
         $this->assets->addJs('js/reservations-edit.js');
     }
@@ -293,23 +295,95 @@ class ReservationsController extends ControllerBase
     }
 
     /**
-     * genera il file pdf della "Lettera di ammissione"
+     * spara in stream il file pdf della "Lettera di ammissione"
      *
      * @param string $id
      */
     public function anteprimaletteraAction($id){
+        $ilpdf = $this->generapdf($id, true);
+        $ilpdf->Output();
+    }
 
-        if (!$this->request->isGet()) {
-            $this->flash->error("Richiesta non valida");
+     /**
+     * spara in stream il file pdf della "Lettera di ammissione"
+     *
+     * @param string $id
+     */
+    public function invialetteraAction(){
 
-            return $this->dispatcher->forward(
-                [
-                    "controller" => "reservations",
-                    "action"     => "edit",
-                    "params"     => [$id]
-                ]
-            );
+
+        if (!$this->request->isAjax()) {
+            $ris["incima"] = "Richiesta non valida";
+            $ris["status"] = "KO";
+            return $this->response->setJsonContent($ris);
         }
+        
+        $id = $this->request->getPost("reservationid","int");
+        $reservation = Reservations::findFirstById($id);
+        $exhibitors = $reservation->exhibitors;
+        $ilpdf = $this->generapdf($id, false);
+
+        $string = strtolower($reservation->exhibitors->ragionesociale);
+        $string = preg_replace("/[^0-9A-Za-z ]/", "", $string);
+        $string = str_replace(" ", "-", $string);
+        while (strstr($string, "--")) {
+            $string = preg_replace("/--/", "-", $string);
+        }
+        $permalink = (utf8_decode($string));
+
+        $ilpdf->Output('temp/lettera-ammissione-'.$permalink.'.pdf','F');
+        $allegato = array("filepath" => 'temp/lettera-ammissione-'.$permalink.'.pdf', "mimetype" => 'application/pdf');
+        
+        $parametri = array(
+            'exhibitors' => $exhibitors,
+            'evento' => $this->evento->descrizione, 
+            'destinatari' => array($exhibitors->emailaziendale => $exhibitors->ragionesociale, $exhibitors->referenteemail => $exhibitors->referentenome),
+            'allegato' => $allegato
+        );        
+        $result = MyEmailSender::inviaEmail($this, 'letteraammissione', $parametri,"Lettera di Ammissione per ".$this->evento->descrizione);
+
+        if($result){
+            $ris["status"] = "OK";
+            $ris['incima'] = "Invio effettuato con successo!";
+            $auth = $this->session->get('auth');
+
+            $logstatireservations = new LogStatiReservations();
+            $logstatireservations->reservations_id = $id;
+            $logstatireservations->stati_id = $reservation->stato;
+            $logstatireservations->users_id = $auth['id'];
+            $logstatireservations->dataora = date("Y-m-d H:i:s");
+            $logstatireservations->messaggio = $auth["username"]." ha inviato la lettera di ammissione al cliente.";
+            if ($logstatireservations->save() === false) {
+
+                $i=0;
+                foreach ($logstatireservations->getMessages() as $message) {
+                    \PhalconDebug::info("errore: ".$message);
+                    $ris['incima'] .= ' '.$message;
+                    $i++;
+                }
+                $ris["status"] = "KO";
+                return $this->response->setJsonContent($ris);
+            }
+            else{
+                $ris['incima'] .= "<br>L'evento è stato inserito nel diario";
+            }
+            return $this->response->setJsonContent($ris);
+        }
+        else{
+            $ris["status"] = "KO";
+            $ris['incima'] = "errore di invio email.";
+            return $this->response->setJsonContent($ris);
+        }
+        // @unlink('temp/lettera-ammissione-'.$permalink.'.pdf');
+
+    }
+
+    /**
+     * genera il file pdf della "Lettera di ammissione"
+     *
+     * @param string $id
+     */
+    public function generapdf($id,$headers = true){
 
         $reservation = Reservations::findFirstById($id);
 
@@ -324,18 +398,20 @@ class ReservationsController extends ControllerBase
             );
         }
 
-        $string = strtolower($reservation->getExhibitors()->ragionesociale);
-        $string = preg_replace("/[^0-9A-Za-z ]/", "", $string);
-        $string = str_replace(" ", "-", $string);
-        while (strstr($string, "--")) {
-            $string = preg_replace("/--/", "-", $string);
+        if($headers === true){
+            $string = strtolower($reservation->getExhibitors()->ragionesociale);
+            $string = preg_replace("/[^0-9A-Za-z ]/", "", $string);
+            $string = str_replace(" ", "-", $string);
+            while (strstr($string, "--")) {
+                $string = preg_replace("/--/", "-", $string);
+            }
+            $permalink = (utf8_decode($string));
+            
+            $this->view->setRenderLevel(\Phalcon\Mvc\View::LEVEL_NO_RENDER);
+            $this->response->resetHeaders();   
+            $this->response->setHeader('Content-Type', 'application/pdf');
+            $this->response->setHeader('Content-Disposition', "attachment; filename=lettera-ammissione-{$permalink}.pdf");
         }
-        $permalink = (utf8_decode($string));
-        
-        $this->view->setRenderLevel(\Phalcon\Mvc\View::LEVEL_NO_RENDER);
-        $this->response->resetHeaders();   
-        $this->response->setHeader('Content-Type', 'application/pdf');
-        $this->response->setHeader('Content-Disposition', "attachment; filename=lettera-ammissione-{$permalink}.pdf");
 
         // Instanciation of inherited class
         $pdf = new Mypdf();
@@ -351,8 +427,9 @@ class ReservationsController extends ControllerBase
         $pdf->Cell(0,8,"Lettera di ammissione",0,1,'C');
         $pdf->Cell(0,8,$this->evento->descrizione,0,1,'C');
 
+        $auth = $this->session->get('auth');
         $pdf->SetFont('Times','',12);
-        $pdf->Cell(0,6,"Da inviare firmata a giorgio@falacosagiustaumbria.it o via fax allo 075 3721786",0,1,'C');
+        $pdf->Cell(0,6,"Da inviare firmata a ".$auth["email"]." o via fax allo 075 3721786",0,1,'C');
         $pdf->Cell(0,6,utf8_decode("Il saldo dovrà essere corrisposto entro e non oltre i termini indicati nella fattura."),0,1,'C');
         $pdf->Ln();
 
@@ -421,7 +498,7 @@ class ReservationsController extends ControllerBase
             $pr = $reservationservice->quantita * $reservationservice->services->$fieldprezzo;
             $iva = $reservationservice->quantita * $reservationservice->services->$fieldprezzo * 0.22;
             $totale += $pr;
-            $pdf->Cell(27,6,number_format($pr + $iva,2,",","."),1,0,'R'); //prezzo inclusivo di iva
+            $pdf->Cell(27,6,number_format($iva,2,",","."),1,0,'R'); //prezzo inclusivo di iva
             $pdf->Ln();
         }
         // rigo stand personalizzato
@@ -433,7 +510,7 @@ class ReservationsController extends ControllerBase
             $pr = $reservation->prezzostandpersonalizzato;
             $iva = $reservation->prezzostandpersonalizzato * 0.22;
             $totale += $pr;
-            $pdf->Cell(27,6,number_format($pr + $iva,2,",","."),1,0,'R'); //prezzo inclusivo di iva
+            $pdf->Cell(27,6,number_format($iva,2,",","."),1,0,'R'); //prezzo inclusivo di iva
             $pdf->Ln();            
         }
         // rigo altri servizi
@@ -445,42 +522,40 @@ class ReservationsController extends ControllerBase
             $pr = $reservation->prezzoaltriservizi;
             $iva = $reservation->prezzoaltriservizi * 0.22;
             $totale += $pr;
-            $pdf->Cell(27,6,number_format($pr + $iva,2,",","."),1,0,'R'); //prezzo inclusivo di iva
+            $pdf->Cell(27,6,number_format($iva,2,",","."),1,0,'R'); //prezzo inclusivo di iva
             $pdf->Ln();            
         }
         // rigo del totale
         $pdf->SetFillColor(220, 158, 5); // giallo
         
-        $pdf->Cell(136,6,'COSTO TOTALE',1,0,'L');
-        $pdf->Cell(54,6,"EURO ".number_format($totale + $totale * 0.22,2,",","."),1,0,'C'); //prezzo TOTALE inclusivo di iva
+        $pdf->Cell(163,6,'COSTO TOTALE',1,0,'L');
+        $pdf->Cell(27,6,"EURO ".number_format($totale + $totale * 0.22,2,",","."),1,0,'R'); //prezzo TOTALE inclusivo di iva
         $pdf->Ln();
 
-        if($reservation->prezzofinale > 0){
+        if($reservation->prezzofinale != $totale && $reservation->prezzofinale > 0){
             // rigo del totale scontato
-            $pdf->Cell(136,6,'COSTO TOTALE SCONTATO',1,0,'L');
-            $pdf->Cell(54,6,"EURO ".number_format($reservation->prezzofinale + $reservation->prezzofinale * 0.22,2,",","."),1,0,'C'); //prezzo TOTALE scontato inclusivo di iva
+            $pdf->Cell(163,6,'COSTO TOTALE SCONTATO',1,0,'L');
+            $pdf->Cell(27,6,"EURO ".number_format($reservation->prezzofinale + $reservation->prezzofinale * 0.22,2,",","."),1,0,'R'); //prezzo TOTALE scontato inclusivo di iva
             $pdf->Ln();
 
-            // rigo del totale meno il costo fisso
-            $pdf->SetFillColor(219, 84, 6); // arancio chiaro        
-            $pdf->Cell(136,6,'COSTO TOTALE DA CORRISPONDERE',1,0,'L');
-            $pdf->Cell(54,6,"EURO ".number_format(($reservation->prezzofinale + $reservation->prezzofinale * 0.22)-$costifissi,2,",","."),'LTR',0,'C'); //prezzo TOTALE meno anticipo
-            $pdf->Ln();
+            if($reservation->stato >= 2){
+                // rigo del totale meno il costo fisso
+                $pdf->SetFillColor(219, 84, 6); // arancio chiaro        
+                $pdf->Cell(163,6,'COSTO TOTALE DA CORRISPONDERE',1,0,'L');
+                $pdf->Cell(27,6,"EURO ".number_format(($reservation->prezzofinale + $reservation->prezzofinale * 0.22)-$costifissi,2,",","."),'LTR',0,'R'); //prezzo TOTALE meno anticipo
+                $pdf->Ln();
+            }
         }
         else{
-            // rigo del totale meno il costo fisso
-            $pdf->SetFillColor(219, 84, 6); // arancio chiaro        
-            $pdf->Cell(136,6,'COSTO TOTALE DA CORRISPONDERE',1,0,'L');
-            $pdf->Cell(54,6,"EURO ".number_format(($totale + $totale * 0.22)-$costifissi,2,",","."),'LTR',0,'C'); //prezzo TOTALE meno anticipo
-            $pdf->Ln();
+            if($reservation->stato >= 2){
+                // rigo del totale meno il costo fisso
+                $pdf->SetFillColor(219, 84, 6); // arancio chiaro        
+                $pdf->Cell(163,6,'COSTO TOTALE DA CORRISPONDERE (meno anticipo iscrizione gia versato)',1,0,'L');
+                $pdf->Cell(27,6,"EURO ".number_format(($totale + $totale * 0.22)-$costifissi,2,",","."),'LTR',0,'R'); //prezzo TOTALE meno anticipo
+                $pdf->Ln();
+            }
         }
         
-
-        $pdf->SetFillColor(0); // arancio chiaro    
-        $pdf->Cell(136,6,'(Costo totale meno costo fisso di iscrizione gia versato)','LRB',0,'L');
-        $pdf->Cell(54,6,'',1,0,'C');
-        $pdf->Ln();
-
         // note spazio espositivo
         $pdf->Cell(82,18,'DESCRIZIONE SPAZIO E NOTE',1,0,'L');
         $pdf->Cell(108,18,utf8_decode($reservation->standpersonalizzato),1,0,'C');
@@ -581,7 +656,7 @@ class ReservationsController extends ControllerBase
         $pdf->Image('img/quadrato.png',11,182,2);
         $pdf->Image('img/quadrato.png',35,182,2);
 
-        $pdf->Output();
+        return $pdf;
 
 
     }    
@@ -834,7 +909,7 @@ class ReservationsController extends ControllerBase
 
         $reservationservices = ReservationServices::find("reservations_id = ".$reservation->id);
         $fieldprezzo = 'prezzofasciaa';
-        switch($reservation->getExhibitors()->fasciadiprezzo){
+        switch($reservation->exhibitors->fasciadiprezzo){
             case 'b':
                 $fieldprezzo = 'prezzofasciab';
             break;
@@ -913,6 +988,70 @@ class ReservationsController extends ControllerBase
 
 
     }    
+
+    /**
+     * genera dati catalogo
+     *
+     * @param string $id
+     */
+    public function daticatalogoAction($id){
+
+        if (!$this->request->isGet()) {
+            $this->flash->error("Richiesta non valida");
+
+            return $this->dispatcher->forward(
+                [
+                    "controller" => "reservations",
+                    "action"     => "edit",
+                    "params"     => [$id]
+                ]
+            );
+        }
+
+        $reservation = Reservations::findFirstById($id);
+
+        if (!$reservation) {
+            $this->flash->error("la Prenotazione non esiste");
+
+            return $this->dispatcher->forward(
+                [
+                    "controller" => "index",
+                    "action"     => "index",
+                ]
+            );
+        }
+
+        $string = strtolower($reservation->getExhibitors()->ragionesociale);
+        $string = preg_replace("/[^0-9A-Za-z ]/", "", $string);
+        $string = str_replace(" ", "-", $string);
+        while (strstr($string, "--")) {
+            $string = preg_replace("/--/", "-", $string);
+        }
+        $permalink = (utf8_decode($string));
+        
+        $this->view->setRenderLevel(\Phalcon\Mvc\View::LEVEL_NO_RENDER);
+        $this->response->resetHeaders();   
+        $this->response->setHeader('Content-Type', 'application/octet-stream');
+        $this->response->setHeader('Content-Disposition', "attachment; filename=dati-catalogo-{$permalink}.txt");
+
+        // titolo evento
+        echo($this->evento->descrizione." - ");
+        echo("Dati per il  catalogo\n\n");
+
+        $datifatturazione["catalogonome"] = utf8_decode($reservation->exhibitors->catalogonome);
+        $datifatturazione["Indirizzo"] = utf8_decode($reservation->exhibitors->catalogoindirizzo." - ".$reservation->exhibitors->catalogocap." - ".ucfirst($reservation->exhibitors->catalogocitta)." (".$reservation->exhibitors->catalogoprovincia.")");
+        echo "NOME: ".$datifatturazione["catalogonome"]."\n";
+        echo "INDIRIZZO: ".$datifatturazione["Indirizzo"]."\n";
+        echo "TELEFONO: ".$reservation->exhibitors->catalogotelefono."\n";
+        echo "EMAIL: ".$reservation->exhibitors->catalogoemail."\n";
+        echo "SITO WEB: ".$reservation->exhibitors->catalogositoweb."\n";
+        echo "PAGINA FACEBOOK: ".$reservation->exhibitors->catalogofacebook."\n";
+        echo "PROFILO INSTAGRAM: ".$reservation->exhibitors->catalogoinstagram."\n";
+        echo "PROFILO TWITTER: ".$reservation->exhibitors->catalogotwitter."\n";
+        echo "DESCRIZIONE: ".$reservation->exhibitors->catalogodescrizione."\n";
+
+    }    
+
 
 }
 

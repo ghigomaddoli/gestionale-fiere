@@ -401,7 +401,8 @@
     </div>    
 
     <div class="form-row">
-        <div class="col-xs-12">
+
+        <div class="col-sm-12">
             &Egrave; possibile ospitare una o più realtà espositive all’interno del proprio stand. 
             Indicare il numero e il nome dei co-espositori. Se l'espositore segnala uno o più co-espositori, 
             al termine della compilazione di questo form verrà chiesto di inserire i anche dati del co-espositore (dati per fatturazione 
@@ -448,7 +449,8 @@
         </div>        
 
         <div class="form-row">
-                <div class="col-xs-12">
+                <div class="col-sm-2"><i class="far fa-clone fa-3x copiagiu" data-toggle="tooltip" title="Copia i dati di fatturazione dove possibile"></i><i class="fas fa-long-arrow-alt-down fa-3x copiagiu"  data-toggle="tooltip" title="Copia i dati di fatturazione dove possibile"></i></div>
+                <div class="col-sm-10">
                     N.B. La correttezza e la completezza delle informazioni fornite in questo riquadro sono a cura ed interesse dell'espositore. 
                     L'organizzazione non risponde di eventuali errori e/o carenze dovute ad una compilazione non accurata di questo modulo.
                 </div>
@@ -616,3 +618,12 @@
       </div>
     </div>
 </div>
+<div class="modal fade" id="modalspinner" tabindex="-1" role="dialog" aria-labelledby="modalspinner" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+            <i class="fas fa-spinner fa-spin"></i> controllo dati in corso...
+        </div>
+      </div>
+    </div>
+  </div>
