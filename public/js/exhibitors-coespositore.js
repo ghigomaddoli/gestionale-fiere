@@ -1,26 +1,5 @@
 $(document).ready(function(){
 
-    var redirect = $("#redirect").val();
-
-    $("[name=fasciadiprezzo]").change(function(obj){
-        var fascia = this.value;
-
-        var arrstand = $("#arraystand").val().split(',');
-        if(arrstand.length > 0){
-            $.each( arrstand, function( key, value ) {
-               $("#prezzo-stand" + value).html('').append($("#stand"+value+fascia).val() + ' +IVA');
-            });
-        }
-
-        var arrserv = $("#arrayservizi").val().split(',');
-        if(arrserv.length > 0){
-            $.each( arrserv, function( key, value ) {
-               $("#prezzoserv" + value).val($("#prezzoserv"+value+fascia).val() + ' +IVA');
-            });
-        }
-
-    });
-
     $("#fespositori").submit(function(event){
 
         $('#modalspinner').modal('show');
@@ -44,7 +23,6 @@ $(document).ready(function(){
                 var selettore = '';
                 var primoselettore = '';
                 var indice = 0;
-                var linkcoespositore = 'gulp';
                 
                 $.each( response, function( nomecampo, messaggioerrore ) {
    
@@ -56,9 +34,6 @@ $(document).ready(function(){
                     } 
                     // in base al campo input inietto il messaggio di errore in posti diversi..
                     switch (nomecampo) { 
-                        case 'reservation_id':
-                         linkcoespositore = 'exhibitors/coespositore/' + messaggioerrore;
-                            break;
                         case 'fasciadiprezzo': 
                         $( '#fdp' ).after( "<div class=\"alert alert-danger darimuovere\" role=\"alert\">" + messaggioerrore + "</div>" );
                             break;
@@ -74,14 +49,18 @@ $(document).ready(function(){
                         primoselettore = "#contenutosuccess";
                             break;  
                         case 'incima':
-                        $( '#incima' ).html( "<div class=\"alert alert-success darimuovere\" role=\"alert\">" + messaggioerrore + "</div>" );
+                        if(messaggioerrore == 'OK'){
+                            $( '#incima' ).html( "<div class=\"alert alert-success darimuovere\" role=\"alert\">" + messaggioerrore + "</div>" );
+                        }
+                        else{
+                            $( '#incima' ).html( "<div class=\"alert alert-danger darimuovere\" role=\"alert\">" + messaggioerrore + "</div>" );
+                        }
                         primoselettore = "#incima";
                             break;                              
                         case 'status':
                         if(messaggioerrore == 'OK'){
                             $('#modalspinner').fadeOut(1500, function(){
                                 $('#modalspinner').modal('hide');
-                                $('#daticoesp').attr('href',linkcoespositore);
                                 $('#SuccessInsertModal').modal('show');
                             });
                         }
@@ -97,7 +76,6 @@ $(document).ready(function(){
 
                     indice++;
                 });
-                //$(primoselettore).focus();
                 $('html, body').stop().animate({
                   scrollTop: ($(primoselettore).offset().top - 80)
                 }, 1000, 'easeInOutExpo');

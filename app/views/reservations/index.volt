@@ -12,38 +12,38 @@
                 <div class="row">
                     <div class="col-1"><strong>Filtra per:</strong> </div>
                     <div class="col-11">
-                      {{ form('reservations/index', 'id' : 'filtriricerca', 'role': 'form', 'method': 'POST', 'autocomplete': 'off', 'class': 'd-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0') }} 
-                      <div class="input-group">
-                              <label for="FiltroArea" class="control-label">Area Tematica:&nbsp;</label>
-                            {{ select('areas_id', areas, 'using': ['id', 'nome'], 'class' : 'form-control', 'useEmpty' : true, 'emptyText'  : 'Tutte le aree', 'id' : 'FiltroArea') }}
+                      {{ form('reservations/index', 'id' : 'filtriricerca', 'role': 'form', 'method': 'POST', 'autocomplete': 'off', 'class' : 'form-inline') }} 
+                      <div class="form-row align-items-center">
+                            {{ select('areas_id', areas, 'using': ['id', 'nome'], 'class' : 'form-control form-control-sm', 'useEmpty' : true, 'emptyText'  : 'Tutte le aree', 'id' : 'FiltroArea') }}
                            &nbsp;&nbsp; 
-                           <label for="FiltroStato" class="control-label">Stato:&nbsp; </label>
-                           {{ select('stato', stati, 'using': ['id', 'descrizionebreve'], 'class' : 'form-control', 'useEmpty' : true, 'emptyText'  : 'Tutti gli stati', 'id' : 'FiltroStato') }}
+                           {{ select('stato', stati, 'using': ['id', 'descrizionebreve'], 'class' : 'form-control form-control-sm', 'useEmpty' : true, 'emptyText'  : 'Tutti gli stati', 'id' : 'FiltroStato') }}
                            &nbsp;&nbsp; 
-                           <label for="OrderBy" class="control-label">Ordina i risultati per:&nbsp; </label>
-                           {{ select_static('orderby', ['' : 'Più recenti', 'Exhibitors.ragionesociale' :'Ragione Sociale', 'stato' : 'Stato', 'areas_id' : 'Area Tematica'], 'class' : 'form-control', 'id' : 'OrderBy') }}                         
+                           <label for="OrderBy" class="control-label">Ordina per:&nbsp;</label>
+                           {{ select_static('orderby', ['' : 'Più recenti', 'Exhibitors.ragionesociale' :'Ragione Sociale', 'stato' : 'Stato', 'areas_id' : 'Area Tematica'], 'class' : 'form-control form-control-sm', 'id' : 'OrderBy') }}                         
                            &nbsp;&nbsp; 
-                           <label for="Filtroprogcult" class="control-label">Prog. Culturale:&nbsp; </label>
-                           {{ check_field('interventoprogrammaculturale', 'value' : '1', 'class' : 'form-control', 'id' : 'Filtroprogcult') }}                                                  
-                           &nbsp;<button type="submit" class="btn btn-primary">&nbsp;<i class="fas fa-search"></i>&nbsp;Cerca</button>
+                           <label for="Filtroprogcult" class="control-label">Prog. Cult.:&nbsp; </label>
+                           {{ check_field('interventoprogrammaculturale', 'value' : '1', 'data-size' : 'mini', 'id' : 'Filtroprogcult', 'class' : 'form-control form-control-sm' ) }}                                                 
+                           &nbsp;&nbsp;<button type="submit" class="btn btn-primary">&nbsp;<i class="fas fa-search"></i>&nbsp;Cerca</button>
                            {{ end_form() }}
-                           {{ form('reservations/excelgen', 'id' : 'fexcelgen', 'role': 'form', 'method': 'POST', 'autocomplete': 'off') }} 
+
+                           {{ form('reservations/index', 'id' : 'freset', 'role': 'form', 'method': 'POST', 'autocomplete': 'off', 'class' : 'form-inline') }} 
+                           &nbsp;<input type="submit" id="ResetFiltri" value="Reset" class="btn btn-primary">
+                           {{ end_form() }}
+                           &nbsp;&nbsp;
+                           {{ form('reservations/excelgen', 'id' : 'fexcelgen', 'role': 'form', 'method': 'POST', 'autocomplete': 'off', 'class' : 'form-inline') }} 
                            {{ hidden_field('areas_id', 'id' : 'FiltroAreaexcel') }}
                            {{ hidden_field('stato', 'id' : 'FiltroStatoexcel') }}
                            {{ hidden_field('orderby', 'id' : 'FiltroOrderbyexcel') }}
                            {{ hidden_field('interventoprogrammaculturale', 'id' : 'Filtroprogcultexcel') }}
                            &nbsp;<button type="button" id="excelgen" class="btn btn-primary" data-toggle="tooltip" title="Scarica in formato Excel i dati con i criteri di ricerca impostati">&nbsp;<i class="fas fa-file-excel"></i>&nbsp;Scarica</button>
+                           &nbsp;
+                           {{ check_field('separasheets', 'value' : '1', 'data-toggle' : 'toggle','data-on':'più fogli','data-off':'un foglio', 'id' : 'separasheets', 'data-size' : 'mini', 'class' : 'form-control form-control-sm') }}
                            {{ end_form() }}
-                           {{ form('reservations/index', 'id' : 'freset', 'role': 'form', 'method': 'POST', 'autocomplete': 'off') }} 
-                           &nbsp;<input type="submit" id="ResetFiltri" value="Reset" class="btn btn-primary">
-                           {{ end_form() }}
-                        </div>
-                    </div>
+                      </div>
                 </div>
-                <div class="row">
-                  <div class="col">&nbsp;</div>
-              </div>
+                <div class="row">&nbsp;</div>
         </div>
+  
 
   <div class="container-fluid">
 
@@ -101,8 +101,11 @@
                         </td>
                         <td class="text-nowrap">
                             {{ link_to('exhibitors/edit/' ~ reservation.exhibitors.id, "<i class='fas fa-pencil-alt'></i>", 'class': 'btn btn-sm btn-outline-secondary', 'title' :  "Modifica i dati anagrafici di fatturazione espositore", 'data-toggle' : 'tooltip') }}
-                            {{ link_to('exhibitors/delete/' ~ reservation.exhibitors.id, "<i class='fas fa-trash-alt'></i>", 'class': 'btn btn-sm btn-outline-secondary', 'title' :  "Elimina espositore e tutte le sue richieste!", 'data-toggle' : 'tooltip') }}
+                            {{ link_to('exhibitors/delete/' ~ reservation.exhibitors.id, "<i class='fas fa-trash-alt'></i>",'data-target' : '#deletetModal', 'data-idesp' : reservation.exhibitors.id, 'data-esp' : reservation.exhibitors.ragionesociale, 'class': 'btn btn-sm btn-outline-secondary cancellaespositore', 'data-toggle' : 'tooltip') }}
                             {{ link_to('reservations/edit/' ~ reservation.id, "<i class='fas fa-cogs'></i>", 'class': 'btn btn-sm btn-outline-secondary', 'title' :  "Dettaglio di Stand, Servizi e pagamenti", 'data-toggle' : 'tooltip') }}
+                            {% if reservation.padre_id is null %}
+                            {{ link_to('exhibitors/coespositore/' ~ reservation.id, "<i class='fas fa-user-friends'></i>", 'class': 'btn btn-sm btn-outline-secondary', 'title' :  "Inserisci coespositore", 'data-toggle' : 'tooltip') }}
+                            {% endif %}
                         </td>
                         </tr>
                     {% endfor %} 
@@ -167,3 +170,24 @@
 <a class="scroll-to-top rounded" href="#page-top">
 <i class="fas fa-angle-up"></i>
 </a>
+
+<!-- Logout Modal-->
+{{ partial('partials/logoutmodal') }}
+
+<div class="modal fade" id="deletetModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Sei sicuro di voler eliminare questo espositore?</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">Clicca su "Elimina" per eliminare definitivamente l'espositore e tutti i servizi da lui prenotati.</div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Annulla</button>
+        <a class="btn btn-primary" href="#">Elimina</a>
+      </div>
+    </div>
+  </div>
+  </div>

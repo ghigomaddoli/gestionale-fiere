@@ -64,6 +64,12 @@ class Reservations extends \Phalcon\Mvc\Model
      *
      * @var string
      */
+    public $notecondivise;    
+
+    /**
+     *
+     * @var string
+     */
     public $altriservizi;
 
     /**
@@ -100,25 +106,7 @@ class Reservations extends \Phalcon\Mvc\Model
      *
      * @var string
      */
-    public $numerofattura; 
-    
-    /**
-     *
-     * @var integer
-     */
-    public $anticiporichiesto;
-    
-    /**
-     *
-     * @var integer
-     */
-    public $anticipopagato;
-    
-    /**
-     *
-     * @var integer
-     */
-    public $pagamentocompleto;
+    public $numerofattura;
 
     /**
      * Initialize method for model.
@@ -131,7 +119,7 @@ class Reservations extends \Phalcon\Mvc\Model
         $this->belongsTo('exhibitors_id', 'Exhibitors', 'id', ['alias' => 'Exhibitors', 'reusable' => true]);
         $this->belongsTo('events_id', 'Events', 'id', ['alias' => 'Events','reusable' => true]);
         $this->belongsTo('areas_id', 'Areas', 'id', ['alias' => 'Areas','reusable' => true]);
-        $this->belongsTo('padre_id', 'Exhibitors', 'id', ['alias' => 'Padri']);
+        $this->belongsTo('padre_id', 'Reservations', 'id', ['alias' => 'Padri']);
         $this->belongsTo('stato', 'Stati', 'id', ['alias' => 'Stati','reusable' => true]);
     }
 
@@ -206,16 +194,14 @@ class Reservations extends \Phalcon\Mvc\Model
             'padre_id' => 'padre_id',
             'prezzofinale' => 'prezzofinale',
             'notepagamento' => 'notepagamento',
+            'notecondivise' => 'notecondivise',
             'altriservizi' => 'altriservizi',
             'prezzoaltriservizi' => 'prezzoaltriservizi',
             'interventoprogrammaculturale' => 'interventoprogrammaculturale',
             'prezzostandpersonalizzato' => 'prezzostandpersonalizzato',
             'standpersonalizzato' => 'standpersonalizzato',
             'stato' => 'stato',
-            'numerofattura' => 'numerofattura',
-            'anticiporichiesto' => 'anticiporichiesto',
-            'anticipopagato' => 'anticipopagato',
-            'pagamentocompleto' => 'pagamentocompleto'
+            'numerofattura' => 'numerofattura'
         ];
     }
    

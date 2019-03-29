@@ -129,6 +129,18 @@ public function getUserName(){
     }
 }
 
+public function getUserId(){
+    $auth = $this->session->get('auth');
+
+    if ($auth) {
+        $ses =  $this->session->get('auth');
+        return $ses['id'];
+    }
+    else{
+        return '';
+    }
+}
+
 public function getUserEmail(){
     $auth = $this->session->get('auth');
 
@@ -149,7 +161,8 @@ public function getAvatar(){
             return "<img src='/{$ses['avatar']}' class='rounded-circle' height='21px'>";
         }
         else{
-            return '<i class="fas fa-user-circle fa-fw"></i>';
+             //return '<i class="fas fa-user-circle fa-fw"></i>';
+            return "<img src=\"http://lorempixel.com/21/21/cats/".$ses['id']."\" class='rounded-circle' height='21px'>";
         }
     }
     else{

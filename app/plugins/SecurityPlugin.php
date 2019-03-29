@@ -50,7 +50,7 @@ class SecurityPlugin extends Plugin
 				'events'    => ['index', 'search', 'new', 'edit', 'save', 'create', 'delete'],
 				'exhibitors'    => ['index','search', 'edit', 'delete','testinvio'],
 				'notereservations'    => ['index', 'search', 'new', 'edit', 'save', 'create', 'delete'],
-				'reservations'    => ['index','search', 'edit', 'delete', 'anteprimalettera','excelgen','facsimilefattura','invialettera','daticatalogo'],
+				'reservations'    => ['index','search', 'edit', 'delete', 'anteprimalettera','excelgen','facsimilefattura','daticatalogo','scrivinota'],
 				'reservationservices'    => ['index', 'search', 'new', 'edit', 'save', 'create', 'delete'],
 				'services'    => ['index', 'search', 'new', 'edit', 'save', 'create', 'delete'],
 				'statireservations'    => ['index', 'search', 'new', 'edit', 'save', 'create', 'delete'],
@@ -66,8 +66,8 @@ class SecurityPlugin extends Plugin
 				'index'      => ['index'],
 				'errors'     => ['show401', 'show404', 'show500'],
 				'session'    => ['index', 'register', 'start', 'end'],
-				'reservations'    => ['new', 'save', 'create'],
-				'exhibitors'    => [ 'new', 'nuovo', 'validate', 'save', 'create'],
+				'reservations'    => ['new', 'save', 'create','invialettera'],
+				'exhibitors'    => [ 'new', 'nuovo', 'validate', 'save', 'create', 'coespositore','coespositorecreate'],
 			];
 			foreach ($publicResources as $resource => $actions) {
 				$acl->addResource(new Resource($resource), $actions);
@@ -128,7 +128,7 @@ class SecurityPlugin extends Plugin
 
 		if (!$acl->isResource($controller)) {
 
-			$this->miologger->log("ACL:: ".$controller."non sembra essere un controller! esco con 404");
+			$this->miologger->log("ACL:: ".$controller." non sembra essere un controller! esco con 404");
 
 			$dispatcher->forward([
 				'controller' => 'errors',
@@ -140,10 +140,10 @@ class SecurityPlugin extends Plugin
 
 		$allowed = $acl->isAllowed($role, $controller, $action);
 		$accettazione = ($allowed ? "SI" : "NO");
-		$this->miologger->log("ACL:: ruolo: {$role} controller: {$controller} action: {$action}. Lo accetto? {$accettazione}");
+		//$this->miologger->log("ACL:: ruolo: {$role} controller: {$controller} action: {$action}. Lo accetto? {$accettazione}");
 
 		if (!$allowed) {
-			$this->miologger->log("ACL:: ruolo: {$role} controller: {$controller} action: {$action}. Lo accetto? {$accettazione}. Invece non lo acetto");
+			$this->miologger->log("ACL:: ruolo: {$role} controller: {$controller} action: {$action}. Lo accetto? {$accettazione}. Non lo accetto");
 			$dispatcher->forward([
 				'controller' => 'errors',
 				'action'     => 'show401'

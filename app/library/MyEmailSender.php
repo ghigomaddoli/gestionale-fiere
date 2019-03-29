@@ -16,7 +16,7 @@ class MyEmailSender {
      */
     static function inviaEmail($application, $template, $parametri,$oggetto)
     {
-        \PhalconDebug::info("Destinatari:",$parametri['destinatari']);
+        //\PhalconDebug::info("parametri:",$parametri);
         //$destinatari = get_object_vars($parametri['destinatari']);
         $destinatari = $parametri['destinatari'];
         // verifico che i destinatari dell'email siano impostati:
@@ -35,24 +35,21 @@ class MyEmailSender {
         if($application->view->exists('emailtemplates/'.$template)){
 
             \PhalconDebug::info('SI IL TEMPLATE ESISTE');
+            $miaview = $application->view;
 
-            $application->view->getRender(
+            $bodyemail = $miaview->getRender(
                 'emailtemplates',
                 $template,
                 $parametri,
                 function ($miaview) {
-            
                     $miaview->setViewsDir('../app/views/');
-            
                     $miaview->setRenderLevel(
                         View::LEVEL_LAYOUT
                     );
+
                 }
             );
-
-            $bodyemail = $application->view->getContent();
-
-            \PhalconDebug::info($bodyemail);
+            sleep(1);
 
             // Create a message
             $message = (new Swift_Message($oggetto))
@@ -60,6 +57,10 @@ class MyEmailSender {
             ->setTo($destinatari)
             ->setBody($bodyemail, 'text/html')
             ->addPart(strip_tags($bodyemail), 'text/plain');
+
+            if(isset($parametri['replyto'])){
+                $message->setReplyTo($parametri['replyto']);
+            }
 
             if(isset($parametri['allegato']) && is_array($parametri['allegato'])){
                 $allegato = $parametri['allegato'];
@@ -69,7 +70,7 @@ class MyEmailSender {
 
             // Send the message
             $result = $mailer->send($message);
-
+            \PhalconDebug::info("result invio:",$result);
             if($result){
                 return true;
             }

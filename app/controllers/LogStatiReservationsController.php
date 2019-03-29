@@ -1,6 +1,6 @@
 <?php
 
-class LogStatiReservationsController extends \Phalcon\Mvc\Controller
+class LogStatiReservationsController extends ControllerBase
 {
 
     public function indexAction()

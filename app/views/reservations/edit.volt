@@ -13,7 +13,10 @@
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
     <li class="breadcrumb-item">
-    <a href="/reservations/index">Gestione Stand</a>
+    <a href="/reservations/index">Gestione Prenotazioni</a>
+    </li>
+    <li class="breadcrumb-item active">
+        Stand
     </li>
     <li class="breadcrumb-item active">{{ reservation.exhibitors.ragionesociale }} </li>
     </ol>
@@ -25,8 +28,11 @@
     {% if !reservation.padre_id is empty %}
 
     <div class="form-group">
-        <h2>Attenzione! Questo espositore è co-espositore di {{ reservation.getpadri().ragionesociale}}
+        <h2>{{ reservation.exhibitors.ragionesociale }} è co-espositore di {{ mainreservation.exhibitors.ragionesociale}}</h2>
     </div>
+
+    {{ partial('partials/coespositoreedit') }}
+
 
     {% else %}
 
@@ -143,7 +149,7 @@
                     </div>
             </div>
             <div class="col-sm-4"><h4>Riepilogo contabile</h4>
-                <table id="riepilogocontabile" class="table table-sm table-riepilogo">
+                <table id="riepilogocontabile" class="table-responsive table-sm table-riepilogo">
                     <tr><th>descrizione</th><th class="text-right">costo&nbsp;un.</th><th class="text-right">quant.</th><th class="text-right">tot</th><th class="text-right">iva</th></tr>
                     {% set totale = 0 %}
                     {% set totiva = 0 %}
@@ -266,82 +272,22 @@
     {# { hidden_field("stato", "value" : reservation.stato, "id" : "statohidden") } #}
 
     <div class="row">
-            <div class="col-sm-12">
-                <label for="fieldNotepagamento" class="control-label">Note pagamento</label>
+            <div class="col-sm-3">
+                    <label for="fieldStandpersonalizzato" class="control-label">Numero Fattura</label>
+                    {{ text_field('numerofattura', "class" : "form-control", "id" : "numerofattura", "value" : reservation.numerofattura) }}
+            </div>
+            <div class="col-sm-9">
+                <label for="fieldNotepagamento" class="control-label">Note pagamento (staff only)</label>
                 {{ text_area('notepagamento', "rows" : 4, "class" : "form-control", "id" : "fieldNotepagamento", "value" : reservation.notepagamento ) }}
             </div>
     </div>
 
     <div class="row">
-            <div class="col-sm-12">&nbsp;</div>
-    </div>
-
-    <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-            {{ submit_button('Salva le modifiche',"class" : "btn btn-lg btn-primary") }}
-        </div>
-    </div>
-
-
-
-    {% endif %}
-    
-    <!-- Sezione per la generazione della Lettera di ammissione -->
-    <div class="jumbotron">
-        <h3>Lettera di ammissione</h3>
-        <p>Cliccando sul pulsante sottostante puoi decidere di generare il pdf in anteprima oppure di inviarlo anche all'espositore come allegato email</p>
-        <div class="row text-center">
-            <!--div class="col">{{ link_to('exhibitors/testinvio/' ~ reservation.exhibitors.id, "Test invio email conferma", 'role': 'button', 'class': 'btn btn-danger btn-lg') }}</div-->
-            <div class="col">{{ link_to('reservations/anteprimalettera/' ~ reservation.id, "Anteprima Lettera di ammissione", 'target' : '_blank', 'role': 'button', 'class': 'btn btn-primary btn-lg') }}</div>
-            <div class="col">{{ link_to('reservations/invialettera/' ~ reservation.id, "&nbsp;<i class='far fa-envelope'></i>&nbsp;&nbsp;Invia la Lettera di ammissione all'espositore", 'id':'inviolettera', 'role': 'button', 'class': 'btn btn-lg btn-warning', "data-toggle" : "tooltip", "data-placement" : "top", "title" : "La lettera di ammissione verrà inviata all'indirizzo " ~ reservation.exhibitors.emailaziendale) }}</div>
-        </div>
-    </div>
-
-    <!-- Sezione per la generazione della fattura -->
-    <div class="jumbotron">
-            <h3>Generazione Fattura</h3>
-            <p>Cliccando sul pulsante sottostante puoi generare la fattura</p>
-            <div class="row text-center">
-                    <div class="col-4">
-                            <div class="input-group">
-                                    <div class="input-group-prepend">
-                                      <span class="input-group-text" id="umerofatturalabel">Numero Fattura</span>
-                                    </div>
-                                    {{ text_field('numerofattura', "class" : "form-control", "id" : "numerofattura", "value" : reservation.numerofattura) }}
-                            </div>
-                    </div>
-                <div class="col-8">{{ link_to('reservations/facsimilefattura/' ~ reservation.id, "&nbsp;<i class='fas fa-file-invoice-dollar'></i>&nbsp;&nbsp;Genera il Fac Simile della fattura", 'role': 'button', 'class': 'btn btn-lg btn-warning', "data-toggle" : "tooltip", "data-placement" : "top", "title" : "Verranno generati in formato txt tutti i dati necessari alla fattura") }}</div>
-                <!--div class="col-4 text-left">
-                        {% set car = null %} 
-                        {% if reservation.anticiporichiesto == 1 %} 
-                            {% set car = 'checked' %} 
-                        {% endif %}
-                        <div class="form-check form-control-lg">
-                        {{ check_field('anticiporichiesto', 'value': 1, 'checked' : car, 'class' : 'form-check-input', 'id' : 'cbar') }}
-                        <label class="form-check-label" for="cbipc">Richiesta anticipo inviata</label>
-                        </div>  
-
-                        {% set capag = null %} 
-                        {% if reservation.anticipopagato == 1 %} 
-                            {% set capag = 'checked' %} 
-                        {% endif %}
-                        <div class="form-check form-control-lg">
-                        {{ check_field('anticipopagato', 'value': 1, 'checked' : capag, 'class' : 'form-check-input', 'id' : 'cbap') }}
-                        <label class="form-check-label" for="cbipc">Anticipo Pagato</label>
-                        </div>  
-
-                        {% set cpc = null %} 
-                        {% if reservation.pagamentocompleto == 1 %} 
-                            {% set cpc = 'checked' %} 
-                        {% endif %}
-                        <div class="form-check form-control-lg">
-                        {{ check_field('pagamentocompleto', 'value': 1, 'checked' : cpc, 'class' : 'form-check-input', 'id' : 'cbpc') }}
-                        <label class="form-check-label" for="cbipc">Pagamento Completo</label>
-                        </div>  
-                </div-->
+            <div class="col">
+                <label for="fieldNotecondivise" class="control-label">Note condivise con l'espositore</label>
+                {{ text_area('notecondivise', "rows" : 4, "class" : "form-control", "id" : "fieldNotecondivise", "value" : reservation.notecondivise ) }}
             </div>
     </div>
-
 
     <div class="row">
             <div class="col-sm-12">&nbsp;</div>
@@ -355,28 +301,79 @@
             <div class="col-sm-12">&nbsp;</div>
     </div>
     
-        <div class="row">
-                <div class="col-sm-1 hidden-xs">&nbsp;</div>
-                <div class="col-sm-10 col-xs-12">
-                    <label for="customRange2" id="descrizionestato">Stato: 
-                        {% for i, stato in stati  %}
-                        {% if reservation.stato == stato.id %} {% set visible = 'inline' %} {% else %} {% set visible = 'none' %} {% endif %}
-                        <span id="badge-stato-{{ stato.id }}" class="badge badge-{{ stato.colore }}" title="{{ stato.descrizionestato }}" style="display:{{ visible }}">{{ stato.descrizionestato }}</span>
-                        {% endfor %}
-                    </label>
-                    <input type="range" name="stato" class="custom-range" min="1" max="{{ statimax }}" step="1" value="{{ reservation.stato }}">
-                </div>
-                <div class="col-sm-1 hidden-xs">&nbsp;</div>
-        </div>
-    
-        <div class="row">
+    <div class="row">
+            <div class="col-sm-1 hidden-xs">&nbsp;</div>
+            <div class="col-sm-10 col-xs-12">
+                <label for="customRange2" id="descrizionestato">Stato: 
                     {% for i, stato in stati  %}
-                    <div class="col hidden-xs text-center">
-                    <span id="legenda-stato-{{ stato.id }}" class="badge badge-{{ stato.colore }}" title="{{ stato.descrizionestato }}" >{{ stato.descrizionebreve }}</span>            
-                    </div>
+                    {% if reservation.stato == stato.id %} {% set visible = 'inline' %} {% else %} {% set visible = 'none' %} {% endif %}
+                    <span id="badge-stato-{{ stato.id }}" class="badge badge-{{ stato.colore }}" title="{{ stato.descrizionestato }}" style="display:{{ visible }}">{{ stato.descrizionestato }}</span>
                     {% endfor %}
-        </div>
+                </label>
+                <input type="range" name="stato" class="custom-range" min="1" max="{{ statimax }}" step="1" value="{{ reservation.stato }}">
+            </div>
+            <div class="col-sm-1 hidden-xs">&nbsp;</div>
+    </div>
+
+    <div class="row">
+                {% for i, stato in stati  %}
+                <div class="col hidden-xs text-center">
+                <span id="legenda-stato-{{ stato.id }}" class="badge badge-{{ stato.colore }}" title="{{ stato.descrizionestato }}" >{{ stato.descrizionebreve }}</span>            
+                </div>
+                {% endfor %}
+    </div>
     
+
+    <div class="row">
+            <div class="col-sm-12">&nbsp;</div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            {{ submit_button('Salva le modifiche',"class" : "btn btn-lg btn-primary") }}
+        </div>
+    </div>
+
+    <!-- Sezione per la generazione della Lettera di ammissione -->
+    <div class="jumbotron">
+        <h3>Lettera di ammissione</h3>
+        <p>Cliccando sul pulsante sottostante puoi decidere di generare il pdf in anteprima oppure di inviarlo anche all'espositore come allegato email</p>
+        <div class="row">
+            <div class="col">{{ link_to('exhibitors/testinvio/' ~ reservation.exhibitors.id, "Test invio email conferma", 'role': 'button', 'class': 'btn btn-danger btn-lg') }}</div>
+            <div class="col"><div class="form-group">{{ link_to('reservations/anteprimalettera/' ~ reservation.id, "Anteprima Lettera di ammissione", 'target' : '_blank', 'role': 'button', 'class': 'btn btn-primary btn-lg') }}</div></div>
+            <div class="col"><div class="form-group">{{ link_to('reservations/invialettera/' ~ reservation.id, "&nbsp;<i class='far fa-envelope'></i>&nbsp;&nbsp;Invia Lettera di ammissione", 'id':'inviolettera', 'role': 'button', 'class': 'btn btn-lg btn-warning', "data-toggle" : "tooltip", "data-placement" : "top", "title" : "La lettera di ammissione verrà inviata all'indirizzo " ~ reservation.exhibitors.emailaziendale) }}</div></div>
+        </div>
+    </div>
+
+
+    <div class="row">
+            <div class="col-sm-12 col-md-6">
+                    <div class="jumbotron">
+                            <h3>Generazione dati per il catalogo</h3>
+                            <p>Cliccando sul bottone sottostante puoi generare un file di testo con i dati del catalogo di questo espositore.</p>
+                    
+                            <div class="row">
+                                    <div class="col-8">{{ link_to('reservations/daticatalogo/' ~ reservation.id, "&nbsp;<i class='fas fa-file-invoice-dollar'></i>&nbsp;&nbsp;Genera i dati per il catalogo", 'role': 'button', 'class': 'btn btn-lg btn-warning', "data-toggle" : "tooltip", "data-placement" : "top", "title" : "Verranno generati in formato txt tutti i dati del catalogo") }}</div>
+                            </div>
+                    
+                    </div>
+            </div>
+            <div class="col-sm-12 col-md-6">    <!-- Sezione per la generazione della fattura -->
+                <div class="jumbotron">
+                        <h3>Generazione Fattura</h3>
+                        <p>Cliccando sul pulsante sottostante puoi generare il fac simile della la fattura di questo espositore</p>
+                        <div class="row">
+                            <div class="col">{{ link_to('reservations/facsimilefattura/' ~ reservation.id, "&nbsp;<i class='fas fa-file-invoice-dollar'></i>&nbsp;&nbsp;Genera il Fac Simile della fattura", 'role': 'button', 'class': 'btn btn-lg btn-warning', "data-toggle" : "tooltip", "data-placement" : "top", "title" : "Verranno generati in formato txt tutti i dati necessari alla fattura") }}</div>
+                        </div>
+                </div>
+            </div>
+    </div>
+
+
+
+
+
+
         {{ end_form() }}
 
     <!-- Sezione dei dati catalogo -->
@@ -384,39 +381,20 @@
             <div class="col-sm-12">&nbsp;</div>
     </div>
 
-    <div class="jumbotron">
-        <h3>Generazione dati per il catalogo</h3>
-        <p>Cliccando sul bottone sottostante puoi generare un file di testo con i dati del catalogo di questo espositore.</p>
 
-        <div class="row">
-                <div class="col-8">{{ link_to('reservations/daticatalogo/' ~ reservation.id, "&nbsp;<i class='fas fa-file-invoice-dollar'></i>&nbsp;&nbsp;Genera i dati per il catalogo", 'role': 'button', 'class': 'btn btn-lg btn-warning', "data-toggle" : "tooltip", "data-placement" : "top", "title" : "Verranno generati in formato txt tutti i dati del catalogo") }}</div>
-        </div>
-
-    </div>
-
+    {% endif %}
 
     <!-- Sezione del diario/log-->
     <div class="row">
             <div class="col-sm-12">&nbsp;</div>
     </div>
 
-    <div class="jumbotron">
-        <h3>Diario dell'espositore</h3>
-        <p>Di seguito sono riportate le fasi salienti del flussso di lavoro per questo espositore, e le vostre note.</p>
-        {% for index, log in logstatireservations %}
-        <div class="row">
-                <div class="col-12">
- 
-                <p>    
-                    {{ log.dataora }} 
-                    {{ log.users_id }}
-                    {{ log.messaggio }}
-                </p>
-                    
-                </div>
-        </div>
-        {% endfor %}
-    </div>
+<!-- zigzag timeline -->
+<div class="jumbotron">
+    {{ partial('partials/diario') }}
+</div>
+<!-- end zigzag timeline-->
+
 
   </div>
   <!-- /.container-fluid -->
@@ -464,8 +442,11 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-body">
-            <i class="fas fa-spinner fa-spin"></i> controllo dati in corso...
+            <i class="fas fa-spinner fa-spin"></i> elaborazione in corso...
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Logout Modal-->
+{{ partial('partials/logoutmodal') }}

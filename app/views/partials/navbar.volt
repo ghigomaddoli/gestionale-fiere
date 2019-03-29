@@ -6,7 +6,7 @@
 
     <a href="/" class="navbar-left"><img src="/img/logoflcgu.png" height="40px"></a>
     <li class="divider"></li>
-    <a class="navbar-brand mr-1" href="/">Fa' la cosa giusta Umbria</a>
+    <a class="navbar-brand mr-1" href="/">{{ evento|e }}</a>
 
     {% if logged === true %}
     <!-- Navbar Search -->

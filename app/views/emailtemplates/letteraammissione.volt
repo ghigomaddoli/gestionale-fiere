@@ -105,9 +105,10 @@
                   <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;">
                     <tr>
                       <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">
-                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Spett.le {{ exhibitors.ragionesociale }},</p>
-                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">in allegato può trovare la lettera di ammissione di {{ evento }}, con il riepilogo dei servizi da Lei richiesti.</p>
-                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Cordiali saluti, Lo Staff di {{ evento }}.</p>
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Gentile espositore {{ exhibitors.ragionesociale }},</p>
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">la ringraziamo per aver scelto di partecipare a {{ evento }},</p>
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">In allegato la sua lettera di ammissione che la preghiamo di leggere e di rinviarci firmata per perfezionare la sua iscrizione in fiera. Le ricordiamo, qualora non lo avesse ancora fatto, di provvedere al pagamento della quota di iscrizione e di inviarci, insieme alla lettera firmata, la distinta del bonifico della quota di iscrizione senza la quale non possiamo considerare opzionato lo spazio espositivo da lei pre-scelto.</p>
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Con i migliori saluti, lo staff di {{ evento }}.</p>
                         <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><hr></p>
                       </td>
                     </tr>

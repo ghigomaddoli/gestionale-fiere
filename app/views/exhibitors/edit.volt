@@ -12,12 +12,11 @@
 
 
     <!-- Breadcrumbs-->
-    <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-            <a href="/reservations/index">Dati Anagrafici</a>
-            </li>
-            <li class="breadcrumb-item active">{{ exhibitor.ragionesociale }}</li>
-            </ol>
+<ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/reservations/index">Gestione Prenotazioni</a></li>
+        <li class="breadcrumb-item active">Dati Anagrafici</li>
+        <li class="breadcrumb-item active">{{ exhibitor.ragionesociale }}</li>
+</ol>
 
     <div id="incima"></div>
     
@@ -421,3 +420,7 @@
       </div>
     </div>
 </div>
+
+
+<!-- Logout Modal-->
+{{ partial('partials/logoutmodal') }}

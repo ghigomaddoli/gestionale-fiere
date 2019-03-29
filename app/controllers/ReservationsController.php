@@ -87,7 +87,9 @@ class ReservationsController extends ControllerBase
             $this->flash->notice("Nessun espositore da mostrare con questi criteri di ricerca");
             $this->persistent->searchParams = null;
         }     
-
+        $this->assets->addCss('https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css');
+        $this->assets->addCss('css/style.css');
+        $this->assets->addJs('https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js');
         $this->assets->addJs('js/reservations-index.js');
 
     }
@@ -111,6 +113,11 @@ class ReservationsController extends ControllerBase
                 ]
             );
         }
+        if($reservation->padre_id){
+            $mainreservation = Reservations::findFirstById($reservation->padre_id);
+            $this->view->mainreservation = $mainreservation;
+            $this->view->mainreservationservices = ReservationServices::find("reservations_id = ".$reservation->padre_id);
+        }
 
         $this->view->reservation = $reservation;
         $this->view->areas = Areas::find("events_id = ".$reservation->events_id);
@@ -121,7 +128,7 @@ class ReservationsController extends ControllerBase
         $this->view->reservationservices = $reservationservices;
 
         $prezzocalcolato = 0;
-        $campoprezzo = $reservation->getExhibitors()->fasciadiprezzo == 'a' ? 'prezzofasciaa' : 'prezzofasciab';
+        $campoprezzo = $reservation->exhibitors->fasciadiprezzo == 'a' ? 'prezzofasciaa' : 'prezzofasciab';
 
         //calcolo del prezzo totale teorico:
         foreach($reservationservices as $servizio){
@@ -136,6 +143,7 @@ class ReservationsController extends ControllerBase
 
         $this->view->logstatireservations = LogStatiReservations::find("reservations_id = ".$reservation->id." ORDER BY dataora DESC");
 
+        $this->assets->addCss('css/style.css');
         $this->assets->addJs('js/reservations-edit.js');
     }
 
@@ -283,7 +291,7 @@ class ReservationsController extends ControllerBase
 
         $form->clear();    
 
-        $this->flash->success("I dati della prenotazione dell'espositore {$reservation->getExhibitors()->ragionesociale} sono stati aggiornati");
+        $this->flash->success("I dati della prenotazione dell'espositore {$reservation->exhibitors->ragionesociale} sono stati aggiornati");
 
         return $this->dispatcher->forward(
             [
@@ -305,7 +313,7 @@ class ReservationsController extends ControllerBase
     }
 
      /**
-     * spara in stream il file pdf della "Lettera di ammissione"
+     * allega alla email il file pdf della "Lettera di ammissione"
      *
      * @param string $id
      */
@@ -333,16 +341,18 @@ class ReservationsController extends ControllerBase
 
         $ilpdf->Output('temp/lettera-ammissione-'.$permalink.'.pdf','F');
         $allegato = array("filepath" => 'temp/lettera-ammissione-'.$permalink.'.pdf', "mimetype" => 'application/pdf');
+        $auth = $this->session->get('auth');
         
         $parametri = array(
             'exhibitors' => $exhibitors,
             'evento' => $this->evento->descrizione, 
-            'destinatari' => array($exhibitors->emailaziendale => $exhibitors->ragionesociale, $exhibitors->referenteemail => $exhibitors->referentenome),
-            'allegato' => $allegato
+            'destinatari' => array($exhibitors->emailaziendale => $exhibitors->ragionesociale, $exhibitors->referenteemail => $exhibitors->referentenome, "amministrazione@falacosagiustaumbria.it" => "Amministrazione FLCGU"),
+            'allegato' => $allegato,
+            'replyto' => array($auth["email"] => $auth["nome"])
         );        
         $result = MyEmailSender::inviaEmail($this, 'letteraammissione', $parametri,"Lettera di Ammissione per ".$this->evento->descrizione);
 
-        if($result){
+        if($result > 0){
             $ris["status"] = "OK";
             $ris['incima'] = "Invio effettuato con successo!";
             $auth = $this->session->get('auth');
@@ -399,7 +409,7 @@ class ReservationsController extends ControllerBase
         }
 
         if($headers === true){
-            $string = strtolower($reservation->getExhibitors()->ragionesociale);
+            $string = strtolower($reservation->exhibitors->ragionesociale);
             $string = preg_replace("/[^0-9A-Za-z ]/", "", $string);
             $string = str_replace(" ", "-", $string);
             while (strstr($string, "--")) {
@@ -429,19 +439,22 @@ class ReservationsController extends ControllerBase
 
         $auth = $this->session->get('auth');
         $pdf->SetFont('Times','',12);
-        $pdf->Cell(0,6,"Da inviare firmata a ".$auth["email"]." o via fax allo 075 3721786",0,1,'C');
-        $pdf->Cell(0,6,utf8_decode("Il saldo dovrà essere corrisposto entro e non oltre i termini indicati nella fattura."),0,1,'C');
+        $pdf->MultiCell(0,6,utf8_decode("Da inviare firmata a ".$auth["email"]." o via fax allo 075 3721786."),0,'L',false);
+        $pdf->SetFont('Times','',10);
+        $pdf->MultiCell(0,6,utf8_decode("Si prega di versare il COSTO DI ISCRIZIONE tramite bonifico su conto corrente presso Banca Etica di Perugia. \nCodice iban: IT18W0501803000000012426979 Intestato a: Fair Lab srls. \nCausale: la ragione sociale della propria azienda."),1,'C',false);
+        $pdf->SetFont('Times','',12);
+        $pdf->MultiCell(0,6,utf8_decode("Finché l'organizzazione non riceve il costo di iscrizione non considera opzionato lo spazio in mappa. Il saldo dovrà essere corrisposto entro e non oltre i termini indicati nella fattura."),0,'L',false);
         $pdf->Ln();
 
         $pdf->SetFont('Times','B',12);
         $pdf->Cell(0,6,"DATI ESPOSITORE PER LA FATTURAZIONE",0,1,'L');
 
         $pdf->SetFont('Times','',12);
-        $datifatturazione["Ragione Sociale"] = utf8_decode($reservation->getExhibitors()->ragionesociale);
-        $datifatturazione["Indirizzo"] = utf8_decode($reservation->getExhibitors()->indirizzo." - ".$reservation->getExhibitors()->cap." - ".ucfirst($reservation->getExhibitors()->citta)." (".$reservation->getExhibitors()->provincia.")");
-        $datifatturazione["Telefono e Email"] = utf8_decode($reservation->getExhibitors()->telefono." ".$reservation->getExhibitors()->emailaziendale);
-        if(!empty($reservation->getExhibitors()->piva)) $datifatturazione["Partita Iva"] = $reservation->getExhibitors()->piva;
-        if(!empty($reservation->getExhibitors()->codfisc)) $datifatturazione["Codice Fiscale"] = $reservation->getExhibitors()->codfisc;
+        $datifatturazione["Ragione Sociale"] = utf8_decode($reservation->exhibitors->ragionesociale);
+        $datifatturazione["Indirizzo"] = utf8_decode($reservation->exhibitors->indirizzo." - ".$reservation->exhibitors->cap." - ".ucfirst($reservation->exhibitors->citta)." (".$reservation->exhibitors->provincia.")");
+        $datifatturazione["Telefono e Email"] = utf8_decode($reservation->exhibitors->telefono." ".$reservation->exhibitors->emailaziendale);
+        if(!empty($reservation->exhibitors->piva)) $datifatturazione["Partita Iva"] = $reservation->exhibitors->piva;
+        if(!empty($reservation->exhibitors->codfisc)) $datifatturazione["Codice Fiscale"] = $reservation->exhibitors->codfisc;
         $pdf->BasicTable($datifatturazione);
         $pdf->Ln();
 
@@ -449,8 +462,8 @@ class ReservationsController extends ControllerBase
         $pdf->Cell(0,6,"REFERENTE ESPOSITORE PER CONTATTI PRIMA E DURANTE LA FIERA",0,1,'L');
 
         $pdf->SetFont('Times','',12);
-        $datireferente["Nome e cognome"] = utf8_decode($reservation->getExhibitors()->referentenome);
-        $datireferente["Cellulare e Email"] = utf8_decode($reservation->getExhibitors()->referentetelefono." - ".$reservation->getExhibitors()->referenteemail);
+        $datireferente["Nome e cognome"] = utf8_decode($reservation->exhibitors->referentenome);
+        $datireferente["Cellulare e Email"] = utf8_decode($reservation->exhibitors->referentetelefono." - ".$reservation->exhibitors->referenteemail);
         $pdf->BasicTable($datireferente);
         $pdf->Ln();
 
@@ -458,8 +471,8 @@ class ReservationsController extends ControllerBase
         $pdf->Cell(0,6,"RIEPILOGO ORDINE",0,1,'L');
 
         $pdf->SetFont('Times','',12);
-        $riepilogo["Sezione Tematica"] = utf8_decode($reservation->getAreas()->nome);
-        $riepilogo["Elenco prodotti"] = utf8_decode(substr($reservation->getExhibitors()->prodottiesposti,0,87)."...");
+        $riepilogo["Sezione Tematica"] = utf8_decode($reservation->areas->nome);
+        $riepilogo["Elenco prodotti"] = utf8_decode(substr($reservation->exhibitors->prodottiesposti,0,87)."...");
         $riepilogo["Codice Spazio"] = utf8_decode($reservation->codicestand);
         $pdf->BasicTable($riepilogo);
 
@@ -470,7 +483,7 @@ class ReservationsController extends ControllerBase
 
         $reservationservices = ReservationServices::find("reservations_id = ".$reservation->id);
         $fieldprezzo = 'prezzofasciaa';
-        switch($reservation->getExhibitors()->fasciadiprezzo){
+        switch($reservation->exhibitors->fasciadiprezzo){
             case 'b':
                 $fieldprezzo = 'prezzofasciab';
             break;
@@ -489,6 +502,7 @@ class ReservationsController extends ControllerBase
         
         $totale = 0;
         $costifissi = 200;
+        $ivatot = 0;
         foreach($reservationservices as $reservationservice){
             if($reservationservice->services->descrizione == "Costo fisso di iscrizione") $costifissi = $reservationservice->services->$fieldprezzo;
             $pdf->Cell(82,6,$reservationservice->services->descrizione,1);
@@ -497,6 +511,7 @@ class ReservationsController extends ControllerBase
             $pdf->Cell(27,6,number_format($reservationservice->quantita * $reservationservice->services->$fieldprezzo,2,",","."),1,0,'R'); //prezzo = quantita * prezzofascia
             $pr = $reservationservice->quantita * $reservationservice->services->$fieldprezzo;
             $iva = $reservationservice->quantita * $reservationservice->services->$fieldprezzo * 0.22;
+            $ivatot += $iva;
             $totale += $pr;
             $pdf->Cell(27,6,number_format($iva,2,",","."),1,0,'R'); //prezzo inclusivo di iva
             $pdf->Ln();
@@ -509,6 +524,7 @@ class ReservationsController extends ControllerBase
             $pdf->Cell(27,6,number_format($reservation->prezzostandpersonalizzato,2,",","."),1,0,'R'); //prezzo = quantita * prezzofascia
             $pr = $reservation->prezzostandpersonalizzato;
             $iva = $reservation->prezzostandpersonalizzato * 0.22;
+            $ivatot += $iva;
             $totale += $pr;
             $pdf->Cell(27,6,number_format($iva,2,",","."),1,0,'R'); //prezzo inclusivo di iva
             $pdf->Ln();            
@@ -521,6 +537,7 @@ class ReservationsController extends ControllerBase
             $pdf->Cell(27,6,number_format($reservation->prezzoaltriservizi,2,",","."),1,0,'R'); //prezzo = quantita * prezzofascia
             $pr = $reservation->prezzoaltriservizi;
             $iva = $reservation->prezzoaltriservizi * 0.22;
+            $ivatot += $iva;
             $totale += $pr;
             $pdf->Cell(27,6,number_format($iva,2,",","."),1,0,'R'); //prezzo inclusivo di iva
             $pdf->Ln();            
@@ -528,21 +545,26 @@ class ReservationsController extends ControllerBase
         // rigo del totale
         $pdf->SetFillColor(220, 158, 5); // giallo
         
-        $pdf->Cell(163,6,'COSTO TOTALE',1,0,'L');
-        $pdf->Cell(27,6,"EURO ".number_format($totale + $totale * 0.22,2,",","."),1,0,'R'); //prezzo TOTALE inclusivo di iva
+        $pdf->Cell(136,6,'TOTALI',1,0,'L');
+        $pdf->Cell(27,6,number_format($totale,2,",","."),1,0,'R'); //prezzo TOTALE inclusivo di iva
+        $pdf->Cell(27,6,number_format($ivatot,2,",","."),1,0,'R'); //prezzo TOTALE inclusivo di iva
+        $pdf->Ln();
+
+        $pdf->Cell(136,6,'COSTO TOTALE (Iva inclusa)',1,0,'L');
+        $pdf->Cell(54,6,number_format($totale + $totale * 0.22,2,",","."),1,0,'C'); //prezzo TOTALE inclusivo di iva
         $pdf->Ln();
 
         if($reservation->prezzofinale != $totale && $reservation->prezzofinale > 0){
             // rigo del totale scontato
-            $pdf->Cell(163,6,'COSTO TOTALE SCONTATO',1,0,'L');
-            $pdf->Cell(27,6,"EURO ".number_format($reservation->prezzofinale + $reservation->prezzofinale * 0.22,2,",","."),1,0,'R'); //prezzo TOTALE scontato inclusivo di iva
+            $pdf->Cell(136,6,'COSTO TOTALE SCONTATO',1,0,'L');
+            $pdf->Cell(54,6,number_format($reservation->prezzofinale + $reservation->prezzofinale * 0.22,2,",","."),1,0,'C'); //prezzo TOTALE scontato inclusivo di iva
             $pdf->Ln();
 
             if($reservation->stato >= 2){
                 // rigo del totale meno il costo fisso
                 $pdf->SetFillColor(219, 84, 6); // arancio chiaro        
-                $pdf->Cell(163,6,'COSTO TOTALE DA CORRISPONDERE',1,0,'L');
-                $pdf->Cell(27,6,"EURO ".number_format(($reservation->prezzofinale + $reservation->prezzofinale * 0.22)-$costifissi,2,",","."),'LTR',0,'R'); //prezzo TOTALE meno anticipo
+                $pdf->Cell(136,6,'COSTO TOTALE DA CORRISPONDERE (meno anticipo iscrizione gia versato)',1,0,'L');
+                $pdf->Cell(54,6,number_format(($reservation->prezzofinale + $reservation->prezzofinale * 0.22)-$costifissi,2,",","."),'LTR',0,'C'); //prezzo TOTALE meno anticipo
                 $pdf->Ln();
             }
         }
@@ -556,10 +578,22 @@ class ReservationsController extends ControllerBase
             }
         }
         
-        // note spazio espositivo
+        // note spazio espositivo personalizzato
         $pdf->Cell(82,18,'DESCRIZIONE SPAZIO E NOTE',1,0,'L');
-        $pdf->Cell(108,18,utf8_decode($reservation->standpersonalizzato),1,0,'C');
+        $x = $pdf->GetX();
+        $pdf->Cell(108,18,'',1,0,'L');
+        $pdf->SetFont('Times','',8);
+        $pdf->SetX($x);
+        $pdf->MultiCell(108,6,utf8_decode($reservation->standpersonalizzato),0,'L',false);
         $pdf->Ln();
+
+        // note condivise con l'espositore
+        if($reservation->notecondivise !=''){
+            $pdf->Ln();
+            $pdf->SetFont('Times','',12);
+            $pdf->MultiCell(0,6,utf8_decode("ALTRE NOTE: ".$reservation->notecondivise),0,'L',false);
+            $pdf->Ln();
+        }
 
         // data e firma
         $pdf->SetFont('Times','',12);
@@ -663,10 +697,20 @@ class ReservationsController extends ControllerBase
 
     public function excelgenAction()
     {
+        $separasheets = $this->request->getPost('separasheets', 'int');
+        if($separasheets == 1){
+            $this->excelmultisheetgen();
+        }
+        else{
+            $this->excelsinglesheetgen();
+        }
+    }
+
+    public function excelmultisheetgen(){
         
         $this->view->setRenderLevel(\Phalcon\Mvc\View::LEVEL_NO_RENDER);
         $this->response->resetHeaders();
-        $this->response->setHeader('Content-Type', 'application/csv');
+        $this->response->setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         $this->response->setHeader('Content-Disposition', 'attachment; filename=catalogoespositori.xlsx');
 
         $par = array();
@@ -704,7 +748,7 @@ class ReservationsController extends ControllerBase
         }
 
         // elenco servizi esistenti per intestazione colonne
-        $elencoservizi = Services::find("events_id = ".$this->evento->id);
+        $elencoservizi = Services::find("events_id = ".$this->evento->id." AND id != 1");
 
         $areetematiche = Areas::find("events_id = ".$this->evento->id);
 
@@ -718,7 +762,7 @@ class ReservationsController extends ControllerBase
             'area tematica',
             'intervento programma culturale',
             'richiesta stand personalizzato',
-            'stato della richiesta',
+            'stato pagamento',
             'indirizzo',
             'cap',
             'citta',
@@ -735,7 +779,9 @@ class ReservationsController extends ControllerBase
             'quantita coespositori',
             'nomi coespositori',
             'codicestand',
+            'padiglione',
             'altri servizi richiesti',
+            'prezzo finale'
         );
 
         $nomicolonne = array_merge($nomicolonne,$nomiservizi);
@@ -786,7 +832,7 @@ class ReservationsController extends ControllerBase
                 foreach($reservations as $domandaespositore){
                     $sa = array();
                     $serviziacquistati = array();
-                    $reservationservices = ReservationServices::find("reservations_id = ".$domandaespositore->id);
+                    $reservationservices = ReservationServices::find("reservations_id = ".$domandaespositore->id." AND services_id != 1");
                     foreach($reservationservices as $singoloservizio){
                                 $serviziacquistati[$singoloservizio->services_id] = $singoloservizio->quantita;
                     }
@@ -800,28 +846,30 @@ class ReservationsController extends ControllerBase
                     }
         
                     $righe = array(
-                        $domandaespositore->getExhibitors()->ragionesociale, 
-                        $domandaespositore->getAreas()->nome,
+                        $domandaespositore->exhibitors->ragionesociale, 
+                        $domandaespositore->areas->nome,
                         $domandaespositore->interventoprogrammaculturale ? "si" : "no",
                         $domandaespositore->standpersonalizzato,
-                        $domandaespositore->getStati()->descrizionebreve,
-                        $domandaespositore->getExhibitors()->indirizzo,
-                        $domandaespositore->getExhibitors()->cap,
-                        $domandaespositore->getExhibitors()->citta,
-                        $domandaespositore->getExhibitors()->provincia,
-                        $domandaespositore->getExhibitors()->telefono,
-                        $domandaespositore->getExhibitors()->emailaziendale,
-                        $domandaespositore->getExhibitors()->piva,
-                        $domandaespositore->getExhibitors()->codfisc,
-                        $domandaespositore->getExhibitors()->referentenome,
-                        $domandaespositore->getExhibitors()->referentetelefono,
-                        $domandaespositore->getExhibitors()->referenteemail,
-                        $domandaespositore->getExhibitors()->prodottiesposti,
-                        $domandaespositore->getExhibitors()->fasciadiprezzo,
-                        $domandaespositore->getExhibitors()->numerocoespositore,
-                        $domandaespositore->getExhibitors()->nomecoespositore,
+                        $domandaespositore->stati->descrizionebreve,
+                        $domandaespositore->exhibitors->indirizzo,
+                        $domandaespositore->exhibitors->cap,
+                        $domandaespositore->exhibitors->citta,
+                        $domandaespositore->exhibitors->provincia,
+                        $domandaespositore->exhibitors->telefono,
+                        $domandaespositore->exhibitors->emailaziendale,
+                        $domandaespositore->exhibitors->piva,
+                        $domandaespositore->exhibitors->codfisc,
+                        $domandaespositore->exhibitors->referentenome,
+                        $domandaespositore->exhibitors->referentetelefono,
+                        $domandaespositore->exhibitors->referenteemail,
+                        $domandaespositore->exhibitors->prodottiesposti,
+                        $domandaespositore->exhibitors->fasciadiprezzo,
+                        $domandaespositore->exhibitors->numerocoespositore,
+                        $domandaespositore->exhibitors->nomecoespositore,
                         $domandaespositore->codicestand,
+                        $domandaespositore->padiglione,
                         $domandaespositore->altriservizi,
+                        $domandaespositore->prezzofinale,
                     );
                     $righe = array_merge($righe,$sa);
                     $sheet->fromArray( $righe, NULL, 'A'.$contatorerighe );  
@@ -871,7 +919,7 @@ class ReservationsController extends ControllerBase
             );
         }
 
-        $string = strtolower($reservation->getExhibitors()->ragionesociale);
+        $string = strtolower($reservation->exhibitors->ragionesociale);
         $string = preg_replace("/[^0-9A-Za-z ]/", "", $string);
         $string = str_replace(" ", "-", $string);
         while (strstr($string, "--")) {
@@ -886,26 +934,26 @@ class ReservationsController extends ControllerBase
 
         // titolo evento
         echo($this->evento->descrizione." - ");
-        echo("Dati per la fattura\n\n");
+        echo("Dati per la fattura\r\n");
 
         $datifatturazione["Ragione Sociale"] = utf8_decode($reservation->exhibitors->ragionesociale);
         $datifatturazione["Indirizzo"] = utf8_decode($reservation->exhibitors->indirizzo." - ".$reservation->exhibitors->cap." - ".ucfirst($reservation->exhibitors->citta)." (".$reservation->exhibitors->provincia.")");
-        echo "RAGIONE SOCIALE: ".$datifatturazione["Ragione Sociale"]."\n";
-        echo "INDIRIZZO: ".$datifatturazione["Indirizzo"]."\n";
-        echo "TELEFONO: ".$reservation->exhibitors->telefono."\n";
-        echo "EMAIL AZIENDA: ".$reservation->exhibitors->emailaziendale."\n";
-        echo "PARTITA IVA: ".$reservation->exhibitors->piva."\n";
-        echo "PEC: ".$reservation->exhibitors->pec."\n";
-        echo "CODICE SDI: ".$reservation->exhibitors->codicesdi."\n";
-        echo "NOME REFERENTE: ".$reservation->exhibitors->referentenome."\n";
-        echo "TELEFONO REFERENTE: ".$reservation->exhibitors->referentetelefono."\n";
-        echo "EMAIL REFERENTE: ".$reservation->exhibitors->referenteemail."\n";
-        echo "FASCIA DI PREZZO: ".$reservation->exhibitors->fasciadiprezzo."\n\n";
-        echo "NUMERO FATTURA: ".$reservation->numerofattura."\n\n";
+        echo "RAGIONE SOCIALE: ".$datifatturazione["Ragione Sociale"]."\r\n";
+        echo "INDIRIZZO: ".$datifatturazione["Indirizzo"]."\r\n";
+        echo "TELEFONO: ".$reservation->exhibitors->telefono."\r\n";
+        echo "EMAIL AZIENDA: ".$reservation->exhibitors->emailaziendale."\r\n";
+        echo "PARTITA IVA: ".$reservation->exhibitors->piva."\r\n";
+        echo "PEC: ".$reservation->exhibitors->pec."\r\n";
+        echo "CODICE SDI: ".$reservation->exhibitors->codicesdi."\r\n";
+        echo "NOME REFERENTE: ".$reservation->exhibitors->referentenome."\r\n";
+        echo "TELEFONO REFERENTE: ".$reservation->exhibitors->referentetelefono."\r\n";
+        echo "EMAIL REFERENTE: ".$reservation->exhibitors->referenteemail."\r\n";
+        echo "FASCIA DI PREZZO: ".$reservation->exhibitors->fasciadiprezzo."\r\n";
+        echo "NUMERO FATTURA: ".$reservation->numerofattura."\r\n";
 
-        echo "--------------------------------------------------------------\n";
-        echo("RIGHI FATTURA\n");
-        echo "--------------------------------------------------------------\n";
+        echo "--------------------------------------------------------------\r\n";
+        echo("RIGHI FATTURA\r\n");
+        echo "--------------------------------------------------------------\rn";
 
         $reservationservices = ReservationServices::find("reservations_id = ".$reservation->id);
         $fieldprezzo = 'prezzofasciaa';
@@ -923,8 +971,8 @@ class ReservationsController extends ControllerBase
         echo("QUANTITA\t");
         echo("COSTO UNITARIO\t");
         echo("COSTO\t"); //prezzo = quantita * prezzofascia
-        echo(utf8_decode("COSTO+IVA\n")); //prezzo inclusivo di iva
-        echo "--------------------------------------------------------------\n";
+        echo(utf8_decode("COSTO+IVA\r\n")); //prezzo inclusivo di iva
+        echo "--------------------------------------------------------------\r\n";
         
         $totale = 0;
         $costifissi = 200;
@@ -937,8 +985,8 @@ class ReservationsController extends ControllerBase
             $pr = $reservationservice->quantita * $reservationservice->services->$fieldprezzo;
             $iva = $reservationservice->quantita * $reservationservice->services->$fieldprezzo * 0.22;
             $totale += $pr;
-            echo(number_format($pr + $iva,2,",",".")."\n"); //prezzo inclusivo di iva
-            echo "--------------------------------------------------------------\n";
+            echo(number_format($pr + $iva,2,",",".")."\r\n"); //prezzo inclusivo di iva
+            echo "--------------------------------------------------------------\r\n";
         }
         
         // rigo stand personalizzato
@@ -949,41 +997,41 @@ class ReservationsController extends ControllerBase
             $pr = $reservation->prezzostandpersonalizzato;
             $iva = $reservation->prezzostandpersonalizzato * 0.22;
             $totale += $pr;
-            echo(number_format($pr + $iva,2,",",".")."\n"); //prezzo inclusivo di iva
-            echo "--------------------------------------------------------------\n";
+            echo(number_format($pr + $iva,2,",",".")."\r\n"); //prezzo inclusivo di iva
+            echo "--------------------------------------------------------------\r\n";
         }
         // rigo altri servizi
         if ($reservation->prezzoaltriservizi > 0){
-            echo(utf8_decode("Altri servizi: ".$reservation->altriservizi)."\t1\t");
+            echo(utf8_decode("Altri servizi: ".$reservation->altriservizi)."\t\t");
             echo(number_format($reservation->prezzoaltriservizi,2,",",".")."\t");
             echo(number_format($reservation->prezzoaltriservizi,2,",",".")."\t"); //prezzo = quantita * prezzofascia
             $pr = $reservation->prezzoaltriservizi;
             $iva = $reservation->prezzoaltriservizi * 0.22;
             $totale += $pr;
-            echo(number_format($pr + $iva,2,",",".")."\n"); //prezzo inclusivo di iva
-            echo "--------------------------------------------------------------\n";
+            echo(number_format($pr + $iva,2,",",".")."\r\n"); //prezzo inclusivo di iva
+            echo "--------------------------------------------------------------\r\n";
         }
 
         // rigo del totale        
         echo('COSTO TOTALE DA LISTINO: ');
-        echo("EURO ".number_format($totale + $totale * 0.22,2,",",".")."\n"); //prezzo TOTALE inclusivo di iva
-        echo "--------------------------------------------------------------\n";
+        echo("EURO ".number_format($totale + $totale * 0.22,2,",",".")."\r\n"); //prezzo TOTALE inclusivo di iva
+        echo "--------------------------------------------------------------\r\n";
 
         if($reservation->prezzofinale > 0 && $reservation->prezzofinale < $totale){
             echo('COSTO TOTALE SCONTATO: ');
-            echo("EURO ".number_format($reservation->prezzofinale + $reservation->prezzofinale * 0.22,2,",",".")."\n"); //prezzo TOTALE inclusivo di iva
-            echo "--------------------------------------------------------------\n";
+            echo("EURO ".number_format($reservation->prezzofinale + $reservation->prezzofinale * 0.22,2,",",".")."\r\n"); //prezzo TOTALE inclusivo di iva
+            echo "--------------------------------------------------------------\r\n";
             
         // rigo del totale scontato meno il costo fisso
         echo('COSTO TOTALE SCONTATO DA CORRISPONDERE (MENO ANTICIPO): ');
-        echo("EURO ".number_format(($reservation->prezzofinale + $reservation->prezzofinale * 0.22)-$costifissi,2,",",".")."\n"); //prezzo TOTALE meno anticipo
-        echo "--------------------------------------------------------------\n";
+        echo("EURO ".number_format(($reservation->prezzofinale + $reservation->prezzofinale * 0.22)-$costifissi,2,",",".")."\r\n"); //prezzo TOTALE meno anticipo
+        echo "--------------------------------------------------------------\r\n";
         }
         else{
         // rigo del totale meno il costo fisso
         echo('COSTO TOTALE DA CORRISPONDERE (MENO ANTICIPO): ');
-        echo("EURO ".number_format(($totale + $totale * 0.22)-$costifissi,2,",",".")."\n"); //prezzo TOTALE meno anticipo
-        echo "--------------------------------------------------------------\n";
+        echo("EURO ".number_format(($totale + $totale * 0.22)-$costifissi,2,",",".")."\r\n"); //prezzo TOTALE meno anticipo
+        echo "--------------------------------------------------------------\r\n";
         }
 
 
@@ -1021,7 +1069,7 @@ class ReservationsController extends ControllerBase
             );
         }
 
-        $string = strtolower($reservation->getExhibitors()->ragionesociale);
+        $string = strtolower($reservation->exhibitors->ragionesociale);
         $string = preg_replace("/[^0-9A-Za-z ]/", "", $string);
         $string = str_replace(" ", "-", $string);
         while (strstr($string, "--")) {
@@ -1040,18 +1088,238 @@ class ReservationsController extends ControllerBase
 
         $datifatturazione["catalogonome"] = utf8_decode($reservation->exhibitors->catalogonome);
         $datifatturazione["Indirizzo"] = utf8_decode($reservation->exhibitors->catalogoindirizzo." - ".$reservation->exhibitors->catalogocap." - ".ucfirst($reservation->exhibitors->catalogocitta)." (".$reservation->exhibitors->catalogoprovincia.")");
-        echo "NOME: ".$datifatturazione["catalogonome"]."\n";
-        echo "INDIRIZZO: ".$datifatturazione["Indirizzo"]."\n";
-        echo "TELEFONO: ".$reservation->exhibitors->catalogotelefono."\n";
-        echo "EMAIL: ".$reservation->exhibitors->catalogoemail."\n";
-        echo "SITO WEB: ".$reservation->exhibitors->catalogositoweb."\n";
-        echo "PAGINA FACEBOOK: ".$reservation->exhibitors->catalogofacebook."\n";
-        echo "PROFILO INSTAGRAM: ".$reservation->exhibitors->catalogoinstagram."\n";
-        echo "PROFILO TWITTER: ".$reservation->exhibitors->catalogotwitter."\n";
-        echo "DESCRIZIONE: ".$reservation->exhibitors->catalogodescrizione."\n";
+        echo "NOME: ".$datifatturazione["catalogonome"]."\r\n";
+        echo "INDIRIZZO: ".$datifatturazione["Indirizzo"]."\r\n";
+        echo "TELEFONO: ".$reservation->exhibitors->catalogotelefono."\r\n";
+        echo "EMAIL: ".$reservation->exhibitors->catalogoemail."\r\n";
+        echo "SITO WEB: ".$reservation->exhibitors->catalogositoweb."\r\n";
+        echo "PAGINA FACEBOOK: ".$reservation->exhibitors->catalogofacebook."\r\n";
+        echo "PROFILO INSTAGRAM: ".$reservation->exhibitors->catalogoinstagram."\r\n";
+        echo "PROFILO TWITTER: ".$reservation->exhibitors->catalogotwitter."\r\n";
+        echo "DESCRIZIONE: ".$reservation->exhibitors->catalogodescrizione."\r\n";
 
-    }    
+    }
+    
+     /**
+     * inserisce nota operatore sul diario/log
+     *
+     * 
+     */
+    public function scrivinotaAction(){
 
+        if (!$this->request->isAjax()) {
+            $ris["risposta"] = "Richiesta non valida";
+            $ris["status"] = "KO";
+            return $this->response->setJsonContent($ris);
+        }
+        
+        $auth = $this->session->get('auth');
 
+        $logstatireservations = new LogStatiReservations();
+        $logstatireservations->reservations_id = $this->request->getPost("reservations_id","int");
+        $logstatireservations->stati_id = $this->request->getPost("stati_id","int");
+        $logstatireservations->users_id = $auth['id'];
+        $logstatireservations->dataora = date("Y-m-d H:i:s");
+        $logstatireservations->messaggio = $this->request->getPost("messaggio","string");
+        if ($logstatireservations->save() === false) {
+
+            $i=0;
+            foreach ($logstatireservations->getMessages() as $message) {
+                \PhalconDebug::info("errore: ".$message);
+                $ris['risposta'] .= ' '.$message;
+                $i++;
+            }
+            $ris["status"] = "KO";
+            return $this->response->setJsonContent($ris);
+        }
+        else{
+            $ris["status"] = "OK";
+            $ris['risposta'] .= "La nota è stata inserito nel diario";
+        }
+        return $this->response->setJsonContent($ris);
+
+    }        
+
+    public function excelsinglesheetgen()
+    {
+        
+        $this->view->setRenderLevel(\Phalcon\Mvc\View::LEVEL_NO_RENDER);
+        $this->response->resetHeaders();
+        $this->response->setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        $this->response->setHeader('Content-Disposition', 'attachment; filename=catalogoespositori.xlsx');
+
+        $par = array();
+        $parameters = array();
+        $orderby = '';
+
+        if ($this->request->isPost()) {
+
+            $areas_id = $this->request->getPost('areas_id', 'int');
+            $stato = $this->request->getPost('stato', 'int');
+            $ragionesociale = $this->request->getPost('ragionesociale', 'string');
+            $interventoprogrammaculturale = $this->request->getPost('interventoprogrammaculturale', 'int');
+            $orderby = $this->request->getPost('orderby', 'string');
+
+            if(!empty($areas_id)){
+                $par["areas_id"] = $areas_id;
+            }
+            if(!empty($stato)){
+                $par["stato"] = $stato;
+            }
+            if(!empty($ragionesociale)){
+                $par["ragionesociale"] = $ragionesociale;
+            }
+            if(!empty($interventoprogrammaculturale)){
+                $par["interventoprogrammaculturale"] = $interventoprogrammaculturale;
+            }            
+            if(!empty($orderby)){
+                $par["orderby"] = $orderby;
+            }
+            $this->persistent->searchParams = $par;
+        }
+
+        if ($this->persistent->searchParams && count($this->persistent->searchParams)) {
+            $parameters = $this->persistent->searchParams;
+        }
+
+        // elenco servizi esistenti per intestazione colonne
+        $elencoservizi = Services::find("events_id = ".$this->evento->id." AND id != 1");
+
+        $areetematiche = Areas::find("events_id = ".$this->evento->id);
+
+        $nomiservizi = array();
+        foreach($elencoservizi as $nomeservizio){
+            $nomiservizi[] = $nomeservizio->descrizione;
+        }
+
+        $nomicolonne = array(
+            'ragione sociale', 
+            'area tematica',
+            'intervento programma culturale',
+            'richiesta stand personalizzato',
+            'stato pagamento',
+            'indirizzo',
+            'cap',
+            'citta',
+            'provincia',
+            'telefono',
+            'email aziendale',
+            'piva',
+            'codfisc',
+            'nome del referente',
+            'telefono del referente',
+            'email del referente',
+            'prodotti esposti',
+            'fascia di prezzo',
+            'quantita coespositori',
+            'nomi coespositori',
+            'codicestand',
+            'padiglione',
+            'altri servizi richiesti',
+            'prezzo finale'
+        );
+
+        $nomicolonne = array_merge($nomicolonne,$nomiservizi);
+
+        $spreadsheet = new Spreadsheet();
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, "Xlsx");
+
+        //foreach ($areetematiche as $area){ 
+        //    if(!empty($areas_id) && $area->id != $areas_id){
+        //        continue;
+        //    }  
+
+            $builder = $this->modelsManager->createBuilder()
+            ->from('Reservations')
+            ->join('Exhibitors')
+            ->where("events_id = ".$this->evento->id);
+       //     ->andWhere("areas_id = ".$area->id);
+    
+            foreach($parameters as $campo => $valore){
+                switch($campo){
+                    case "ragionesociale":
+                        $builder->andWhere("Exhibitors.{$campo} like '%".$valore."%'");
+                    break;
+                    case "orderby":
+                        $builder->orderBy($valore);
+                    break;
+                    default:
+                        $builder->andWhere("{$campo} = {$valore}");
+                    break;
+                }
+            }
+    
+            if(empty($parameters['orderby'])){
+                $builder->orderBy('Reservations.id DESC');
+            }
+    
+            $reservations = null;
+            $reservations = $builder->getQuery()->execute();
+            $this->view->laquery = $builder->getQuery()->getSql();
+
+            if(count($reservations) > 0){
+                
+                $myWorkSheet = new \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet($spreadsheet, 'espositori'); 
+                $spreadsheet->addSheet($myWorkSheet, 0);
+                $sheet = $spreadsheet->setActiveSheetIndex(0);
+                $sheet->fromArray($nomicolonne,Null,'A1');             
+                $contatorerighe=2;
+                foreach($reservations as $domandaespositore){
+                    $sa = array();
+                    $serviziacquistati = array();
+                    $reservationservices = ReservationServices::find("reservations_id = ".$domandaespositore->id." AND services_id != 1");
+                    foreach($reservationservices as $singoloservizio){
+                                $serviziacquistati[$singoloservizio->services_id] = $singoloservizio->quantita;
+                    }
+                    foreach($elencoservizi as $servizio){
+                        if(!empty($serviziacquistati[(int)$servizio->id])){
+                            $sa[] = (int)$serviziacquistati[$servizio->id];       
+                        }
+                        else{
+                            $sa[] = 0;
+                        }
+                    }
+        
+                    $righe = array(
+                        $domandaespositore->exhibitors->ragionesociale, 
+                        $domandaespositore->areas->nome,
+                        $domandaespositore->interventoprogrammaculturale ? "si" : "no",
+                        $domandaespositore->standpersonalizzato,
+                        $domandaespositore->stati->descrizionebreve,
+                        $domandaespositore->exhibitors->indirizzo,
+                        $domandaespositore->exhibitors->cap,
+                        $domandaespositore->exhibitors->citta,
+                        $domandaespositore->exhibitors->provincia,
+                        $domandaespositore->exhibitors->telefono,
+                        $domandaespositore->exhibitors->emailaziendale,
+                        $domandaespositore->exhibitors->piva,
+                        $domandaespositore->exhibitors->codfisc,
+                        $domandaespositore->exhibitors->referentenome,
+                        $domandaespositore->exhibitors->referentetelefono,
+                        $domandaespositore->exhibitors->referenteemail,
+                        $domandaespositore->exhibitors->prodottiesposti,
+                        $domandaespositore->exhibitors->fasciadiprezzo,
+                        $domandaespositore->exhibitors->numerocoespositore,
+                        $domandaespositore->exhibitors->nomecoespositore,
+                        $domandaespositore->codicestand,
+                        $domandaespositore->padiglione,
+                        $domandaespositore->altriservizi,
+                        $domandaespositore->prezzofinale,
+                    );
+                    $righe = array_merge($righe,$sa);
+                    $sheet->fromArray( $righe, NULL, 'A'.$contatorerighe );  
+                    $contatorerighe++;
+                }
+            }
+
+       // }   foreach area tematica
+        $sheetIndex = $spreadsheet->getIndex(
+            $spreadsheet->getSheetByName('Worksheet')
+        );
+        $spreadsheet->removeSheetByIndex($sheetIndex);
+        $writer->save('php://output');
+
+    }
+   
 }
 

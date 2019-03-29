@@ -99,6 +99,11 @@ class ReservationsForm extends Form
         $notepagamento->setFilters(['striptags', 'string']);
         $this->add($notepagamento);
 
+        $notecondivise = new Text("notecondivise");
+        $notecondivise->setLabel("note condivise");
+        $notecondivise->setFilters(['striptags', 'string']);
+        $this->add($notecondivise);
+
         $altriservizi = new Text("altriservizi");
         $altriservizi->setLabel("altri servizi");
         $altriservizi->setFilters(['striptags', 'string']);
@@ -117,7 +122,7 @@ class ReservationsForm extends Form
 
         $interventoprogrammaculturale = new Check("interventoprogrammaculturale", $optionspc);
         $interventoprogrammaculturale->setLabel("intervento programma culturale");
-        $this->add($interventoprogrammaculturale);
+        $this->add($interventoprogrammaculturale);      
 
         $prezzostandpersonalizzato = new Text("prezzostandpersonalizzato");
         $prezzostandpersonalizzato->setLabel("prezzo stand personalizzato");

@@ -30,7 +30,7 @@ $(document).ready(function(){
     });
 
     $("#inviolettera").click(function(event){
-
+      $('#modalspinner').modal('show');
       event.preventDefault();
       var reservationid = $("#reservationid").val();
 
@@ -51,8 +51,47 @@ $(document).ready(function(){
                   $('#contenutosuccess').html( "<div class=\"alert alert-danger darimuovere\" role=\"alert\">" + messaggioerrore + "</div>" );
                       break;                           
               }
-              $('#SuccessInsertModal').modal('show');
+              $('#modalspinner').fadeOut(1000, function(){
+                $('#modalspinner').modal('hide');
+                $('#SuccessInsertModal').modal('show');
+            });
       });
 
     });
+
+    $("#aggiungilog").click(function(){
+      $('#msgdiario').modal();
+    });
+
+    /* codice per invio ajax nota diario */
+    $("#inseriscinotadiario").click(function(event){
+      event.preventDefault();
+      var form = document.getElementById("formnotadiario");
+      var form_data = new FormData(form);
+      $.ajax({
+          url : '/reservations/scrivinota',
+          type: 'POST',
+          data : form_data,
+          contentType: false,
+          cache: false,
+          processData:false
+      }).done(function(response){
+          var status = response.status;
+          var messaggioerrore = response.risposta;
+          switch (status) { 
+            case 'OK':
+                $('#bodymsgdiario').html( "<div class=\"alert alert-success\" role=\"alert\">" + messaggioerrore + "</div>" );
+                break;                              
+            case 'KO':
+                $('#bodymsgdiario').html( "<div class=\"alert alert-danger\" role=\"alert\">" + messaggioerrore + "</div>" );
+                break;                           
+          }
+          $('#msgdiario').fadeOut(2000, function(){
+            $('#msgdiario').modal('hide');
+            location.reload();
+        });
+      });
+
+    });
+
 });

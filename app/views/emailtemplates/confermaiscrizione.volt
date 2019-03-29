@@ -105,8 +105,8 @@
                   <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;">
                     <tr>
                       <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">
-                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Spett.le {{ exhibitors.ragionesociale }},</p>
-                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">le confermiamo l'iscrizione a {{ evento }}. Di seguito le mostriamo il riepilogo dei dati inseriti.</p>
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Gentile espositore,</p>
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">il suo inserimento è avvenuto correttamente. Sarà cura dell’organizzazione contattarla quanto prima per formalizzare la sua iscrizione a {{ evento }}. Di seguito le mostriamo il riepilogo dei dati inseriti.</p>
                         <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><hr></p>
                         <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><strong>Ragione Sociale:</strong> {{ exhibitors.ragionesociale }}</p>
                         <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><strong>indirizzo:</strong> {{ exhibitors.indirizzo }} - {{ exhibitors.cap }}, {{ exhibitors.citta }} - {{ exhibitors.provincia }}</p>
@@ -141,8 +141,40 @@
                   </table>
                 </td>
               </tr>
-
             <!-- END MAIN CONTENT AREA -->
+
+            {% if exhibitors.nomecoespositore != '' %}
+              <!-- se esistono dei coespositori allora creo la call to action -->
+              <tr>
+                  <td class="wrapper">
+                    <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td>
+                          <p>Per concludere anche l'inserimento dei dati del suo coespositore,</p>
+                          <p>La invitiamo a conservare questo messaggio e, non appena Lei sarà in possesso di tutti i dati del suo coespositore, potrà inserirli cliccando il link sottostante.</p>
+                          <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                                    <tbody>
+                                      <tr style="text-align:center !important;">
+                                        <td style="text-align:center !important;"> <a href="http://gestionale.falacosagiustaumbria.it/exhibitors/coespositore/{{ reservation_id }}" target="_blank" style="display: inline-block; color: #ffffff; background-color: #3498db; border: solid 1px #3498db; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #3498db;">Dati Coespositore</a></td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              <!-- end call to action -->
+              {% endif %}
+
             </table>
 
             <!-- START FOOTER -->
