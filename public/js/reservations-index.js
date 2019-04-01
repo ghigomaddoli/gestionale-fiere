@@ -20,4 +20,17 @@ $(document).ready(function(){
          $('#deletetModal').find('.btn-primary').attr('href', dest);
      });
 
+     $(".dettcont").click(function(event){
+        event.preventDefault();
+        var telaz = $(this).attr('data-telaz');
+        var emailaz = $(this).attr('data-emailaz');
+        var nomeref = $(this).attr('data-nomeref');
+        var telref = $(this).attr('data-telref');
+        var emailref = $(this).attr('data-emailref');
+        var ragsoc = $(this).attr('data-ragsoc');
+        $('#dettagliocontatti').modal('show');
+        $('#dettagliocontatti').find('.modal-title').html("Dettaglio contatti ");
+        $('#dettagliocontatti').find('.modal-body').html("<h5>" + ragsoc + "</h5><p>Telefono azienda: <a href='tel:"+ telaz + "'>" + telaz + "</a></p><p>Email azienda: <a href='mailto:"+ emailaz + "'>" + emailaz + "</a></p><h5>Referente fiera: " + nomeref + "</h5><p>Telefono referente: <a href='tel:"+ telref + "'>" + telref + "</a></p><p>Email referente: <a href='mailto:"+ emailref + "'>" + emailref + "</a></p>");
+    });
+
 });

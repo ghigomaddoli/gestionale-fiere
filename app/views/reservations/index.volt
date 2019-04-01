@@ -61,8 +61,7 @@
                   <thead>
                     <tr>
                         <th>Ragione sociale</th>
-                        <th>Contatti Azienda</th>
-                        <th>Referente Fiera</th>
+                        <th>Contatti</th>
                         <th>Area Tematica</th>
                         <th>Stato</th>
                         <th>Info</th>
@@ -77,15 +76,14 @@
                         {% set colorefascia = 'warning' %}
                         {% endif %}
                         <tr>
-                        <td>{% if reservation.padre_id is not null %} <i class='fas fa-user-friends' data-toggle='tooltip' title='Coespositore di {{ reservation.getPadri().exhibitors.ragionesociale }}'></i> {% endif %} {{ reservation.exhibitors.ragionesociale }}</td>
-                        <td><a href='tel:{{ reservation.exhibitors.telefono }}'><i class="fas fa-phone-square"> {{ reservation.exhibitors.telefono }}</i></a><br>
-                            <a href='mailto:{{ reservation.exhibitors.emailaziendale }}'><i class="far fa-envelope"> {{ reservation.exhibitors.emailaziendale }}</i></a></td>
                         <td>
-                            {{ reservation.exhibitors.referentenome }} 
-                            <a href='tel:{{ reservation.exhibitors.referentetelefono }}'><i class="fas fa-phone-square"> {{ reservation.exhibitors.referentetelefono }}</i></a> 
-                            <a href='mailto:{{ reservation.exhibitors.referenteemail }}'><i class="far fa-envelope"> {{ reservation.exhibitors.referenteemail }}</i></a></td>
+                          {% if reservation.padre_id is not null %} <i class='fas fa-user-friends' data-toggle='tooltip' title='Coespositore di {{ reservation.getPadri().exhibitors.ragionesociale }}'></i> {% endif %} {{ reservation.exhibitors.ragionesociale }}
+                        </td>
                         <td>
-                            <span class="badge" style="background-color:{{ reservation.areas.colore }};">{{ reservation.areas.nome }}</span>
+                            <button class='btn btn-sm btn-outline-secondary fas fa-address-card dettcont' data-target='#dettagliocontatti' data-toggle='modal' data-title='dettaglio contatti' data-ragsoc='{{ reservation.exhibitors.ragionesociale }}' data-telaz='{{ reservation.exhibitors.telefono }}' data-emailaz='{{ reservation.exhibitors.emailaziendale }}' data-nomeref='{{ reservation.exhibitors.referentenome }}' data-telref='{{ reservation.exhibitors.referentetelefono }}' data-emailref='{{ reservation.exhibitors.referenteemail }}'></button>
+                        </td>
+                        <td>
+                            <span class="badge" style="background-color:{{ reservation.areas.colore }}">{{ reservation.areas.nome }}</span>
                         </td>
                         <td>
                             <span class="badge badge-{{ reservation.stati.colore }}">{{ reservation.stati.descrizionebreve }}</span>
@@ -191,3 +189,22 @@
     </div>
   </div>
   </div>
+
+  <div class="modal fade"  id="dettagliocontatti" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Dettaglio contatti</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>ciao</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Chiudi</button>
+        </div>
+      </div>
+    </div>
+    </div>
