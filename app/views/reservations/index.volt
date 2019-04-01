@@ -77,7 +77,7 @@
                         {% set colorefascia = 'warning' %}
                         {% endif %}
                         <tr>
-                        <td>{{ reservation.exhibitors.ragionesociale }}</td>
+                        <td>{% if reservation.padre_id is not null %} <i class='fas fa-user-friends' data-toggle='tooltip' title='Coespositore di {{ reservation.getPadri().exhibitors.ragionesociale }}'></i> {% endif %} {{ reservation.exhibitors.ragionesociale }}</td>
                         <td><a href='tel:{{ reservation.exhibitors.telefono }}'><i class="fas fa-phone-square"> {{ reservation.exhibitors.telefono }}</i></a><br>
                             <a href='mailto:{{ reservation.exhibitors.emailaziendale }}'><i class="far fa-envelope"> {{ reservation.exhibitors.emailaziendale }}</i></a></td>
                         <td>
@@ -104,7 +104,7 @@
                             {{ link_to('exhibitors/delete/' ~ reservation.exhibitors.id, "<i class='fas fa-trash-alt'></i>",'data-target' : '#deletetModal', 'data-idesp' : reservation.exhibitors.id, 'data-esp' : reservation.exhibitors.ragionesociale, 'class': 'btn btn-sm btn-outline-secondary cancellaespositore', 'data-toggle' : 'tooltip') }}
                             {{ link_to('reservations/edit/' ~ reservation.id, "<i class='fas fa-cogs'></i>", 'class': 'btn btn-sm btn-outline-secondary', 'title' :  "Dettaglio di Stand, Servizi e pagamenti", 'data-toggle' : 'tooltip') }}
                             {% if reservation.padre_id is null %}
-                            {{ link_to('exhibitors/coespositore/' ~ reservation.id, "<i class='fas fa-user-friends'></i>", 'class': 'btn btn-sm btn-outline-secondary', 'title' :  "Inserisci coespositore", 'data-toggle' : 'tooltip') }}
+                            {{ link_to('exhibitors/coespositore/' ~ reservation.id, "<i class='fas fa-user-plus'></i>", 'class': 'btn btn-sm btn-outline-secondary', 'title' :  "Inserisci coespositore", 'data-toggle' : 'tooltip') }}
                             {% endif %}
                         </td>
                         </tr>
