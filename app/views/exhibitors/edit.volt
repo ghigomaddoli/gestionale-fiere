@@ -35,7 +35,7 @@
         <div class="form-row">
             <div class="col-md-6">
                 <label for="fieldRagionesociale" class="col-sm-2 control-label">Ragionesociale</label>
-                {{ text_field("ragionesociale", "size" : 30, "class" : "form-control", "id" : "fieldRagionesociale", "value" : exhibitor.ragionesociale) }}
+                {{ text_field("ragionesociale", "size" : 30, "class" : "form-control", "id" : "fieldRagionesociale", "value" : exhibitor.ragionesociale|convert_encoding('html', 'ISO-8859-15')) }}
             </div>
             <div class="col-md-6">
                     <label for="fieldIndirizzo" class="col-sm-2 control-label">Indirizzo</label>

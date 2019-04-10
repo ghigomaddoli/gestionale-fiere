@@ -43,7 +43,7 @@
             <label for="fieldAreasId" class="control-label">Area Tematica</label>
             {{ select('areas_id', areas, 'using': ['id', 'nome'],'class' : 'form-control') }}
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-2">
                 <label class="control-label">&nbsp;</label>
                 {% set cipc = null %} 
                 {% if reservation.interventoprogrammaculturale == 1 %} 
@@ -51,17 +51,21 @@
                 {% endif %}
                 <div class="form-check form-control-lg">
                 {{ check_field('interventoprogrammaculturale', 'value': 1, 'checked' : cipc, 'class' : 'form-check-input', 'id' : 'cbipc') }}
-                <label class="form-check-label" for="cbipc"> Intervento Programma Culturale</label>
+                <label class="form-check-label" for="cbipc"> Intervento Prog. Cult.</label>
                 </div>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-2">
             <label for="fieldCodicestand" class="control-label">Codice stand</label>
             {{ text_field('codicestand', 'size': 20,  "class" : "form-control", "id" : "fieldCodicestand", "value" : reservation.codicestand) }}
         </div>          
-        <div class="col-sm-3">
-            <label for="fieldCodicestand" class="control-label">Padiglione</label>
+        <div class="col-sm-2">
+            <label for="fieldPadiglione" class="control-label">Padiglione</label>
             {{ text_field('padiglione', 'size': 20,  "class" : "form-control", "id" : "fieldPadiglione", "value" : reservation.padiglione) }}
-        </div>      
+        </div>    
+        <div class="col-sm-3">
+            <label for="fieldCommerciale" class="control-label">Commerciale di riferimento</label>
+            {{ text_field('commerciale', 'size': 20,  "class" : "form-control", "id" : "fieldCommerciale", "value" : reservation.commerciale) }}
+        </div>    
     </div>
 
     <div class="row">
@@ -150,7 +154,7 @@
             </div>
             <div class="col-sm-4"><h4>Riepilogo contabile</h4>
                 <table id="riepilogocontabile" class="table-responsive table-sm table-riepilogo">
-                    <tr><th>descrizione</th><th class="text-right">costo&nbsp;un.</th><th class="text-right">quant.</th><th class="text-right">tot</th><th class="text-right">iva</th></tr>
+                    <tr><th>descrizione</th><th class="text-right">costo</th><th class="text-right">q.</th><th class="text-right">tot</th><th class="text-right">iva</th></tr>
                     {% set totale = 0 %}
                     {% set totiva = 0 %}
                     {% for indice, reservationservice in reservationservices %}

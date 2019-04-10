@@ -15,7 +15,7 @@ class Elements extends Component
 
 
     /**
-     * Builds sidebar menu
+     * Builds sidebar menu <i class="fas fa-tachometer-alt"></i>
      *
      * @return string
      */
@@ -24,6 +24,10 @@ class Elements extends Component
 
         $auth = $this->session->get('auth');
         if ($auth) {
+            $this->_sidebarMenu['index']['index'] = [
+                'caption' => 'Dashboard',
+                'fa-icon' => 'fa-tachometer-alt'
+            ];
             $this->_sidebarMenu['reservations']['index'] = [
                 'caption' => 'Gestione Prenotazioni',
                 'fa-icon' => 'fa-briefcase'

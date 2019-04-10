@@ -209,22 +209,6 @@ class ReservationsController extends ControllerBase
             $reservation->interventoprogrammaculturale = 0;
         }
 
-        $anticiporichiesto = $this->request->getPost('anticiporichiesto', 'int');
-        if(empty($anticiporichiesto)){
-            $reservation->anticiporichiesto = 0;
-        }
-
-        $anticipopagato = $this->request->getPost('anticipopagato', 'int');
-        if(empty($anticipopagato)){
-            $reservation->anticipopagato = 0;
-        }
-
-        $pagamentocompleto = $this->request->getPost('pagamentocompleto', 'int');
-        if(empty($pagamentocompleto)){
-            $reservation->pagamentocompleto = 0;
-        }
-
-
         if ($reservation->save() == false) {
             foreach ($reservation->getMessages() as $message) {
                 $this->flash->error($message);
@@ -260,7 +244,6 @@ class ReservationsController extends ControllerBase
             );
         }
         $servizi = $this->request->getPost("services");
-      //  \PhalconDebug::info("servizi",$servizi);
         if(is_array($servizi) && count($servizi)){
             foreach($servizi as $idservizio => $quantita){
                 if($quantita == 0) continue;
@@ -290,7 +273,6 @@ class ReservationsController extends ControllerBase
         $this->db->commit();
 
         $form->clear();    
-
         $this->flash->success("I dati della prenotazione dell'espositore {$reservation->exhibitors->ragionesociale} sono stati aggiornati");
 
         return $this->dispatcher->forward(
@@ -748,7 +730,7 @@ class ReservationsController extends ControllerBase
         }
 
         // elenco servizi esistenti per intestazione colonne
-        $elencoservizi = Services::find("events_id = ".$this->evento->id." AND id != 1");
+        $elencoservizi = Services::find("events_id = ".$this->evento->id." AND id != 1 ORDER BY tipologia");
 
         $areetematiche = Areas::find("events_id = ".$this->evento->id);
 
@@ -823,7 +805,8 @@ class ReservationsController extends ControllerBase
             $this->view->laquery = $builder->getQuery()->getSql();
 
             if(count($reservations) > 0){
-                
+
+                $escaper = new \Phalcon\Escaper();
                 $myWorkSheet = new \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet($spreadsheet, $area->nome); 
                 $spreadsheet->addSheet($myWorkSheet, 0);
                 $sheet = $spreadsheet->setActiveSheetIndex(0);
@@ -846,29 +829,29 @@ class ReservationsController extends ControllerBase
                     }
         
                     $righe = array(
-                        $domandaespositore->exhibitors->ragionesociale, 
-                        $domandaespositore->areas->nome,
+                        htmlspecialchars_decode($domandaespositore->exhibitors->ragionesociale,ENT_QUOTES), 
+                        htmlspecialchars_decode($domandaespositore->areas->nome,ENT_QUOTES), 
                         $domandaespositore->interventoprogrammaculturale ? "si" : "no",
-                        $domandaespositore->standpersonalizzato,
+                        htmlspecialchars_decode($domandaespositore->standpersonalizzato,ENT_QUOTES), 
                         $domandaespositore->stati->descrizionebreve,
-                        $domandaespositore->exhibitors->indirizzo,
+                        htmlspecialchars_decode($domandaespositore->exhibitors->indirizzo,ENT_QUOTES), 
                         $domandaespositore->exhibitors->cap,
-                        $domandaespositore->exhibitors->citta,
-                        $domandaespositore->exhibitors->provincia,
+                        htmlspecialchars_decode($domandaespositore->exhibitors->citta,ENT_QUOTES), 
+                        htmlspecialchars_decode($domandaespositore->exhibitors->provincia,ENT_QUOTES), 
                         $domandaespositore->exhibitors->telefono,
                         $domandaespositore->exhibitors->emailaziendale,
                         $domandaespositore->exhibitors->piva,
                         $domandaespositore->exhibitors->codfisc,
-                        $domandaespositore->exhibitors->referentenome,
+                        htmlspecialchars_decode($domandaespositore->exhibitors->referentenome,ENT_QUOTES), 
                         $domandaespositore->exhibitors->referentetelefono,
                         $domandaespositore->exhibitors->referenteemail,
-                        $domandaespositore->exhibitors->prodottiesposti,
+                        htmlspecialchars_decode($domandaespositore->exhibitors->prodottiesposti,ENT_QUOTES), 
                         $domandaespositore->exhibitors->fasciadiprezzo,
                         $domandaespositore->exhibitors->numerocoespositore,
-                        $domandaespositore->exhibitors->nomecoespositore,
+                        htmlspecialchars_decode($domandaespositore->exhibitors->nomecoespositore,ENT_QUOTES), 
                         $domandaespositore->codicestand,
                         $domandaespositore->padiglione,
-                        $domandaespositore->altriservizi,
+                        htmlspecialchars_decode($domandaespositore->altriservizi,ENT_QUOTES), 
                         $domandaespositore->prezzofinale,
                     );
                     $righe = array_merge($righe,$sa);
@@ -1183,9 +1166,7 @@ class ReservationsController extends ControllerBase
         }
 
         // elenco servizi esistenti per intestazione colonne
-        $elencoservizi = Services::find("events_id = ".$this->evento->id." AND id != 1");
-
-        $areetematiche = Areas::find("events_id = ".$this->evento->id);
+        $elencoservizi = Services::find("events_id = ".$this->evento->id." AND id != 1 ORDER BY tipologia");
 
         $nomiservizi = array();
         foreach($elencoservizi as $nomeservizio){
@@ -1222,18 +1203,12 @@ class ReservationsController extends ControllerBase
         $nomicolonne = array_merge($nomicolonne,$nomiservizi);
 
         $spreadsheet = new Spreadsheet();
-        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, "Xlsx");
-
-        //foreach ($areetematiche as $area){ 
-        //    if(!empty($areas_id) && $area->id != $areas_id){
-        //        continue;
-        //    }  
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, "Xlsx"); 
 
             $builder = $this->modelsManager->createBuilder()
             ->from('Reservations')
             ->join('Exhibitors')
             ->where("events_id = ".$this->evento->id);
-       //     ->andWhere("areas_id = ".$area->id);
     
             foreach($parameters as $campo => $valore){
                 switch($campo){
@@ -1281,29 +1256,29 @@ class ReservationsController extends ControllerBase
                     }
         
                     $righe = array(
-                        $domandaespositore->exhibitors->ragionesociale, 
-                        $domandaespositore->areas->nome,
+                        htmlspecialchars_decode($domandaespositore->exhibitors->ragionesociale,ENT_QUOTES), 
+                        htmlspecialchars_decode($domandaespositore->areas->nome,ENT_QUOTES), 
                         $domandaespositore->interventoprogrammaculturale ? "si" : "no",
-                        $domandaespositore->standpersonalizzato,
+                        htmlspecialchars_decode($domandaespositore->standpersonalizzato,ENT_QUOTES), 
                         $domandaespositore->stati->descrizionebreve,
-                        $domandaespositore->exhibitors->indirizzo,
+                        htmlspecialchars_decode($domandaespositore->exhibitors->indirizzo,ENT_QUOTES), 
                         $domandaespositore->exhibitors->cap,
-                        $domandaespositore->exhibitors->citta,
-                        $domandaespositore->exhibitors->provincia,
+                        htmlspecialchars_decode($domandaespositore->exhibitors->citta,ENT_QUOTES), 
+                        htmlspecialchars_decode($domandaespositore->exhibitors->provincia,ENT_QUOTES), 
                         $domandaespositore->exhibitors->telefono,
                         $domandaespositore->exhibitors->emailaziendale,
                         $domandaespositore->exhibitors->piva,
                         $domandaespositore->exhibitors->codfisc,
-                        $domandaespositore->exhibitors->referentenome,
+                        htmlspecialchars_decode($domandaespositore->exhibitors->referentenome,ENT_QUOTES), 
                         $domandaespositore->exhibitors->referentetelefono,
                         $domandaespositore->exhibitors->referenteemail,
-                        $domandaespositore->exhibitors->prodottiesposti,
+                        htmlspecialchars_decode($domandaespositore->exhibitors->prodottiesposti,ENT_QUOTES), 
                         $domandaespositore->exhibitors->fasciadiprezzo,
                         $domandaespositore->exhibitors->numerocoespositore,
-                        $domandaespositore->exhibitors->nomecoespositore,
+                        htmlspecialchars_decode($domandaespositore->exhibitors->nomecoespositore,ENT_QUOTES), 
                         $domandaespositore->codicestand,
                         $domandaespositore->padiglione,
-                        $domandaespositore->altriservizi,
+                        htmlspecialchars_decode($domandaespositore->altriservizi,ENT_QUOTES), 
                         $domandaespositore->prezzofinale,
                     );
                     $righe = array_merge($righe,$sa);
@@ -1312,7 +1287,6 @@ class ReservationsController extends ControllerBase
                 }
             }
 
-       // }   foreach area tematica
         $sheetIndex = $spreadsheet->getIndex(
             $spreadsheet->getSheetByName('Worksheet')
         );

@@ -97,6 +97,7 @@ $di->setShared('modelsMetadata', function () {
 /**
  * Register the session flash service with the Twitter Bootstrap classes
  */
+/*
 $di->set('flash', function () {
     return new Flash([
         'error'   => 'alert alert-danger',
@@ -104,6 +105,19 @@ $di->set('flash', function () {
         'notice'  => 'alert alert-info',
         'warning' => 'alert alert-warning'
     ]);
+});
+*/
+$di->set('flash', function(){
+    $flash = new Flash(array(
+        'error' => 'alert alert-danger',
+        'warning' => 'alert alert-warning',
+        'success' => 'alert alert-success',
+        'notice' => 'alert alert-info',
+    ));
+
+    $flash->setAutoescape(false); // Here's how to change autoescape
+
+    return $flash;
 });
 
 /**

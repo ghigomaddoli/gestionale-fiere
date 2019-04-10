@@ -44,6 +44,12 @@ class Reservations extends \Phalcon\Mvc\Model
 
     /**
      *
+     * @var string
+     */
+    public $commerciale;
+
+    /**
+     *
      * @var integer
      */
     public $padre_id;
@@ -149,6 +155,17 @@ class Reservations extends \Phalcon\Mvc\Model
             )
         );
 
+        $validator->add(
+            'commerciale',
+            new StringLength(
+                [
+                    "max"            => 100,
+                    "messageMaximum" => "Il campo del referente commerciale non può essere più lungo di 100 caratteri",
+                    "allowEmpty" => true,
+                ]
+            )
+        );
+
         return $this->validate($validator);
     }
 
@@ -190,7 +207,8 @@ class Reservations extends \Phalcon\Mvc\Model
             'events_id' => 'events_id',
             'areas_id' => 'areas_id',
             'codicestand' => 'codicestand',
-            'padiglione' => 'padiglione',            
+            'padiglione' => 'padiglione',   
+            'commerciale' => 'commerciale',            
             'padre_id' => 'padre_id',
             'prezzofinale' => 'prezzofinale',
             'notepagamento' => 'notepagamento',

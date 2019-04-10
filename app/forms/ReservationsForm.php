@@ -73,6 +73,11 @@ class ReservationsForm extends Form
         $padiglione->setFilters(['striptags', 'string']);
         $this->add($padiglione);
 
+        $commerciale = new Text("commerciale");
+        $commerciale->setLabel("Referente commerciale");
+        $commerciale->setFilters(['striptags', 'string']);
+        $this->add($commerciale);
+
         $padre_id = new Select("padre_id",
             Exhibitors::find(),
             [

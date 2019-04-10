@@ -362,6 +362,7 @@ class ExhibitorsController extends ControllerBase
     {
         if (!$this->request->isPost()) {
 
+            Phalcon\Tag::setAutoescape(false);
             $this->view->province = Province::find();
             $this->assets->addCss('css/style.css');
             $this->assets->addJs('js/exhibitors-edit.js');
