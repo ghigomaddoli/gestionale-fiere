@@ -165,10 +165,14 @@
 }
 
 .toggle.btn {
-  background-color: rgb(250, 178, 178);
+  background-color: #e9ecef;
   border: 1px solid black;
 }
-
+/*
+.toggle-handle {
+  background-color: #444343;
+}
+*/
 /* Medium Devices, .visible-md-* */
 @media (min-width: 992px) and (max-width: 1199px) {
   .timeline > li:nth-child(even) {

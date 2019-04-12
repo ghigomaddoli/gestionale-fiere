@@ -67,25 +67,36 @@
         </div>
 
         <div class="form-row">
-            <div class="col-md-3">
+            <div class="col">
                     <label for="fieldTelefono" class="col-sm-2 control-label">Telefono</label>
                     <div>
                             {{ text_field("telefono", "size" : 30, "class" : "form-control", "id" : "fieldTelefono") }}
                     </div>
             </div>
-            <div class="col-md-3">
+            <div class="col">
                     <label for="fieldEmailaziendale" class="col-sm-2 control-label">Email&nbsp;Azienda</label>
                     <div>
                             {{ text_field("emailaziendale", "size" : 30, "class" : "form-control", "id" : "fieldEmailaziendale") }}
                     </div>
             </div>
-            <div class="col-md-3">
+            <div class="col">
+                    <label for="fieldEmailaziendale" class="col-sm-2 control-label">&nbsp;</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">      
+                                    {{ check_field('espositoreestero', 'value' : 1, 'id' : 'espositoreestero', 'aria-label' : 'espositoreestero' ) }} 
+                            </div>
+                        </div>
+                        <input type="text" name="descee" value="Espositore estero" title="espositore estero" class="form-control" disabled="disabled">  
+                    </div>
+            </div>
+            <div class="col">
                     <label for="fieldPartitaiva" class="col-sm-2 control-label">Partita&nbsp;iva</label>
                     <div>
                             {{ text_field("piva", "type" : "number", "size" : "11", "maxlength" : "11", "class" : "form-control", "id" : "fieldPartitaiva") }}
                     </div>
             </div>
-            <div class="col-md-3">
+            <div class="col">
                 <label for="fieldCodFisc" class="col-sm-2 control-label">Cod.&nbsp;Fisc.</label>
                 <div>
                         {{ text_field("codfisc", "size" : "16", "maxlength" : "16", "class" : "form-control", "id" : "fieldCodFisc") }}
@@ -563,7 +574,7 @@
 
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10 smooth-scroll">
-            {{ submit_button('Salva',"class" : "btn btn-primary") }}
+            {{ submit_button('Invia',"class" : "btn btn-primary") }}
         </div>
     </div>
     

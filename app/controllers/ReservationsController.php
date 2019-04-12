@@ -432,8 +432,8 @@ class ReservationsController extends ControllerBase
         $pdf->Cell(0,6,"DATI ESPOSITORE PER LA FATTURAZIONE",0,1,'L');
 
         $pdf->SetFont('Times','',12);
-        $datifatturazione["Ragione Sociale"] = utf8_decode($reservation->exhibitors->ragionesociale);
-        $datifatturazione["Indirizzo"] = utf8_decode($reservation->exhibitors->indirizzo." - ".$reservation->exhibitors->cap." - ".ucfirst($reservation->exhibitors->citta)." (".$reservation->exhibitors->provincia.")");
+        $datifatturazione["Ragione Sociale"] = htmlspecialchars_decode(utf8_decode($reservation->exhibitors->ragionesociale),ENT_QUOTES);
+        $datifatturazione["Indirizzo"] = htmlspecialchars_decode(utf8_decode($reservation->exhibitors->indirizzo." - ".$reservation->exhibitors->cap." - ".ucfirst($reservation->exhibitors->citta)." (".$reservation->exhibitors->provincia.")"),ENT_QUOTES);
         $datifatturazione["Telefono e Email"] = utf8_decode($reservation->exhibitors->telefono." ".$reservation->exhibitors->emailaziendale);
         if(!empty($reservation->exhibitors->piva)) $datifatturazione["Partita Iva"] = $reservation->exhibitors->piva;
         if(!empty($reservation->exhibitors->codfisc)) $datifatturazione["Codice Fiscale"] = $reservation->exhibitors->codfisc;
@@ -444,7 +444,7 @@ class ReservationsController extends ControllerBase
         $pdf->Cell(0,6,"REFERENTE ESPOSITORE PER CONTATTI PRIMA E DURANTE LA FIERA",0,1,'L');
 
         $pdf->SetFont('Times','',12);
-        $datireferente["Nome e cognome"] = utf8_decode($reservation->exhibitors->referentenome);
+        $datireferente["Nome e cognome"] = htmlspecialchars_decode(utf8_decode($reservation->exhibitors->referentenome),ENT_QUOTES);
         $datireferente["Cellulare e Email"] = utf8_decode($reservation->exhibitors->referentetelefono." - ".$reservation->exhibitors->referenteemail);
         $pdf->BasicTable($datireferente);
         $pdf->Ln();
@@ -454,7 +454,7 @@ class ReservationsController extends ControllerBase
 
         $pdf->SetFont('Times','',12);
         $riepilogo["Sezione Tematica"] = utf8_decode($reservation->areas->nome);
-        $riepilogo["Elenco prodotti"] = utf8_decode(substr($reservation->exhibitors->prodottiesposti,0,87)."...");
+        $riepilogo["Elenco prodotti"] = htmlspecialchars(utf8_decode(substr($reservation->exhibitors->prodottiesposti,0,87)."..."),ENT_QUOTES);
         $riepilogo["Codice Spazio"] = utf8_decode($reservation->codicestand);
         $pdf->BasicTable($riepilogo);
 
@@ -566,14 +566,14 @@ class ReservationsController extends ControllerBase
         $pdf->Cell(108,18,'',1,0,'L');
         $pdf->SetFont('Times','',8);
         $pdf->SetX($x);
-        $pdf->MultiCell(108,6,utf8_decode($reservation->standpersonalizzato),0,'L',false);
+        $pdf->MultiCell(108,6,htmlspecialchars_decode(utf8_decode($reservation->standpersonalizzato),ENT_QUOTES),0,'L',false);
         $pdf->Ln();
 
         // note condivise con l'espositore
         if($reservation->notecondivise !=''){
             $pdf->Ln();
             $pdf->SetFont('Times','',12);
-            $pdf->MultiCell(0,6,utf8_decode("ALTRE NOTE: ".$reservation->notecondivise),0,'L',false);
+            $pdf->MultiCell(0,6,htmlspecialchars_decode(utf8_decode("ALTRE NOTE: ".$reservation->notecondivise),ENT_QUOTES),0,'L',false);
             $pdf->Ln();
         }
 

@@ -19,9 +19,11 @@ class ExhibitorsController extends ControllerBase
         $this->view->provinciadefault = 'PG';
         $this->view->areas = Areas::find("events_id = ".$this->evento->id);
         $this->assets->addCss('css/style.css');
+        $this->assets->addCss('https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css');
         $this->view->stands = Services::find("events_id = ".$this->evento->id." AND tipologia IN (1,2)");
         $this->view->services = Services::find("events_id = ".$this->evento->id." AND tipologia = 3");
         $this->assets->addJs('js/exhibitors-new.js');
+        $this->assets->addJs('https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js');
         foreach($this->view->stands as $stand){
             $arraystand[] = $stand->id;
         }
@@ -73,19 +75,7 @@ class ExhibitorsController extends ControllerBase
         $this->view->provinciadefault = 'PG';
         $this->view->areas = Areas::find("events_id = ".$this->evento->id);
         $this->assets->addCss('css/style.css');
-        //$this->view->stands = Services::find("events_id = ".$this->evento->id." AND tipologia IN (1,2)");
-        //$this->view->services = Services::find("events_id = ".$this->evento->id." AND tipologia = 3");
         $this->assets->addJs('js/exhibitors-coespositore.js');
-        /*
-        foreach($this->view->stands as $stand){
-            $arraystand[] = $stand->id;
-        }
-        $this->view->arraystand = implode(",",$arraystand);
-        foreach($this->view->services as $servizio){
-            $arrayservizi[] = $servizio->id;
-        }
-        $this->view->arrayservizi = implode(",",$arrayservizi);
-        */
         $auth = $this->session->get('auth');
         if($auth){
             $this->view->redirect = "/reservations/index";
@@ -131,23 +121,26 @@ class ExhibitorsController extends ControllerBase
         }
 
         // verifico che uno dei due campi tra partita iva e codicefiscale siano stati compilati
-        $piva = $this->request->getPost('piva');
-        $codfisc = $this->request->getPost('codfisc');
-        \PhalconDebug::info('piva: '.$piva.' codfisc: '.$codfisc);
-        if(empty($piva) && empty($codfisc)){
-            $ris["piva"] = "&Egrave; obbligatorio compilare almeno uno dei due campi Partita iva e codice Fiscale";
-            $ris["codfisc"] = "&Egrave; obbligatorio compilare almeno uno dei due campi Partita iva e codice Fiscale";
-            $ris["status"] = "KO";
-            return $this->response->setJsonContent($ris);
-        }
-        if(!empty($codfisc)){
-            // proviamo a verificare la validità formale del codice fiscale con regex presa da internet? boh
-            if(preg_match("/^[A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z]$/i",$codfisc)==false){
-                $ris["codfisc"] = "Il formato del codice fiscale non è valido";
+        // a meno che il cliente sia straniero: in questo caso disabilito i controlli formali.
+        $espositoreestero = $this->request->getPost('espositoreestero');
+        if($espositoreestero != 1){
+            $piva = $this->request->getPost('piva');
+            $codfisc = $this->request->getPost('codfisc');
+            if(empty($piva) && empty($codfisc)){
+                $ris["piva"] = "&Egrave; obbligatorio compilare almeno uno dei due campi Partita iva e codice Fiscale";
+                $ris["codfisc"] = "&Egrave; obbligatorio compilare almeno uno dei due campi Partita iva e codice Fiscale";
                 $ris["status"] = "KO";
                 return $this->response->setJsonContent($ris);
             }
+            if(!empty($codfisc)){
+                // proviamo a verificare la validità formale del codice fiscale
+                if(preg_match("/^[A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z]$/i",$codfisc)==false){
+                    $ris["codfisc"] = "Il formato del codice fiscale non è valido";
+                    $ris["status"] = "KO";
+                    return $this->response->setJsonContent($ris);
+                }
 
+            }
         }
 
         // verifico che almeno uno stand sia stato selezionato

@@ -26,7 +26,7 @@ class IndexController extends ControllerBase
         foreach($stati as $stato){
             $contatorearea = 0;
             foreach($reservations as $reservation){
-                if ($reservation->getStati()->descrizionestato == $stato->descrizionestato){
+                if ($reservation->stati->descrizionestato == $stato->descrizionestato){
                     $contatorearea++;
                 }
             }
@@ -53,7 +53,7 @@ class IndexController extends ControllerBase
         foreach($areas as $area){
             $contatoreareas = 0;
             foreach($reservations as $reservation){
-                if ($reservation->getAreas()->nome == $area->nome){
+                if ($reservation->areas->nome == $area->nome){
                     $contatoreareas++;
                 }
             }
@@ -105,6 +105,7 @@ class IndexController extends ControllerBase
             'quantita coespositori',
             'nomi coespositori',
             'codicestand',
+            'padiglione',
             'altri servizi richiesti',
         );
 
@@ -132,28 +133,29 @@ class IndexController extends ControllerBase
             }
 
             $righe = array(
-                $domandaespositore->getExhibitors()->ragionesociale, 
-                $domandaespositore->getAreas()->nome,
+                htmlspecialchars_decode($domandaespositore->exhibitors->ragionesociale,ENT_QUOTES),
+                htmlspecialchars_decode($domandaespositore->areas->nome,ENT_QUOTES),
                 $domandaespositore->interventoprogrammaculturale ? "si" : "no",
-                $domandaespositore->standpersonalizzato,
-                $domandaespositore->getStati()->descrizionebreve,
-                $domandaespositore->getExhibitors()->indirizzo,
-                $domandaespositore->getExhibitors()->cap,
-                $domandaespositore->getExhibitors()->citta,
-                $domandaespositore->getExhibitors()->provincia,
-                $domandaespositore->getExhibitors()->telefono,
-                $domandaespositore->getExhibitors()->emailaziendale,
-                $domandaespositore->getExhibitors()->piva,
-                $domandaespositore->getExhibitors()->codfisc,
-                $domandaespositore->getExhibitors()->referentenome,
-                $domandaespositore->getExhibitors()->referentetelefono,
-                $domandaespositore->getExhibitors()->referenteemail,
-                $domandaespositore->getExhibitors()->prodottiesposti,
-                $domandaespositore->getExhibitors()->fasciadiprezzo,
-                $domandaespositore->getExhibitors()->numerocoespositore,
-                $domandaespositore->getExhibitors()->nomecoespositore,
+                htmlspecialchars_decode($domandaespositore->standpersonalizzato,ENT_QUOTES),
+                $domandaespositore->stati->descrizionebreve,
+                htmlspecialchars_decode($domandaespositore->exhibitors->indirizzo,ENT_QUOTES),
+                $domandaespositore->exhibitors->cap,
+                $domandaespositore->exhibitors->citta,
+                $domandaespositore->exhibitors->provincia,
+                $domandaespositore->exhibitors->telefono,
+                $domandaespositore->exhibitors->emailaziendale,
+                $domandaespositore->exhibitors->piva,
+                $domandaespositore->exhibitors->codfisc,
+                htmlspecialchars_decode($domandaespositore->exhibitors->referentenome,ENT_QUOTES),
+                $domandaespositore->exhibitors->referentetelefono,
+                $domandaespositore->exhibitors->referenteemail,
+                htmlspecialchars_decode($domandaespositore->exhibitors->prodottiesposti,ENT_QUOTES),
+                $domandaespositore->exhibitors->fasciadiprezzo,
+                $domandaespositore->exhibitors->numerocoespositore,
+                htmlspecialchars_decode($domandaespositore->exhibitors->nomecoespositore,ENT_QUOTES),
                 $domandaespositore->codicestand,
-                $domandaespositore->altriservizi,
+                $domandaespositore->padiglione,
+                htmlspecialchars_decode($domandaespositore->altriservizi,ENT_QUOTES),
             );
             \PhalconDebug::info('riga prima',$righe,$sa);
             $righe = array_merge($righe,$sa);
@@ -171,7 +173,7 @@ class IndexController extends ControllerBase
     {
 
         $this->view->setRenderLevel(\Phalcon\Mvc\View::LEVEL_NO_RENDER);
-        $reservations = Reservations::find("events_id = ".$this->evento->id);
+        $reservations = Reservations::find("events_id = ".$this->evento->id." AND stato = 3 ORDER BY id desc");
         $this->response->resetHeaders();
         $this->response->setHeader('Content-Type', 'application/csv');
         $this->response->setHeader('Content-Disposition', 'attachment; filename=catalogoespositori.csv');
@@ -194,30 +196,30 @@ class IndexController extends ControllerBase
             'profilo instagram',
             'profilo twitter',
             'descrizione',
-        ));
+        ),";");
 
         foreach($reservations as $domandaespositore){
 
             $serviziacquistati = array();
             $reservationservices = ReservationServices::find("reservations_id = ".$domandaespositore->id);
             foreach($reservationservices as $singoloservizio){
-                    $serviziacquistati[] = $singoloservizio->quantita." ".$singoloservizio->getServices()->descrizione;
+                    $serviziacquistati[] = $singoloservizio->quantita." ".$singoloservizio->services->descrizione;
             }
 
             fputcsv($output, array(
-                $domandaespositore->getExhibitors()->catalogonome,
-                $domandaespositore->getExhibitors()->catalogoindirizzo,
-                $domandaespositore->getExhibitors()->catalogocap,
-                $domandaespositore->getExhibitors()->catalogocitta,
-                $domandaespositore->getExhibitors()->catalogoprovincia,
-                $domandaespositore->getExhibitors()->catalogotelefono,
-                $domandaespositore->getExhibitors()->catalogoemail,
-                $domandaespositore->getExhibitors()->catalogositoweb,
-                $domandaespositore->getExhibitors()->catalogofacebook,
-                $domandaespositore->getExhibitors()->catalogoinstagram,
-                $domandaespositore->getExhibitors()->catalogotwitter,
-                $domandaespositore->getExhibitors()->catalogodescrizione,
-            ));
+                htmlspecialchars_decode($domandaespositore->exhibitors->catalogonome,ENT_QUOTES),
+                htmlspecialchars_decode($domandaespositore->exhibitors->catalogoindirizzo,ENT_QUOTES),
+                $domandaespositore->exhibitors->catalogocap,
+                htmlspecialchars_decode($domandaespositore->exhibitors->catalogocitta,ENT_QUOTES),
+                $domandaespositore->exhibitors->catalogoprovincia,
+                $domandaespositore->exhibitors->catalogotelefono,
+                $domandaespositore->exhibitors->catalogoemail,
+                $domandaespositore->exhibitors->catalogositoweb,
+                $domandaespositore->exhibitors->catalogofacebook,
+                $domandaespositore->exhibitors->catalogoinstagram,
+                $domandaespositore->exhibitors->catalogotwitter,
+                htmlspecialchars_decode($domandaespositore->exhibitors->catalogodescrizione,ENT_QUOTES),
+            ),";");
         }
         fclose($output);
 
@@ -264,6 +266,7 @@ class IndexController extends ControllerBase
             'quantita coespositori',
             'nomi coespositori',
             'codicestand',
+            'padiglione',
             'altri servizi richiesti',
         );
 
@@ -300,28 +303,29 @@ class IndexController extends ControllerBase
                     }
         
                     $righe = array(
-                        $domandaespositore->getExhibitors()->ragionesociale, 
-                        $domandaespositore->getAreas()->nome,
+                        htmlspecialchars_decode($domandaespositore->exhibitors->ragionesociale,ENT_QUOTES), 
+                        $domandaespositore->areas->nome,
                         $domandaespositore->interventoprogrammaculturale ? "si" : "no",
-                        $domandaespositore->standpersonalizzato,
-                        $domandaespositore->getStati()->descrizionebreve,
-                        $domandaespositore->getExhibitors()->indirizzo,
-                        $domandaespositore->getExhibitors()->cap,
-                        $domandaespositore->getExhibitors()->citta,
-                        $domandaespositore->getExhibitors()->provincia,
-                        $domandaespositore->getExhibitors()->telefono,
-                        $domandaespositore->getExhibitors()->emailaziendale,
-                        $domandaespositore->getExhibitors()->piva,
-                        $domandaespositore->getExhibitors()->codfisc,
-                        $domandaespositore->getExhibitors()->referentenome,
-                        $domandaespositore->getExhibitors()->referentetelefono,
-                        $domandaespositore->getExhibitors()->referenteemail,
-                        $domandaespositore->getExhibitors()->prodottiesposti,
-                        $domandaespositore->getExhibitors()->fasciadiprezzo,
-                        $domandaespositore->getExhibitors()->numerocoespositore,
-                        $domandaespositore->getExhibitors()->nomecoespositore,
+                        htmlspecialchars_decode($domandaespositore->standpersonalizzato,ENT_QUOTES),
+                        $domandaespositore->stati->descrizionebreve,
+                        htmlspecialchars_decode($domandaespositore->exhibitors->indirizzo,ENT_QUOTES),
+                        $domandaespositore->exhibitors->cap,
+                        htmlspecialchars_decode($domandaespositore->exhibitors->citta,ENT_QUOTES),
+                        $domandaespositore->exhibitors->provincia,
+                        $domandaespositore->exhibitors->telefono,
+                        $domandaespositore->exhibitors->emailaziendale,
+                        $domandaespositore->exhibitors->piva,
+                        $domandaespositore->exhibitors->codfisc,
+                        htmlspecialchars_decode($domandaespositore->exhibitors->referentenome,ENT_QUOTES),
+                        $domandaespositore->exhibitors->referentetelefono,
+                        $domandaespositore->exhibitors->referenteemail,
+                        htmlspecialchars_decode($domandaespositore->exhibitors->prodottiesposti,ENT_QUOTES),
+                        $domandaespositore->exhibitors->fasciadiprezzo,
+                        $domandaespositore->exhibitors->numerocoespositore,
+                        htmlspecialchars_decode($domandaespositore->exhibitors->nomecoespositore,ENT_QUOTES),
                         $domandaespositore->codicestand,
-                        $domandaespositore->altriservizi,
+                        $domandaespositore->padiglione,
+                        htmlspecialchars_decode($domandaespositore->altriservizi,ENT_QUOTES),
                     );
                     $righe = array_merge($righe,$sa);
                     $sheet->fromArray( $righe, NULL, 'A'.$contatorerighe );  
@@ -342,7 +346,6 @@ class IndexController extends ControllerBase
     {
 
         $this->view->setRenderLevel(\Phalcon\Mvc\View::LEVEL_NO_RENDER);
-        $reservations = Reservations::find("events_id = ".$this->evento->id);
         $this->response->resetHeaders();
         $this->response->setHeader('Content-Type', 'application/csv');
         $this->response->setHeader('Content-Disposition', 'attachment; filename=catalogoespositori.xlsx');
@@ -370,7 +373,7 @@ class IndexController extends ControllerBase
 
         foreach ($areetematiche as $area){
 
-            $reservations = Reservations::find("events_id = ".$this->evento->id." ANd areas_id = ".$area->id);
+            $reservations = Reservations::find("events_id = ".$this->evento->id." AND areas_id = ".$area->id." AND stato = 3 ORDER BY id desc");
             if(count($reservations) > 0){
                 $myWorkSheet = new \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet($spreadsheet, $area->nome); 
                 $spreadsheet->addSheet($myWorkSheet, 0);
@@ -381,18 +384,18 @@ class IndexController extends ControllerBase
                 foreach($reservations as $domandaespositore){
 
                     $lariga =  array(
-                        $domandaespositore->getExhibitors()->catalogonome,
-                        $domandaespositore->getExhibitors()->catalogoindirizzo,
-                        $domandaespositore->getExhibitors()->catalogocap,
-                        $domandaespositore->getExhibitors()->catalogocitta,
-                        $domandaespositore->getExhibitors()->catalogoprovincia,
-                        $domandaespositore->getExhibitors()->catalogotelefono,
-                        $domandaespositore->getExhibitors()->catalogoemail,
-                        $domandaespositore->getExhibitors()->catalogositoweb,
-                        $domandaespositore->getExhibitors()->catalogofacebook,
-                        $domandaespositore->getExhibitors()->catalogoinstagram,
-                        $domandaespositore->getExhibitors()->catalogotwitter,
-                        $domandaespositore->getExhibitors()->catalogodescrizione,
+                        htmlspecialchars_decode($domandaespositore->exhibitors->catalogonome,ENT_QUOTES),
+                        htmlspecialchars_decode($domandaespositore->exhibitors->catalogoindirizzo,ENT_QUOTES),
+                        $domandaespositore->exhibitors->catalogocap,
+                        htmlspecialchars_decode($domandaespositore->exhibitors->catalogocitta,ENT_QUOTES),
+                        $domandaespositore->exhibitors->catalogoprovincia,
+                        $domandaespositore->exhibitors->catalogotelefono,
+                        $domandaespositore->exhibitors->catalogoemail,
+                        $domandaespositore->exhibitors->catalogositoweb,
+                        $domandaespositore->exhibitors->catalogofacebook,
+                        $domandaespositore->exhibitors->catalogoinstagram,
+                        $domandaespositore->exhibitors->catalogotwitter,
+                        htmlspecialchars_decode($domandaespositore->exhibitors->catalogodescrizione,ENT_QUOTES),
                     );
                     $sheet->fromArray( $lariga, NULL, 'A'.$contatorerighe );  
                     $contatorerighe++;

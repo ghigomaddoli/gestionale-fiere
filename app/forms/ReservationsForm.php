@@ -107,6 +107,15 @@ class ReservationsForm extends Form
         $notecondivise = new Text("notecondivise");
         $notecondivise->setLabel("note condivise");
         $notecondivise->setFilters(['striptags', 'string']);
+        $notecondivise->addValidators([
+            new StringLength(
+                [
+                    "max"            => 300,
+                    "messageMaximum" => "Il campo Note condivise è troppo lungo (max 300 caratteri)",
+                    "allowEmpty" => true,
+                ]
+            )
+        ]);
         $this->add($notecondivise);
 
         $altriservizi = new Text("altriservizi");

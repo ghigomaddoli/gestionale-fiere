@@ -167,6 +167,11 @@ class AnagraficaForm extends Form
         ]);
         $this->add($emailaziendale);
 
+        $espositoreestero = new Check("espositoreestero",["name" => "espositoreestero","value" =>"1"]);
+        $espositoreestero->setLabel("Espositore estero");
+        $espositoreestero->setFilters(['striptags', 'string']);
+        $this->add($espositoreestero);
+
         $piva = new Text("piva");
         $piva->setLabel("Partita Iva");
         $piva->setFilters(['striptags', 'string']);
