@@ -73,10 +73,21 @@ class ReservationsForm extends Form
         $padiglione->setFilters(['striptags', 'string']);
         $this->add($padiglione);
 
-        $commerciale = new Text("commerciale");
-        $commerciale->setLabel("Referente commerciale");
-        $commerciale->setFilters(['striptags', 'string']);
-        $this->add($commerciale);
+        $users_id = new Select("users_id",
+            Users::find("attivo = 1"),
+            [
+                'using'      => [
+                    'id',
+                    'username',
+                ],
+                'useEmpty'   => true,
+                'emptyText'  => 'Seleziona il commerciale di riferimento',
+                'emptyValue' => '',
+            ]
+        );
+        $users_id->setLabel("Commerciale di riferimento");
+        $users_id->setFilters(['striptags', 'string']);
+        $this->add($users_id);
 
         $padre_id = new Select("padre_id",
             Exhibitors::find(),

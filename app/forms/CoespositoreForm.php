@@ -239,21 +239,7 @@ class CoespositoreForm extends Form
             )
         ]);
         $this->add($prodottiesposti);        
-/*
-        $padiglione = new Text("padiglione");
-        $padiglione->setLabel("Padiglione");
-        $padiglione->setFilters(['striptags', 'string', 'trim']);
-        $padiglione->addValidators([
-            new StringLength(
-                [
-                    "max"            => 20,
-                    "messageMaximum" => "Il campo Padiglione è troppo lungo (max 20 caratteri)",
-                    "allowEmpty" => true,
-                ]
-            )
-        ]);
-        $this->add($padiglione);
-*/
+
         $interventoprogrammaculturale = new Check("interventoprogrammaculturale",["name" => "interventoprogrammaculturale","value" =>"1"]);
         $interventoprogrammaculturale->setLabel("Desidero partecipare al programma culturale");
         $interventoprogrammaculturale->setFilters(['striptags', 'string']);

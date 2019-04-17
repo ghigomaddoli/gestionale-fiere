@@ -44,9 +44,9 @@ class Reservations extends \Phalcon\Mvc\Model
 
     /**
      *
-     * @var string
+     * @var integer
      */
-    public $commerciale;
+    public $users_id;    
 
     /**
      *
@@ -125,6 +125,7 @@ class Reservations extends \Phalcon\Mvc\Model
         $this->belongsTo('exhibitors_id', 'Exhibitors', 'id', ['alias' => 'Exhibitors', 'reusable' => true]);
         $this->belongsTo('events_id', 'Events', 'id', ['alias' => 'Events','reusable' => true]);
         $this->belongsTo('areas_id', 'Areas', 'id', ['alias' => 'Areas','reusable' => true]);
+        $this->belongsTo('users_id', 'Users', 'id', ['alias' => 'Users','reusable' => true]);
         $this->belongsTo('padre_id', 'Reservations', 'id', ['alias' => 'Padri']);
         $this->belongsTo('stato', 'Stati', 'id', ['alias' => 'Stati','reusable' => true]);
     }
@@ -150,17 +151,6 @@ class Reservations extends \Phalcon\Mvc\Model
                 [
                     "max"            => 20,
                     "messageMaximum" => "Il campo Padiglione non può essere più lungo di 20 caratteri",
-                    "allowEmpty" => true,
-                ]
-            )
-        );
-
-        $validator->add(
-            'commerciale',
-            new StringLength(
-                [
-                    "max"            => 100,
-                    "messageMaximum" => "Il campo del referente commerciale non può essere più lungo di 100 caratteri",
                     "allowEmpty" => true,
                 ]
             )
@@ -208,7 +198,7 @@ class Reservations extends \Phalcon\Mvc\Model
             'areas_id' => 'areas_id',
             'codicestand' => 'codicestand',
             'padiglione' => 'padiglione',   
-            'commerciale' => 'commerciale',            
+            'users_id' => 'users_id',          
             'padre_id' => 'padre_id',
             'prezzofinale' => 'prezzofinale',
             'notepagamento' => 'notepagamento',

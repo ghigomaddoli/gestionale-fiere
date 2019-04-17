@@ -64,7 +64,7 @@
         </div>    
         <div class="col-sm-3">
             <label for="fieldCommerciale" class="control-label">Commerciale di riferimento</label>
-            {{ text_field('commerciale', 'size': 20,  "class" : "form-control", "id" : "fieldCommerciale", "value" : reservation.commerciale) }}
+            {{ select('users_id', users, 'using': ['id', 'username'],'class' : 'form-control', 'useEmpty' : true, 'emptyText'  : '------') }}
         </div>    
     </div>
 

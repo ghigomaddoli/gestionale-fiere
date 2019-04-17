@@ -65,6 +65,7 @@
                         <th>Area Tematica</th>
                         <th>Stato</th>
                         <th>Info</th>
+                        <th>Commerciale</th>
                         <th></th>
                     </tr>
                   </thead>
@@ -96,6 +97,11 @@
                             {% if reservation.interventoprogrammaculturale == 1 %}
                             <a href="#" class="badge badge-info" id="ipc-{{ reservation.id }}" data-toggle="tooltip" title="Parteciperà al programma culturale"><i class="fas fa-graduation-cap"></i></a>
                             {% endif %}
+                        </td>
+                        <td>
+                          {% if reservation.users_id > 0 %}
+                          {{ reservation.users.username }}
+                          {% endif %}
                         </td>
                         <td class="text-nowrap">
                             {{ link_to('exhibitors/edit/' ~ reservation.exhibitors.id, "<i class='fas fa-pencil-alt'></i>", 'class': 'btn btn-sm btn-outline-secondary', 'title' :  "Modifica i dati anagrafici di fatturazione espositore", 'data-toggle' : 'tooltip') }}

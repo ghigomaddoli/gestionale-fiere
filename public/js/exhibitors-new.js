@@ -117,4 +117,15 @@ $(document).ready(function(){
         $("#fieldCatalogoemail").val($("#fieldEmailaziendale").val());
     });
 
+    $('#espositoreestero').click(function(){
+        if(this.checked){
+            $("#provincia").val('XX');
+            $("#provincia").attr('readonly',true);
+        }
+        else{
+            $("#provincia").attr('readonly',false);
+            $("#provincia").val('PG');
+        }
+    });
+
 });

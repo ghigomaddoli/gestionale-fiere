@@ -124,6 +124,8 @@ class ReservationsController extends ControllerBase
         $this->tag->setDefault('areas_id', $reservation->areas_id);
         $this->view->stands = Services::find("events_id = ".$reservation->events_id." AND tipologia IN (1,2)");
         $this->view->services = Services::find("events_id = ".$reservation->events_id." AND tipologia = 3");
+        $this->view->users = Users::find(" attivo = 1 ");
+        $this->tag->setDefault('users_id', $reservation->users_id);
         $reservationservices = ReservationServices::find("reservations_id = ".$reservation->id);
         $this->view->reservationservices = $reservationservices;
 
