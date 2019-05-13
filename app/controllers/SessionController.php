@@ -1,5 +1,5 @@
 <?php
-
+use Phalcon\Mvc\Url;
 
 class SessionController extends ControllerBase
 {
@@ -92,4 +92,140 @@ class SessionController extends ControllerBase
             ]
         );
     }
+
+    public function forgotAction()
+    {
+
+    }
+
+    public function resetAction()
+    {
+        if ($this->request->isPost()) {
+
+            $email = $this->request->getPost('email');
+
+            $user = Users::findFirst([
+            "(email = :email:) AND attivo = 1",
+            'bind' => ['email' => $email]
+            ]);
+
+            if ($user != false) {
+
+                // 1) genero un token
+                $token = $this->security->getToken();
+
+                // 2) lo inserisco nel database
+                $user->token = $token;
+                if ($user->save() == false) {
+                    foreach ($user->getMessages() as $message) {
+                        $this->flash->error($message);
+                    }
+                }
+
+                // 3) invio il link di reset password
+                $parametri = array(
+                    'user' => $user,
+                    'baseuri' => 'http://gestionale.falacosagiustaumbria.it/',
+                    'destinatari' => array($email => $user->nome),
+                    'replyto' => array($email => $user->nome)
+                );        
+                $result = MyEmailSender::inviaEmail($this, 'resetpassword', $parametri,"Istruzioni di reset della password per ".$user->nome);
+
+                if($result > 0){
+
+                    $this->flash->success("le istruzioni per il reset della password sono state inviate all'indirizzo email {$email}");
+
+                    return $this->dispatcher->forward(
+                        [
+                            "controller" => "index",
+                            "action"     => "index",
+                        ]
+                    );
+                }
+                else{
+                    $this->flash->error('errore nell\'invio dell\'email');
+                }
+            }
+
+            $this->flash->error('indirizzo email inesistente');
+        }
+
+        return $this->dispatcher->forward(
+            [
+                "controller" => "session",
+                "action"     => "index",
+            ]
+        );
+    }
+
+    /* visualizza il form per inserire la nuova password */
+    public function newpassAction($token)
+    {
+        $this->view->token = $token;
+    }
+
+    /* salva la nuova password nel db */
+    public function savenewpasswordAction()
+    {
+            // 1) mi arriva token e vecchia password, le controllo.
+            if ($this->request->isPost()) {
+                $token = $this->request->getPost('token');
+                \PhalconDebug::info('ricevo token: ',$token);
+                $newpass = $this->request->getPost('newpass');
+                $newpass2 = $this->request->getPost('newpass2');
+                if($newpass != $newpass2){
+                    $this->flashSession->error('Errore. I due campi password non coincidono');
+                    $this->response->redirect('session/newpass/{$token}');
+                }
+                $user = Users::findFirst([
+                "(token = :token:) AND attivo = 1",
+                'bind' => ['token' => $token]
+                ]);
+    
+                if ($user != false) {
+                    \PhalconDebug::info('user trovato!: ',$user);
+                    // 3) se sono corrette resetto la password e salvo
+                   $user->password = sha1($newpass);
+
+                   if($user->save()){
+
+                        $this->flash->success('Password aggiornata con successo!');
+                        return $this->dispatcher->forward(
+                            [
+                                "controller" => "index",
+                                "action"     => "index",
+                            ]
+                        );
+
+                   }
+                   else{
+                    $this->flash->error('errore nel salvataggio della nuova password');
+                    $this->dispatcher->forward(
+                        [
+                            'controller' => 'errors',
+                            'action'     => 'show404'
+                        ]
+                    );
+                   }
+                }
+                else{
+                    $this->flash->error('errore. Token scaduto e/o password non valida');
+                    $this->dispatcher->forward(
+                        [
+                            'controller' => 'errors',
+                            'action'     => 'show404'
+                        ]
+                    );
+                }
+            }
+            else{
+                $this->dispatcher->forward(
+                    [
+                        'controller' => 'errors',
+                        'action'     => 'show404'
+                    ]
+                );
+            }
+    }
+
 }

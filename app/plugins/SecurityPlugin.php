@@ -65,7 +65,7 @@ class SecurityPlugin extends Plugin
 			$publicResources = [
 				'index'      => ['index'],
 				'errors'     => ['show401', 'show404', 'show500'],
-				'session'    => ['index', 'register', 'start', 'end'],
+				'session'    => ['index', 'register', 'start', 'end', 'forgot','reset','newpass','savenewpassword'],
 				'reservations'    => ['new', 'save', 'create','invialettera'],
 				'exhibitors'    => [ 'new', 'nuovo', 'validate', 'save', 'create', 'coespositore','coespositorecreate'],
 			];

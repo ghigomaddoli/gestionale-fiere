@@ -62,6 +62,12 @@ class Users extends \Phalcon\Mvc\Model
     public $ruolo;
 
     /**
+     *
+     * @var string
+     */
+    public $token;
+
+    /**
      * Validations and business logic
      *
      * @return boolean
