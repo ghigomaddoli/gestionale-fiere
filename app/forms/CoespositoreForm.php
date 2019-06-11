@@ -166,8 +166,8 @@ class CoespositoreForm extends Form
         $codfisc->addValidators([
             new StringLength(
                 [
-                    "min"   =>16,
-                    "messageMinimum" => "Il Codice Fiscale deve essere composto da 16 caratteri",
+                    "min"   =>11,
+                    "messageMinimum" => "Il Codice Fiscale deve essere composto da almeno 11 caratteri",
                     "allowEmpty" => true,
                 ]
             )

@@ -220,9 +220,9 @@ class AnagraficaForm extends Form
         $codfisc->addValidators([
             new StringLength(
                 [
-                    "min"   =>16,
+                    "min"   =>11,
                     "max"            => 16,
-                    "messageMaximum" => "Codice Fiscale deve essere composto da 16 caratteri",
+                    "messageMaximum" => "Codice Fiscale deve essere composto da almeno 11 caratteri",
                     "allowEmpty" => true,
                 ]
             )

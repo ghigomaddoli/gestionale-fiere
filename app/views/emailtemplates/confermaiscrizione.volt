@@ -159,7 +159,7 @@
                                   <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                                     <tbody>
                                       <tr style="text-align:center !important;">
-                                        <td style="text-align:center !important;"> <a href="http://gestionale.falacosagiustaumbria.it/exhibitors/coespositore/{{ reservation_id }}" target="_blank" style="display: inline-block; color: #ffffff; background-color: #3498db; border: solid 1px #3498db; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #3498db;">Dati Coespositore</a></td>
+                                        <td style="text-align:center !important;"> <a href="http://iscrizioni.falacosagiustaumbria.it/exhibitors/coespositore/{{ reservation_id }}" target="_blank" style="display: inline-block; color: #ffffff; background-color: #3498db; border: solid 1px #3498db; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #3498db;">Dati Coespositore</a></td>
                                       </tr>
                                     </tbody>
                                   </table>

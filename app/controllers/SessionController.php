@@ -125,7 +125,7 @@ class SessionController extends ControllerBase
                 // 3) invio il link di reset password
                 $parametri = array(
                     'user' => $user,
-                    'baseuri' => 'http://gestionale.falacosagiustaumbria.it/',
+                    'baseuri' => 'http://iscrizioni.falacosagiustaumbria.it/',
                     'destinatari' => array($email => $user->nome),
                     'replyto' => array($email => $user->nome)
                 );        
@@ -173,9 +173,16 @@ class SessionController extends ControllerBase
                 \PhalconDebug::info('ricevo token: ',$token);
                 $newpass = $this->request->getPost('newpass');
                 $newpass2 = $this->request->getPost('newpass2');
+                // verifico che le due password siano uguali
                 if($newpass != $newpass2){
                     $this->flashSession->error('Errore. I due campi password non coincidono');
                     $this->response->redirect('session/newpass/{$token}');
+                }
+                // verifico con espressione regolare che la password abbia un minimo di complessità: una maiuscola, una minuscola un numero e un carattere speciale
+                $pattern = '/(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/';
+                if (!(preg_match($pattern, $newpass))) {
+                    $this->flashSession->error('La password che scegli dovrebbe contenere almeno: una maiuscola, una minuscola, un numero e un carattere speciale');
+                    $this->response->redirect('session/newpass/{$token}');                   
                 }
                 $user = Users::findFirst([
                 "(token = :token:) AND attivo = 1",

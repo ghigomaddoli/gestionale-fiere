@@ -107,7 +107,7 @@
                       <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">
                         <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Gentile {{ user.nome }},</p>
                         <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Abbiamo ricevuto una richiesta di ripristino della tua password per il Gestionale di Fa' la cosa giusta Umbria!. Fai clic sul link in basso per sceglierne una nuova:</p>
-                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><a href="http://gestionale.falacosagiustaumbria.it/session/newpass/{{user.token}}">Reimposta la tua password</a></p>
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><a href="http://iscrizioni.falacosagiustaumbria.it/session/newpass/{{user.token}}">Reimposta la tua password</a></p>
                         <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Se non hai inviato tu questa richiesta, ignora questo messaggio.</p>
                         <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><hr></p>
                       </td>

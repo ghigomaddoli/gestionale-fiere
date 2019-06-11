@@ -132,6 +132,7 @@ class ExhibitorsController extends ControllerBase
                 $ris["status"] = "KO";
                 return $this->response->setJsonContent($ris);
             }
+            /*
             if(!empty($codfisc)){
                 // proviamo a verificare la validità formale del codice fiscale
                 if(preg_match("/^[A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z]$/i",$codfisc)==false){
@@ -140,7 +141,7 @@ class ExhibitorsController extends ControllerBase
                     return $this->response->setJsonContent($ris);
                 }
 
-            }
+            }*/
         }
 
         // verifico che almeno uno stand sia stato selezionato
@@ -427,6 +428,7 @@ class ExhibitorsController extends ControllerBase
             $ris["status"] = "KO";
             return $this->response->setJsonContent($ris);
         }
+        /*
         if(!empty($codfisc)){
             // proviamo a verificare la validità formale del codice fiscale con regex presa da internet? boh
             if(preg_match("/^[A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z]$/i",$codfisc)==false){
@@ -435,7 +437,7 @@ class ExhibitorsController extends ControllerBase
                 return $this->response->setJsonContent($ris);
             }
 
-        }
+        }*/
 
         if ($exhibitors->save() === false) {
 
@@ -565,6 +567,7 @@ class ExhibitorsController extends ControllerBase
             $ris["status"] = "KO";
             return $this->response->setJsonContent($ris);
         }
+        /*
         if(!empty($codfisc)){
             // proviamo a verificare la validità formale del codice fiscale con regex presa da internet? boh
             if(preg_match("/^[A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z]$/i",$codfisc)==false){
@@ -573,7 +576,7 @@ class ExhibitorsController extends ControllerBase
                 return $this->response->setJsonContent($ris);
             }
 
-        }
+        }*/
 
         if ($exhibitors->save() === false) {
 
